@@ -1,0 +1,13 @@
+.settings-bar {
+  display: flex;
+}
+
+table {
+  width: 100%;
+
+  tr {
+    &.blocked {
+      background: rgba(#000, 0.05);;
+    }
+  }
+}
