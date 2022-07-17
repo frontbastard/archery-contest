@@ -1,8 +1,9 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser, User } from '../models/user.model';
+import { IUser, User } from '../../../models/user.model';
 
 const USERS: IUser[] = [
   new User({
@@ -57,18 +58,19 @@ const USERS: IUser[] = [
 ];
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss'],
+  selector: 'app-user-manage-list',
+  templateUrl: './user-manage-list.component.html',
+  styleUrls: ['./user-manage-list.component.scss'],
 })
-export class UsersListComponent {
+export class UserManageListComponent {
   usersList = new MatTableDataSource(USERS);
   userStatuses = [
     { value: 'all', viewValue: 'All' },
     { value: 'blocked', viewValue: 'Blocked' },
   ];
   selectedUserStatus = this.userStatuses[0].value;
-  displayedColumns: string[] = ['name', 'email', 'date', 'buttons'];
+  displayedColumns: string[] = ['select', 'name', 'email', 'date', 'buttons'];
+  selection = new SelectionModel<User>(true, []);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -101,6 +103,33 @@ export class UsersListComponent {
 
     this.getPaginatorFirstPage();
     this.usersList.sort = this.sort;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.usersList.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.usersList.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: User): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   private getPaginatorFirstPage() {

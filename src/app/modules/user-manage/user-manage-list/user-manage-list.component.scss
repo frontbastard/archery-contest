@@ -1,10 +1,9 @@
 .settings-bar {
   display: flex;
+  align-items: center;
 }
 
 table {
-  width: 100%;
-
   tr {
     &.blocked {
       background: rgba(#000, 0.05);;

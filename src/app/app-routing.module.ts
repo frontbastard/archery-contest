@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ACRoutes } from './common/routes';
 
 const routes: Routes = [
   {
-    path: 'manage-users',
+    path: ACRoutes.ManageUsers,
     loadChildren: () =>
-      import('src/app/modules/user-management/user-management.module').then(
-        (mod) => mod.UserManagementModule
+      import('src/app/modules/user-manage/user-manage.module').then(
+        (mod) => mod.UserManageModule
       ),
   },
 ];
