@@ -1,0 +1,12 @@
+.settings-bar {
+  display: flex;
+  align-items: center;
+}
+
+table {
+  tr {
+    &.blocked {
+      background: rgba(#000, 0.05);;
+    }
+  }
+}

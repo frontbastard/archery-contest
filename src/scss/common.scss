@@ -1,3 +1,32 @@
+.container {
+  position: relative;
+  padding: 0 15px;
+}
+
+.align-right {
+  text-align: right;
+}
+
 .spacer {
   flex-grow: 1;
+}
+
+.blocked {
+  color: red;
+}
+
+.unblocked {
+  color: green;
+}
+
+button {
+  +button {
+
+    &.mat-button,
+    &.mat-icon-button,
+    &.mat-stroked-button,
+    &.mat-flat-button {
+      margin-left: 10px;
+    }
+  }
 }
