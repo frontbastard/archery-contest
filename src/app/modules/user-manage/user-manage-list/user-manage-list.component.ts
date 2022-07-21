@@ -1,129 +1,97 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser, User } from '../../../models/user.model';
-
-const USERS: IUser[] = [
-  new User({
-    id: 0,
-    email: 'john@email.com',
-    name: 'John',
-    blocked: false,
-    date: new Date(),
-  }),
-  new User({
-    id: 1,
-    email: 'steave@email.com',
-    name: 'Steave',
-    blocked: false,
-    date: new Date(),
-  }),
-  new User({
-    id: 2,
-    email: 'mike@email.com',
-    name: 'Mike',
-    blocked: false,
-    date: new Date(),
-  }),
-  new User({
-    id: 3,
-    email: 'george@email.com',
-    name: 'George Washington Junior',
-    blocked: false,
-    date: new Date(),
-  }),
-  new User({
-    id: 4,
-    email: 'ivan@email.com',
-    name: 'Ivan',
-    blocked: true,
-    date: new Date(),
-  }),
-  new User({
-    id: 5,
-    email: 'hrystyna@email.com',
-    name: 'Hrystyna',
-    blocked: false,
-    date: new Date(),
-  }),
-  new User({
-    id: 6,
-    email: 'alyona@email.com',
-    name: 'Alyona',
-    blocked: true,
-    date: new Date(),
-  }),
-];
+import { IUser } from '../../../models/user.model';
 
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
   styleUrls: ['./user-manage-list.component.scss'],
 })
-export class UserManageListComponent {
-  usersList = new MatTableDataSource(USERS);
-  userStatuses = [
+export class UserManageListComponent implements OnInit, AfterViewInit {
+  // public usersList: IUser[] = [];
+  public usersMatTableDataSource = new MatTableDataSource<IUser>();
+  public userStatuses = [
     { value: 'all', viewValue: 'All' },
     { value: 'blocked', viewValue: 'Blocked' },
   ];
-  selectedUserStatus = this.userStatuses[0].value;
-  displayedColumns: string[] = ['select', 'name', 'email', 'date', 'buttons'];
-  selection = new SelectionModel<User>(true, []);
+  public selectedUserStatus = this.userStatuses[0].value;
+  public displayedColumns: string[] = [
+    'select',
+    'name',
+    'email',
+    'date',
+    'buttons',
+  ];
+  public selection = new SelectionModel<IUser>(true, []);
 
+  @Input() usersList: IUser[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.usersList.paginator = this.paginator;
-    this.usersList.sort = this.sort;
+  ngOnInit() {
+    this.usersMatTableDataSource = new MatTableDataSource<IUser>(
+      this.usersList
+    );
   }
 
-  applyFilter(event: Event) {
+  ngAfterViewInit() {
+    this.usersMatTableDataSource.paginator = this.paginator;
+    this.usersMatTableDataSource.sort = this.sort;
+  }
+
+  public applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.usersList.filter =
+    this.usersMatTableDataSource.filter =
       filterValue.length < 2 ? '' : filterValue.trim().toLowerCase();
 
     this.getPaginatorFirstPage();
   }
 
-  userClicked(user: IUser) {
+  public userClicked(user: IUser) {
     console.log(user);
   }
 
-  userStatusChanged(event: Event) {
+  public userStatusChanged(event: Event) {
     this.selectedUserStatus = (event.target as HTMLSelectElement).value;
 
-    this.usersList = new MatTableDataSource(
-      USERS.filter((user) =>
+    this.usersMatTableDataSource = new MatTableDataSource(
+      this.usersList.filter((user) =>
         this.selectedUserStatus === 'blocked' ? user.blocked : user
       )
     );
 
     this.getPaginatorFirstPage();
-    this.usersList.sort = this.sort;
+    this.usersMatTableDataSource.sort = this.sort;
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
+  public isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.usersList.data.length;
+    const numRows = this.usersMatTableDataSource.data.length;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
+  public toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
       return;
     }
 
-    this.selection.select(...this.usersList.data);
+    this.selection.select(...this.usersMatTableDataSource.data);
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: User): string {
+  public checkboxLabel(row?: IUser): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
@@ -133,10 +101,10 @@ export class UserManageListComponent {
   }
 
   private getPaginatorFirstPage() {
-    if (this.usersList.paginator) {
-      this.usersList.paginator.firstPage();
+    if (this.usersMatTableDataSource.paginator) {
+      this.usersMatTableDataSource.paginator.firstPage();
     } else {
-      this.usersList.paginator = this.paginator;
+      this.usersMatTableDataSource.paginator = this.paginator;
     }
   }
 }

@@ -5,6 +5,10 @@ import { UserManageDetailsComponent } from './user-manage-details/user-manage-de
 import { UserManageComponent } from './user-manage.component';
 import { UserManageListComponent } from './user-manage-list/user-manage-list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { userFeatureKey, userReducer } from 'src/app/store/user/user.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from 'src/app/store/user/user.effects';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     UserManageRoutingModule,
     SharedModule,
+    EffectsModule.forFeature([UserEffects]),
+    StoreModule.forFeature(userFeatureKey, userReducer),
   ],
 })
 export class UserManageModule {}
