@@ -2,6 +2,9 @@
   <mat-toolbar-row>
     <span>{{ "Archery Contest" }}</span>
     <span class="spacer"></span>
-    <a mat-button routerLink="manage-users">{{ "Manage users" }}</a>
+    <a mat-button routerLink="manage-users">
+      <mat-icon aria-hidden="false" aria-label="Manage icon" fontIcon="manage_accounts">manage_accounts</mat-icon>
+      {{ "Manage users" }}
+    </a>
   </mat-toolbar-row>
 </mat-toolbar>
