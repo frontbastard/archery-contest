@@ -3,9 +3,9 @@ import { Action, createAction, props } from '@ngrx/store';
 import { ActionRequestPayload, ActionResponsePayload, ISearchRequest, ISearchResponse } from 'src/app/models/core';
 
 export enum UserActions {
-  LOAD_USERS = '[User] Load Users',
-  USERS_LOADED = '[User] Users Loaded',
-  ERROR_OCCURED = '[User] Error Occured',
+  loadUsers = '[User] Load Users',
+  usersLoaded = '[User] Users Loaded',
+  errorOccured = '[User] Error Occured',
   // TOGGLE_STATUS = '[User] Toggle Status',
   // ADD_USER = '[User] Add User',
   // UPDATE_USER = '[User] Update User',
@@ -13,16 +13,16 @@ export enum UserActions {
 }
 
 export const loadUsers = createAction(
-  UserActions.LOAD_USERS,
+  UserActions.loadUsers,
   props<ActionRequestPayload<ISearchRequest<IUserFilterModel>>>()
 );
 
 export const usersLoaded = createAction(
-  UserActions.USERS_LOADED,
+  UserActions.usersLoaded,
   props<ActionResponsePayload<ISearchResponse<IUser>>>()
 );
 
-export const errorOccured = createAction(UserActions.ERROR_OCCURED);
+export const errorOccured = createAction(UserActions.errorOccured);
 
 // export class ToggleStatus implements Action {
 //   readonly type = UserActions.TOGGLE_STATUS;

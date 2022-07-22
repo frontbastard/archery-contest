@@ -9,7 +9,7 @@ import { UserActions } from './user.actions';
 export class UserEffects {
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.LOAD_USERS),
+      ofType(UserActions.loadUsers),
       mergeMap((payload: ActionRequestPayload<ISearchRequest<IUserFilterModel>>) =>
         of({
           items: [
@@ -24,10 +24,10 @@ export class UserEffects {
           totalCount: 1,
         } as ISearchResponse<IUser>).pipe(
           map((users) => ({
-            type: UserActions.USERS_LOADED,
+            type: UserActions.usersLoaded,
             data: users,
           })),
-          catchError(() => of({ type: UserActions.ERROR_OCCURED }))
+          catchError(() => of({ type: UserActions.errorOccured }))
         )
       )
     )
