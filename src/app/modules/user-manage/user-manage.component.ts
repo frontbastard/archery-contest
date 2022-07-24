@@ -3,8 +3,11 @@ import { Component } from '@angular/core';
 import { IUser, IUserFilterModel } from 'src/app/models/user.model';
 import { Store } from '@ngrx/store';
 import { IUserState } from 'src/app/store/user/user.state';
-import { loadUsers } from 'src/app/store/user/user.actions';
-import { selectUsers } from 'src/app/store/user/user.selectors';
+import { loadUsers, deleteUser } from 'src/app/store/user/user.actions';
+import {
+  selectIsUserStateLoading,
+  selectUsers,
+} from 'src/app/store/user/user.selectors';
 import { ActionRequestPayload, ISearchRequest } from 'src/app/models/core';
 
 @Component({
@@ -14,15 +17,24 @@ import { ActionRequestPayload, ISearchRequest } from 'src/app/models/core';
 })
 export class UserManageComponent implements OnInit {
   public usersList: IUser[] = [];
+  public isLoading = false;
 
   constructor(private store: Store<IUserState>) {}
 
   ngOnInit(): void {
     this.store.select(selectUsers).subscribe((users) => {
       this.usersList = users.items;
-      console.log(users);
-
     });
-    this.store.dispatch(loadUsers({} as ActionRequestPayload<ISearchRequest<IUserFilterModel>>));
+
+    this.store.select(selectIsUserStateLoading).subscribe((isLoading) => {
+      this.isLoading = isLoading;
+    });
+    this.store.dispatch(
+      loadUsers({} as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
+    );
+  }
+
+  onDeleteUser($id: ActionRequestPayload<string>): void {
+    this.store.dispatch(deleteUser($id));
   }
 }

@@ -1,24 +1,26 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { EventEmitter, OnChanges, Output } from '@angular/core';
 import {
   AfterViewInit,
   Component,
   Input,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { IUser } from '../../../models/user.model';
+import { UserRoutes } from 'src/app/common/routes';
+import { ActionRequestPayload } from 'src/app/models/core';
 
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
   styleUrls: ['./user-manage-list.component.scss'],
 })
-export class UserManageListComponent implements OnInit, AfterViewInit {
+export class UserManageListComponent implements OnChanges, AfterViewInit {
   // public usersList: IUser[] = [];
-  public usersMatTableDataSource = new MatTableDataSource<IUser>();
+  public usersDataSource = new MatTableDataSource<IUser>();
   public userStatuses = [
     { value: 'all', viewValue: 'All' },
     { value: 'blocked', viewValue: 'Blocked' },
@@ -32,62 +34,60 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     'buttons',
   ];
   public selection = new SelectionModel<IUser>(true, []);
+  public userRoutesRoot = UserRoutes.Root;
 
   @Input() usersList: IUser[] = [];
+  @Output() deleteUser = new EventEmitter<ActionRequestPayload<string>>()
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
-    this.usersMatTableDataSource = new MatTableDataSource<IUser>(
+  ngOnChanges(): void {
+    this.usersDataSource = new MatTableDataSource<IUser>(
       this.usersList
     );
+    this.updateUsersDataSource();
   }
 
-  ngAfterViewInit() {
-    this.usersMatTableDataSource.paginator = this.paginator;
-    this.usersMatTableDataSource.sort = this.sort;
+  ngAfterViewInit(): void {
+    this.updateUsersDataSource();
   }
 
-  public applyFilter(event: Event) {
+  public applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.usersMatTableDataSource.filter =
+    this.usersDataSource.filter =
       filterValue.length < 2 ? '' : filterValue.trim().toLowerCase();
 
     this.getPaginatorFirstPage();
   }
 
-  public userClicked(user: IUser) {
-    console.log(user);
-  }
-
-  public userStatusChanged(event: Event) {
+  public userStatusChanged(event: Event): void {
     this.selectedUserStatus = (event.target as HTMLSelectElement).value;
 
-    this.usersMatTableDataSource = new MatTableDataSource(
+    this.usersDataSource = new MatTableDataSource(
       this.usersList.filter((user) =>
         this.selectedUserStatus === 'blocked' ? user.blocked : user
       )
     );
 
     this.getPaginatorFirstPage();
-    this.usersMatTableDataSource.sort = this.sort;
+    this.usersDataSource.sort = this.sort;
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
-  public isAllSelected() {
+  public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
-    const numRows = this.usersMatTableDataSource.data.length;
+    const numRows = this.usersDataSource.data.length;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
-  public toggleAllRows() {
+  public toggleAllRows(): void {
     if (this.isAllSelected()) {
       this.selection.clear();
       return;
     }
 
-    this.selection.select(...this.usersMatTableDataSource.data);
+    this.selection.select(...this.usersDataSource.data);
   }
 
   /** The label for the checkbox on the passed row */
@@ -100,11 +100,20 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     }`;
   }
 
-  private getPaginatorFirstPage() {
-    if (this.usersMatTableDataSource.paginator) {
-      this.usersMatTableDataSource.paginator.firstPage();
+  public onDeleteUser(id: ActionRequestPayload<string>): void {
+    this.deleteUser.emit(id);
+  }
+
+  private updateUsersDataSource(): void {
+    this.usersDataSource.paginator = this.paginator;
+    this.usersDataSource.sort = this.sort;
+  }
+
+  private getPaginatorFirstPage(): void {
+    if (this.usersDataSource.paginator) {
+      this.usersDataSource.paginator.firstPage();
     } else {
-      this.usersMatTableDataSource.paginator = this.paginator;
+      this.usersDataSource.paginator = this.paginator;
     }
   }
 }

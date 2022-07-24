@@ -1,15 +1,22 @@
 import { IUser, IUserFilterModel } from 'src/app/models/user.model';
-import { Action, createAction, props } from '@ngrx/store';
-import { ActionRequestPayload, ActionResponsePayload, ISearchRequest, ISearchResponse } from 'src/app/models/core';
+import { createAction, props } from '@ngrx/store';
+import {
+  ActionRequestPayload,
+  ActionResponsePayload,
+  ISearchRequest,
+  ISearchResponse,
+} from 'src/app/models/core';
 
 export enum UserActions {
   loadUsers = '[User] Load Users',
   usersLoaded = '[User] Users Loaded',
-  errorOccured = '[User] Error Occured',
-  // TOGGLE_STATUS = '[User] Toggle Status',
+  toggleDisabled = '[User] Toggle Disabled',
+  disableToggled = '[User] Disable Toggled',
   // ADD_USER = '[User] Add User',
   // UPDATE_USER = '[User] Update User',
-  // DELETE_USER = '[User] Delete User',
+  deleteUser = '[User] Delete User',
+  userDeleted = '[User] User Deleted',
+  errorOccured = '[User] Error Occured',
 }
 
 export const loadUsers = createAction(
@@ -22,10 +29,8 @@ export const usersLoaded = createAction(
   props<ActionResponsePayload<ISearchResponse<IUser>>>()
 );
 
-export const errorOccured = createAction(UserActions.errorOccured);
-
 // export class ToggleStatus implements Action {
-//   readonly type = UserActions.TOGGLE_STATUS;
+//   readonly type = UserActions.toggleDisabled;
 
 //   constructor(public payload: boolean) {}
 // }
@@ -42,7 +47,14 @@ export const errorOccured = createAction(UserActions.errorOccured);
 //   constructor(public payload: User) {}
 // }
 
-// export class DeleteUser implements Action {
-//   readonly type = UserActions.DELETE_USER;
-// }
+export const deleteUser = createAction(
+  UserActions.deleteUser,
+  props<ActionRequestPayload<string>>()
+);
 
+export const userDeleted = createAction(
+  UserActions.userDeleted,
+  props<ActionResponsePayload<ISearchResponse<IUser>>>()
+);
+
+export const errorOccured = createAction(UserActions.errorOccured);

@@ -3,6 +3,10 @@ export enum ACRoutes {
   ManageUsers = 'manage-users',
 }
 
+export enum UserRoutes {
+  Root = 'manage-users'
+}
+
 export enum RouteParams {
   ID = 'id',
 }
