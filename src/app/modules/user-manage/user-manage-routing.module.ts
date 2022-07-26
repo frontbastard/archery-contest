@@ -1,18 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { UserManageComponent } from './user-manage.component';
 import { RouteParams } from 'src/app/common/routes';
 import { UserManageDetailsComponent } from './user-manage-details/user-manage-details.component';
+import { UserManageRouterComponent } from './user-manage-router.component';
+import { UserManageListComponent } from './user-manage-list/user-manage-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserManageComponent,
-  },
-  {
-    path: `:${RouteParams.ID}`,
-    component: UserManageDetailsComponent,
+    component: UserManageRouterComponent,
+    children: [
+      {
+        path: '',
+        component: UserManageListComponent,
+      },
+      {
+        path: `:${RouteParams.ID}`,
+        component: UserManageDetailsComponent,
+      },
+    ],
   },
 ];
 

@@ -15,8 +15,8 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.loadUsers),
       mergeMap(
-        (payload: ActionRequestPayload<ISearchRequest<IUserFilterModel>>) =>
-          this.userApiService.getAll().pipe(
+        ({data, cancellationObservable}: ActionRequestPayload<ISearchRequest<IUserFilterModel>>) =>
+          this.userApiService.search(data, cancellationObservable).pipe(
             map((users) => ({
               type: UserActions.usersLoaded,
               data: users,
@@ -30,8 +30,8 @@ export class UserEffects {
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.deleteUser),
-      mergeMap((payload: ActionRequestPayload<string>) =>
-        this.userApiService.delete(payload).pipe(
+      mergeMap(({data, cancellationObservable}: ActionRequestPayload<number>) =>
+        this.userApiService.delete(data, cancellationObservable).pipe(
           map((users) => ({
             type: UserActions.userDeleted,
             data: users,
