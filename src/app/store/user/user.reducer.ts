@@ -1,5 +1,11 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { errorOccured, loadUsers, usersLoaded } from './user.actions';
+import {
+  errorOccured,
+  loadUsers,
+  usersLoaded,
+  deleteUser,
+  userDeleted,
+} from './user.actions';
 import { initialState, IUserState } from './user.state';
 
 const _reducer = createReducer(
@@ -15,6 +21,19 @@ const _reducer = createReducer(
   })),
   on(errorOccured, (state) => ({
     ...state,
+    loadingRequestCounter: state.loadingRequestCounter - 1,
+  })),
+  on(deleteUser, (state, action) => ({
+    ...state,
+    users: {
+      items: state.users.items.filter((user) => user.id !== action[0]),
+      totalCount: state.users.totalCount - 1,
+    },
+    loadingRequestCounter: state.loadingRequestCounter + 1,
+  })),
+  on(userDeleted, (state, action) => ({
+    ...state,
+    users: action.data,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   }))
 );

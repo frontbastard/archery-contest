@@ -1,2 +1,7 @@
 <h1>{{ "Users Management" }}</h1>
-<app-user-manage-list [usersList]="usersList"></app-user-manage-list>
+<app-user-manage-list
+  *ngIf="usersList; else loadingTemplate"
+  [usersList]="usersList"
+  (deleteUser)="onDeleteUser($event)"
+></app-user-manage-list>
+<ng-template #loadingTemplate>Loading...</ng-template>
