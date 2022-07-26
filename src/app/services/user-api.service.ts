@@ -1,34 +1,24 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActionRequestPayload, ISearchResponse } from '../models/core';
-import { IUser } from '../models/user.model';
+import { IUser, IUserFilterModel } from '../models/user.model';
+import { BaseApiCrudService } from './base-api-crud.service';
+import { HttpApiService } from './http-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserApiService {
-  private readonly usersApiUrl = 'api/users';
-
-  constructor(private httpClient: HttpClient) {}
-
-  public getAll(): Observable<ISearchResponse<IUser>> {
-    const url = this.usersApiUrl;
-    return this.httpClient.get<ISearchResponse<IUser>>(url);
+export class UserApiService extends BaseApiCrudService<number, IUser, IUser, void, IUser, void, IUserFilterModel, IUser> {
+  constructor(public override httpApiService: HttpApiService) {
+    super(httpApiService)
   }
 
-  public getById() {
+  rootRoute = 'users';
 
-  }
-
-  public create() {}
-
-  public update() {}
-
-  public toggleDisabled() {}
-
-  public delete(id: ActionRequestPayload<string>): Observable<Object> {
-    const url = `${this.usersApiUrl}/${id}`;
-    return this.httpClient.delete(url);
+  public toggleDisabled(id: ActionRequestPayload<string>, value: boolean): Observable<void> {
+    const url = `${this.rootRoute}/${id}`;
+    return this.httpApiService.put<void>(url, {
+      items: {blocked: value}
+    });
   }
 }

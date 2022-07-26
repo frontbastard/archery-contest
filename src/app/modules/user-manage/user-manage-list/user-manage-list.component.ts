@@ -1,25 +1,30 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { EventEmitter, OnChanges, Output } from '@angular/core';
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { EventEmitter, DoCheck, Output } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser } from '../../../models/user.model';
+import { IUser, IUserFilterModel } from '../../../models/user.model';
 import { UserRoutes } from 'src/app/common/routes';
-import { ActionRequestPayload } from 'src/app/models/core';
+import {
+  ActionRequestPayload,
+  ISearchRequest,
+  ISearchResponse,
+} from 'src/app/models/core';
+import { OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { IUserState } from 'src/app/store/user/user.state';
+import { loadUsers } from 'src/app/store/user/user.actions';
+import { Actions } from '@ngrx/effects';
+import { selectUsers } from 'src/app/store/user/user.selectors';
 
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
   styleUrls: ['./user-manage-list.component.scss'],
 })
-export class UserManageListComponent implements OnChanges, AfterViewInit {
-  // public usersList: IUser[] = [];
+export class UserManageListComponent implements OnInit, AfterViewInit {
+  public searchResult: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
   public usersDataSource = new MatTableDataSource<IUser>();
   public userStatuses = [
     { value: 'all', viewValue: 'All' },
@@ -36,20 +41,33 @@ export class UserManageListComponent implements OnChanges, AfterViewInit {
   public selection = new SelectionModel<IUser>(true, []);
   public userRoutesRoot = UserRoutes.Root;
 
-  @Input() usersList: IUser[] = [];
-  @Output() deleteUser = new EventEmitter<ActionRequestPayload<string>>()
+  @Output() deleteUser = new EventEmitter<ActionRequestPayload<string>>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnChanges(): void {
-    this.usersDataSource = new MatTableDataSource<IUser>(
-      this.usersList
+  public get isItemsInitialized(): boolean {
+    return this.searchResult.items !== null;
+  }
+
+  public get isItemsExist(): boolean {
+    return this.searchResult.totalCount > 0;
+  }
+
+  constructor(private store: Store<IUserState>, private actions: Actions) {}
+
+  ngOnInit(): void {
+    this.store.select(selectUsers).subscribe((users) => {
+      this.searchResult = users;
+      this.usersDataSource.data = users.items;
+    });
+    this.store.dispatch(
+      loadUsers({} as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
     );
-    this.updateUsersDataSource();
   }
 
   ngAfterViewInit(): void {
-    this.updateUsersDataSource();
+    this.usersDataSource.paginator = this.paginator;
+    this.usersDataSource.sort = this.sort;
   }
 
   public applyFilter(event: Event): void {
@@ -63,10 +81,8 @@ export class UserManageListComponent implements OnChanges, AfterViewInit {
   public userStatusChanged(event: Event): void {
     this.selectedUserStatus = (event.target as HTMLSelectElement).value;
 
-    this.usersDataSource = new MatTableDataSource(
-      this.usersList.filter((user) =>
-        this.selectedUserStatus === 'blocked' ? user.blocked : user
-      )
+    this.usersDataSource.data = this.searchResult.items.filter((user) =>
+      this.selectedUserStatus === 'blocked' ? user.blocked : user
     );
 
     this.getPaginatorFirstPage();
@@ -102,11 +118,6 @@ export class UserManageListComponent implements OnChanges, AfterViewInit {
 
   public onDeleteUser(id: ActionRequestPayload<string>): void {
     this.deleteUser.emit(id);
-  }
-
-  private updateUsersDataSource(): void {
-    this.usersDataSource.paginator = this.paginator;
-    this.usersDataSource.sort = this.sort;
   }
 
   private getPaginatorFirstPage(): void {
