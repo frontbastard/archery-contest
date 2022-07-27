@@ -3,7 +3,7 @@ export interface IUser {
   email: string;
   name: string;
   blocked: boolean;
-  date: Date;
+  createdAt: Date;
 }
 
 export interface IUserFilterModel {}
