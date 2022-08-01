@@ -19,7 +19,7 @@ export class UserEffects {
           this.userApiService.search(data, cancellationObservable).pipe(
             map((users) => ({
               type: UserActions.usersLoaded,
-              data: users,
+              data: {totalCount: 1, items: users}, // TODO: Refactor
             })),
             catchError(() => of({ type: UserActions.errorOccured }))
           )
