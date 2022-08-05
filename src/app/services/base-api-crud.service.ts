@@ -42,13 +42,9 @@ export abstract class BaseApiCrudService<
     );
   }
 
-  public create() {
+  public create() {}
 
-  }
-
-  public update() {
-
-  }
+  public update() {}
 
   public delete(
     id: TID,

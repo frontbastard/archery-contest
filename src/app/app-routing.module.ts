@@ -7,7 +7,7 @@ const routes: Routes = [
     path: UserRoutes.Root,
     loadChildren: () =>
       import('src/app/modules/user-manage/user-manage.module').then(
-        (mod) => mod.UserManageModule
+        mod => mod.UserManageModule
       ),
   },
 ];

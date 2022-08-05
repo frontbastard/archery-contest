@@ -30,7 +30,7 @@ import { environment } from 'src/environments/environment';
     StoreModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       name: 'NgRx Demo App',
-      logOnly: environment.production
+      logOnly: environment.production,
     }),
   ],
   providers: [
