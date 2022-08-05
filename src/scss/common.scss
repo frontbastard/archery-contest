@@ -19,13 +19,12 @@
   color: green;
 }
 
-mat-icon[aria-label="Admin icon"] {
-  color: goldenrod
+mat-icon[aria-label='Admin icon'] {
+  color: goldenrod;
 }
 
 button {
-  +button {
-
+  + button {
     &.mat-button,
     &.mat-icon-button,
     &.mat-stroked-button,

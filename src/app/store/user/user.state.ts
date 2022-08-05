@@ -7,6 +7,6 @@ export interface IUserState {
 }
 
 export const initialState: IUserState = {
-  users: { totalCount: 0, items: null},
+  users: { totalCount: 0, items: null },
   loadingRequestCounter: 0,
 };

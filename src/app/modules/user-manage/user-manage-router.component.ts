@@ -5,10 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './user-manage-router.component.html',
 })
 export class UserManageRouterComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor() {}
 }

@@ -8,17 +8,29 @@ import { HttpApiService } from './http-api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class UserApiService extends BaseApiCrudService<number, IUser, IUser, void, IUser, void, IUserFilterModel, IUser> {
+export class UserApiService extends BaseApiCrudService<
+  number,
+  IUser,
+  IUser,
+  void,
+  IUser,
+  void,
+  IUserFilterModel,
+  IUser
+> {
   constructor(public override httpApiService: HttpApiService) {
-    super(httpApiService)
+    super(httpApiService);
   }
 
   rootRoute = 'users';
 
-  public toggleDisabled(id: ActionRequestPayload<string>, value: boolean): Observable<void> {
+  public toggleDisabled(
+    id: ActionRequestPayload<string>,
+    value: boolean
+  ): Observable<void> {
     const url = `${this.rootRoute}/${id}`;
     return this.httpApiService.put<void>(url, {
-      items: {blocked: value}
+      items: { blocked: value },
     });
   }
 }

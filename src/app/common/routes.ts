@@ -4,7 +4,7 @@ export enum ACRoutes {
 }
 
 export enum UserRoutes {
-  Root = 'manage-users'
+  Root = 'manage-users',
 }
 
 export enum RouteParams {

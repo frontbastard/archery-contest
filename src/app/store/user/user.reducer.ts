@@ -10,7 +10,7 @@ import { initialState, IUserState } from './user.state';
 
 const _reducer = createReducer(
   initialState,
-  on(loadUsers, (state) => ({
+  on(loadUsers, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
@@ -19,14 +19,14 @@ const _reducer = createReducer(
     users: action.data,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(errorOccured, (state) => ({
+  on(errorOccured, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
   on(deleteUser, (state, action) => ({
     ...state,
     users: {
-      items: state.users.items.filter((user) => user.id !== action[0]),
+      items: state.users.items.filter(user => user.id !== action[0]),
       totalCount: state.users.totalCount - 1,
     },
     loadingRequestCounter: state.loadingRequestCounter + 1,

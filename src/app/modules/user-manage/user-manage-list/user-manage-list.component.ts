@@ -56,7 +56,7 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
   constructor(private store: Store<IUserState>, private actions: Actions) {}
 
   ngOnInit(): void {
-    this.store.select(selectUsers).subscribe((users) => {
+    this.store.select(selectUsers).subscribe(users => {
       this.searchResult = users;
       this.usersDataSource.data = users.items;
     });
@@ -81,7 +81,7 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
   public userStatusChanged(event: Event): void {
     this.selectedUserStatus = (event.target as HTMLSelectElement).value;
 
-    this.usersDataSource.data = this.searchResult.items.filter((user) =>
+    this.usersDataSource.data = this.searchResult.items.filter(user =>
       this.selectedUserStatus === 'blocked' ? user.blocked : user
     );
 
