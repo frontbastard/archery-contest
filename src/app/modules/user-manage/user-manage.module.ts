@@ -9,6 +9,7 @@ import { userFeatureKey, userReducer } from 'src/app/store/user/user.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from 'src/app/store/user/user.effects';
 import { UserManageRouterComponent } from './user-manage-router.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { UserManageRouterComponent } from './user-manage-router.component';
     UserManageRouterComponent,
   ],
   imports: [
+    MaterialModule,
     CommonModule,
     UserManageRoutingModule,
     SharedModule,
