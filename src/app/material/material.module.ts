@@ -13,23 +13,32 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { CommonModule } from '@angular/common';
+
+const modules = [
+  MatToolbarModule,
+  MatIconModule,
+  MatListModule,
+  MatButtonModule,
+  MatInputModule,
+  MatCheckboxModule,
+  MatTableModule,
+  MatSelectModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatTooltipModule,
+  MatCardModule,
+  MatDividerModule,
+  MatSidenavModule,
+];
 
 @NgModule({
+  imports: [
+    CommonModule,
+    ...modules
+  ],
   exports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatTableModule,
-    MatSelectModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTooltipModule,
-    MatCardModule,
-    MatDividerModule,
-    MatSidenavModule,
+    ...modules
   ],
 })
 export class MaterialModule {}

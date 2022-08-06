@@ -5,8 +5,18 @@
 
 table {
   tr {
+    position: relative;
+
     &.blocked {
-      background: rgba(#000, 0.05);;
+      background: rgba(#000, 0.05);
     }
   }
+}
+
+.table-user-icon {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  font-size: 16px;
+  opacity: 0.5;
 }

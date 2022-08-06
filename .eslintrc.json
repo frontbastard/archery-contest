@@ -28,7 +28,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "semi": ["error", "always"]
       }
     },
     // NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE
