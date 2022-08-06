@@ -4,7 +4,11 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser, IUserFilterModel, IUserStatus } from '../../../models/user.model';
+import {
+  IUser,
+  IUserFilterModel,
+  IUserStatus,
+} from '../../../models/user.model';
 import { UserRoutes } from 'src/app/common/routes';
 import {
   ActionRequestPayload,
@@ -20,6 +24,7 @@ import { selectUsers } from 'src/app/store/user/user.selectors';
 import { AppConstants } from 'src/app/common/app-constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UserRoles } from 'src/app/common/user-roles';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-user-manage-list',
@@ -70,7 +75,11 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     return this.selection.hasValue() && !this.isAllSelected();
   }
 
-  constructor(private store: Store<IUserState>, private actions: Actions) {}
+  constructor(
+    private store: Store<IUserState>,
+    private actions: Actions,
+    private tService: TranslocoService
+  ) {}
 
   ngOnInit(): void {
     this.store.select(selectUsers).subscribe(users => {
@@ -147,7 +156,7 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
 
   public toggleSelectedRow($event: MatCheckboxChange, row: IUser) {
     console.log(row);
-    
+
     return $event ? this.selection.toggle(row) : null;
   }
 

@@ -1,9 +1,9 @@
-<h1>{{ 'Users List' }}</h1>
+<h1>{{ 'userManage.title' | transloco }}</h1>
 <ng-container *ngIf="isItemsInitialized">
   <ng-container *ngIf="isItemsExist; else noUsersTemplate">
     <div class="settings-bar">
       <mat-form-field appearance="standard">
-        <mat-label>{{ 'Filter' }}</mat-label>
+        <mat-label>{{ 'common.filter' | transloco }}</mat-label>
         <input
           matInput
           (keyup)="applyFilter($event)"
@@ -12,18 +12,21 @@
       </mat-form-field>
       <span class="spacer"></span>
       <button mat-stroked-button [disabled]="!isSelectedItems">
-        {{ 'Block' }}
+        {{ 'common.block' | transloco }}
       </button>
       <button mat-stroked-button [disabled]="!isSelectedItems">
-        {{ 'Unblock' }}
+        {{ 'common.edit' | transloco }}
       </button>
       <button mat-stroked-button [disabled]="!isSelectedItems" color="warn">
-        {{ 'Delete' }}
+        {{ 'common.delete' | transloco }}
       </button>
       <span class="spacer"></span>
       <mat-form-field appearance="standard">
-        <mat-label>{{ 'Select user status' }}</mat-label>
+        <mat-label>{{
+          'userManage.users_list.select_user_status' | transloco
+        }}</mat-label>
         <select matNativeControl (change)="userStatusChanged($event)">
+          <!-- TODO: Make translations for ngFor below -->
           <option
             *ngFor="let status of userStatuses; trackBy: trackByUserStatus"
             [value]="status.value"
@@ -61,7 +64,9 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'Name' }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'userManage.users_list.name' | transloco }}
+        </th>
         <td mat-cell *matCellDef="let user">
           <a mat-button [routerLink]="[user._id]">
             {{ user.name }}
@@ -80,14 +85,16 @@
 
       <!-- Email Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'Email' }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'userManage.users_list.email' | transloco }}
+        </th>
         <td mat-cell *matCellDef="let user">{{ user.email }}</td>
       </ng-container>
 
       <!-- Date Column -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ 'Created' }}
+          {{ 'userManage.users_list.created' | transloco }}
         </th>
         <td mat-cell *matCellDef="let user">
           {{ user.createdAt | date: 'medium' }}
@@ -99,6 +106,7 @@
         <th mat-header-cell *matHeaderCellDef>{{ '' }}</th>
         <td mat-cell *matCellDef="let user" class="align-right">
           <button mat-button class="blocked-label">
+            <!-- TODO: Make translations for string below -->
             {{ user.blocked ? 'Unblock' : 'Block' }}
           </button>
           <button mat-button color="primary" [routerLink]="[user._id]">
@@ -119,13 +127,16 @@
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">
-          {{ 'No data matching the filter' }} "{{ input.value }}"
+          {{ 'common.no_data_matching_filter' | transloco }} "{{ input.value }}"
         </td>
       </tr>
     </table>
 
+    <!-- TODO: Translate the paginator -->
     <mat-paginator [pageSizeOptions]="AppConstants.PAGE_SIZE_OPTIONS">
     </mat-paginator>
   </ng-container>
-  <ng-template #noUsersTemplate>No users</ng-template>
+  <ng-template #noUsersTemplate>{{
+    'userManage.users_list.no_users' | transloco
+  }}</ng-template>
 </ng-container>

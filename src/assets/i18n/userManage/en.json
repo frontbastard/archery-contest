@@ -1,0 +1,11 @@
+{
+    "title": "Users List",
+    "users_list": {
+        "name": "Name",
+        "email": "Email",
+        "created": "Created",
+        "blocked": "Blocked",
+        "select_user_status": "Select user status",
+        "no_users": "No users"
+    }
+}

@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from 'src/app/store/user/user.effects';
 import { UserManageRouterComponent } from './user-manage-router.component';
 import { MaterialModule } from 'src/app/material/material.module';
+import { TranslocoModule, TRANSLOCO_SCOPE } from '@ngneat/transloco';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,8 @@ import { MaterialModule } from 'src/app/material/material.module';
     SharedModule,
     EffectsModule.forFeature([UserEffects]),
     StoreModule.forFeature(userFeatureKey, userReducer),
+    TranslocoModule,
   ],
+  providers: [{ provide: TRANSLOCO_SCOPE, useValue: 'userManage' }],
 })
 export class UserManageModule {}

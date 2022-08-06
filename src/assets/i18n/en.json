@@ -1,0 +1,16 @@
+{
+    "common": {
+        "delete": "Delete",
+        "edit": "Update",
+        "block": "Block",
+        "unblock": "Unblock",
+        "filter": "Filter",
+        "items_per_page": "Items per page",
+        "of": "of",
+        "all": "All",
+        "no_data_matching_filter": "No data matching the filter"
+    },
+    "header": {
+        "manage_users": "Manage Users"
+    }
+}
