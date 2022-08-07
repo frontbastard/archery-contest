@@ -1,16 +1,23 @@
 {
-    "common": {
-        "delete": "Delete",
-        "edit": "Update",
-        "block": "Block",
-        "unblock": "Unblock",
-        "filter": "Filter",
-        "items_per_page": "Items per page",
-        "of": "of",
-        "all": "All",
-        "no_data_matching_filter": "No data matching the filter"
+  "common": {
+    "delete": "Delete",
+    "edit": "Update",
+    "all": "All",
+    "notFound": "Nothing found"
+  },
+  "navigation": {
+    "manageUsers": "Manage Users"
+  },
+  "elements": {
+    "search": {
+      "title": "Search",
+      "placeholder": "What are looking for?",
+      "nothingFound": "Nothing found on request"
     },
-    "header": {
-        "manage_users": "Manage Users"
+    "paginator": {
+      "itemsPerPage": "Items per page",
+      "nextPage": "Next page",
+      "previousPage": "Previous page"
     }
+  }
 }

@@ -1,11 +1,15 @@
 {
+  "common": {
+    "blocked": "Заблоковані",
+    "active": "Активні",
+    "block": "Заблокувати",
+    "unblock": "Розблокувати"
+  },
+  "usersList": {
     "title": "Список користувачів",
-    "users_list": {
-        "name": "Імʼя",
-        "email": "Email",
-        "created": "Створено",
-        "blocked": "Заблоковано",
-        "select_user_status": "Вибрати статус користувача",
-        "no_users": "Користувачі не знайдені"
-    }
+    "name": "Імʼя",
+    "email": "Email",
+    "created": "Створено",
+    "selectUserStatus": "Вибрати статус користувача"
+  }
 }

@@ -1,16 +1,23 @@
 {
-    "common": {
-        "delete": "Видалити",
-        "edit": "Редагувати",
-        "block": "Заблокувати",
-        "unblock": "Розблокувати",
-        "filter": "Фільтрувати",
-        "items_per_page": "Елементів на сторінці",
-        "of": "із",
-        "all": "Всі",
-        "no_data_matching_filter": "За цим запитом нічого не знайдено"
+  "common": {
+    "delete": "Видалити",
+    "edit": "Редагувати",
+    "all": "Всі",
+    "notFound": "Нічого не знайдено"
+  },
+  "navigation": {
+    "manageUsers": "Керування користувачами"
+  },
+  "elements": {
+    "search": {
+      "title": "Пошук",
+      "placeholder": "Що шукаємо?",
+      "nothingFound": "Нічого не знайдено за запитом"
     },
-    "header": {
-        "manage_users": "Користувачі"
+    "paginator": {
+      "itemsPerPage": "Елементів на сторінці",
+      "nextPage": "Наступна сторінка",
+      "previousPage": "Попередня сторінка"
     }
+  }
 }

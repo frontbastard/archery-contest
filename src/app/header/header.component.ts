@@ -21,7 +21,7 @@ export class HeaderComponent {
     this.siteLanguage = this.languageList.find(l => l.code === lang).label;
   }
 
-  public trackByLangs(index, lang) {
+  public trackByLangs(_index, lang) {
     return lang.code;
   }
 }

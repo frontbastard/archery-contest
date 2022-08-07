@@ -30,7 +30,7 @@ import { TranslocoRootModule } from './transloco-root.module';
     EffectsModule.forRoot([]),
     StoreModule.forRoot([]),
     StoreDevtoolsModule.instrument({
-      name: 'NgRx Demo App',
+      name: 'Archery Contest App',
       logOnly: environment.production,
     }),
     TranslocoRootModule,
