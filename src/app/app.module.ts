@@ -16,7 +16,12 @@ import { AuthInterceptor } from './http-interceptors/auth-interceptors';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { TranslocoRootModule } from './transloco-root.module';
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import localeUk from '@angular/common/locales/uk';
 
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeUk, 'uk');
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   imports: [

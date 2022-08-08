@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { UserRoutes } from '../common/routes';
 
@@ -6,15 +7,24 @@ import { UserRoutes } from '../common/routes';
   selector: 'app-header',
   templateUrl: './header.component.html',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   public siteLanguage = 'English';
   public readonly UserRoutes = UserRoutes;
   public languageList = [
     { code: 'en', label: 'English' },
-    { code: 'ua', label: 'Українська' },
+    { code: 'uk', label: 'Українська' },
   ];
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private translocoService: TranslocoService
+  ) {}
+
+  ngOnInit(): void {
+    // this.route.queryParams.subscribe(params => {
+    //   this.translocoService.setActiveLang(params['lang']);
+    // });
+  }
 
   public changeLanguage(lang: string): void {
     this.translocoService.setActiveLang(lang);
