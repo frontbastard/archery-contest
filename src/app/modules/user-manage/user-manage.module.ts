@@ -14,6 +14,7 @@ import { TranslocoModule, TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from 'src/app/material/custom/paginator';
+import { NgModelChangeDebouncedDirective } from 'src/app/directives/ng-model-change-debounced.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CustomMatPaginatorIntl } from 'src/app/material/custom/paginator';
     UserManageListComponent,
     UserManageDetailsComponent,
     UserManageRouterComponent,
+    NgModelChangeDebouncedDirective,
   ],
   imports: [
     MaterialModule,

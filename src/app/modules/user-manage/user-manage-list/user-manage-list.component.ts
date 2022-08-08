@@ -1,5 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { EventEmitter, Output, Component, ViewChild } from '@angular/core';
+import {
+  EventEmitter,
+  Output,
+  Component,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,6 +26,19 @@ import { AppConstants } from 'src/app/common/app-constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UserRoles } from 'src/app/common/user-roles';
 import { TranslocoService } from '@ngneat/transloco';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  take,
+  fromEvent,
+  map,
+  tap,
+  takeLast,
+  filter,
+  switchMap,
+  EMPTY,
+  pluck,
+} from 'rxjs';
 
 @Component({
   selector: 'app-user-manage-list',
@@ -92,10 +111,10 @@ export class UserManageListComponent implements OnInit {
     this.refreshList();
   }
 
-  public applySearch($event: Event): void {
-    const searchValue = ($event.target as HTMLInputElement).value;
-    this.usersDataSource.filter =
-      searchValue.length < 2 ? '' : searchValue.trim().toLowerCase();
+  public applySearch(): void {
+    if (this.request.searchTerm.length === 1) return;
+
+    this.refreshList();
   }
 
   public applyUserStatus($event): void {
@@ -147,7 +166,7 @@ export class UserManageListComponent implements OnInit {
     };
   }
 
-  public pageChanged($event: PageEvent) {
+  public applyPaginationChangePage($event: PageEvent) {
     this.request.pageIndex = $event.pageIndex;
     this.request.pageSize = $event.pageSize;
     this.refreshList();

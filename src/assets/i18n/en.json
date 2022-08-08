@@ -11,7 +11,7 @@
   "elements": {
     "search": {
       "title": "Search",
-      "placeholder": "What are looking for?",
+      "placeholder": "What are we looking for?",
       "nothingFound": "Nothing found on request"
     },
     "paginator": {
