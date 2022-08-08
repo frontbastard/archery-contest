@@ -23,17 +23,16 @@ const _reducer = createReducer(
     ...state,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(deleteUser, (state, action) => ({
+  on(deleteUser, state => ({
     ...state,
-    users: {
-      items: state.users.items.filter(user => user._id !== action[0]),
-      totalCount: state.users.totalCount - 1,
-    },
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
   on(userDeleted, (state, action) => ({
     ...state,
-    users: action.data,
+    users: {
+      items: state.users.items.filter(user => user._id !== action.data),
+      totalCount: state.users.totalCount - 1,
+    },
     loadingRequestCounter: state.loadingRequestCounter - 1,
   }))
 );

@@ -47,6 +47,7 @@
     mat-table
     [dataSource]="result.items"
     matSort
+    (matSortChange)="applySortChange($event)"
     matSortActive="created"
     class="mat-elevation-z8">
     <!-- Checkbox Column -->
@@ -71,11 +72,7 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        (click)="applySortChange()">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ 'userManage.usersList.name' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
@@ -90,11 +87,7 @@
 
     <!-- Email Column -->
     <ng-container matColumnDef="email">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        (click)="applySortChange()">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ 'userManage.usersList.email' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">{{ user.email }}</td>
@@ -102,11 +95,7 @@
 
     <!-- Created At Column -->
     <ng-container matColumnDef="createdAt">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        (click)="applySortChange()">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ 'userManage.usersList.created' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
@@ -128,7 +117,7 @@
         <button mat-button color="primary" [routerLink]="[user._id]">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button color="warn">
+        <button mat-button color="warn" (click)="deleteUser(user._id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
