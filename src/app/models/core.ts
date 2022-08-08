@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 export interface ISearchRequest<TFilter> {
   searchTerm: string;
   sortTerm: string;
-  sortAsc: boolean;
+  sortAsc: string;
   pageIndex: number;
   pageSize: number;
   filter: TFilter;
