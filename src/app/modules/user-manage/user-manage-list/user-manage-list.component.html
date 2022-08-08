@@ -94,7 +94,7 @@
         {{ 'userManage.usersList.created' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
-        {{ user.createdAt | date: 'medium' }}
+        {{ user.createdAt | date: 'medium':'':localeService.locale }}
       </td>
     </ng-container>
 

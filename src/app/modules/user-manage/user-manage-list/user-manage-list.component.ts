@@ -39,6 +39,7 @@ import {
   EMPTY,
   pluck,
 } from 'rxjs';
+import { LocaleService } from 'src/app/services/locale.service';
 
 @Component({
   selector: 'app-user-manage-list',
@@ -100,7 +101,7 @@ export class UserManageListComponent implements OnInit {
   constructor(
     private store: Store<IUserState>,
     private actions: Actions,
-    private tService: TranslocoService
+    public localeService: LocaleService
   ) {}
 
   ngOnInit(): void {
