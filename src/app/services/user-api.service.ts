@@ -9,7 +9,7 @@ import { HttpApiService } from './http-api.service';
   providedIn: 'root',
 })
 export class UserApiService extends BaseApiCrudService<
-  number,
+  string,
   IUser,
   IUser,
   void,

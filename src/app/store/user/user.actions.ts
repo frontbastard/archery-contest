@@ -54,7 +54,7 @@ export const deleteUser = createAction(
 
 export const userDeleted = createAction(
   UserActions.userDeleted,
-  props<ActionResponsePayload<ISearchResponse<IUser>>>()
+  props<ActionResponsePayload<string>>()
 );
 
 export const errorOccured = createAction(UserActions.errorOccured);

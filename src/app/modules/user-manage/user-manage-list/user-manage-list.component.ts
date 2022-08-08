@@ -1,6 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { EventEmitter, Output, Component, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { IUser, IUserFilterModel } from '../../../models/user.model';
@@ -13,13 +12,17 @@ import {
 import { OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IUserState } from 'src/app/store/user/user.state';
-import { loadUsers } from 'src/app/store/user/user.actions';
-import { Actions } from '@ngrx/effects';
+import { loadUsers, UserActions } from 'src/app/store/user/user.actions';
+import { deleteUser } from 'src/app/store/user/user.actions';
+import { Actions, ofType } from '@ngrx/effects';
 import { selectUsers } from 'src/app/store/user/user.selectors';
 import { AppConstants } from 'src/app/common/app-constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { LocaleService } from 'src/app/services/locale.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { PageEvent } from '@angular/material/paginator';
 
+@UntilDestroy()
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
@@ -55,10 +58,6 @@ export class UserManageListComponent implements OnInit {
   ];
   public selection = new SelectionModel<IUser>(true, []);
 
-  @Output() deleteUser = new EventEmitter<ActionRequestPayload<string>>();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
   }
@@ -86,13 +85,17 @@ export class UserManageListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.usersDataSource.sort = this.sort;
-    this.usersDataSource.paginator = this.paginator;
-
     this.store.select(selectUsers).subscribe(users => {
       this.result = users;
       this.usersDataSource.data = users.items;
     });
+
+    this.actions
+      .pipe(ofType(UserActions.userDeleted), untilDestroyed(this))
+      .subscribe(() => {
+        this.refreshList();
+      });
+
     this.refreshList();
   }
 
@@ -113,10 +116,18 @@ export class UserManageListComponent implements OnInit {
     this.refreshList();
   }
 
-  public applySortChange() {
-    this.request.sortTerm = this.sort.active;
-    this.request.sortAsc = this.sort.direction;
+  public applySortChange({ active, direction }) {
+    this.request.sortTerm = active;
+    this.request.sortAsc = direction;
     this.refreshList();
+  }
+
+  public deleteUser(id: string): void {
+    this.store.dispatch(
+      deleteUser({
+        data: id,
+      } as ActionRequestPayload<string>)
+    );
   }
 
   public handleToggleAllRows($event: MatCheckboxChange) {

@@ -31,11 +31,11 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.deleteUser),
       mergeMap(
-        ({ data, cancellationObservable }: ActionRequestPayload<number>) =>
+        ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
           this.userApiService.delete(data, cancellationObservable).pipe(
-            map(users => ({
+            map(id => ({
               type: UserActions.userDeleted,
-              data: users,
+              data: id,
             })),
             catchError(() => of({ type: UserActions.errorOccured }))
           )
