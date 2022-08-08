@@ -15,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthInterceptor } from './http-interceptors/auth-interceptors';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -29,9 +30,10 @@ import { environment } from 'src/environments/environment';
     EffectsModule.forRoot([]),
     StoreModule.forRoot([]),
     StoreDevtoolsModule.instrument({
-      name: 'NgRx Demo App',
+      name: 'Archery Contest App',
       logOnly: environment.production,
     }),
+    TranslocoRootModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, // TODO: Refactor

@@ -1,0 +1,15 @@
+{
+  "common": {
+    "blocked": "Blocked",
+    "active": "Active",
+    "block": "Block",
+    "unblock": "Unblock"
+  },
+  "usersList": {
+    "title": "Users List",
+    "name": "Name",
+    "email": "Email",
+    "created": "Created",
+    "selectUserStatus": "Select user status"
+  }
+}

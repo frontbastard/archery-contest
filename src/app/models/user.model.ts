@@ -7,9 +7,6 @@ export interface IUser {
   createdAt: Date;
 }
 
-export interface IUserStatus {
-  value: string,
-  viewValue: string,
+export interface IUserFilterModel {
+  blocked: boolean;
 }
-
-export interface IUserFilterModel {}

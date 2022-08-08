@@ -1,10 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { EventEmitter, DoCheck, Output } from '@angular/core';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { EventEmitter, Output, Component, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser, IUserFilterModel, IUserStatus } from '../../../models/user.model';
+import { IUser, IUserFilterModel } from '../../../models/user.model';
 import { UserRoutes } from 'src/app/common/routes';
 import {
   ActionRequestPayload,
@@ -20,23 +19,32 @@ import { selectUsers } from 'src/app/store/user/user.selectors';
 import { AppConstants } from 'src/app/common/app-constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UserRoles } from 'src/app/common/user-roles';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
   styleUrls: ['./user-manage-list.component.scss'],
 })
-export class UserManageListComponent implements OnInit, AfterViewInit {
+export class UserManageListComponent implements OnInit {
   public readonly UserRoutes = UserRoutes;
   public readonly AppConstants = AppConstants;
 
-  public searchResult: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
+  public result: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
+  public request: ISearchRequest<IUserFilterModel> = {
+    searchTerm: null,
+    pageIndex: 0,
+    pageSize: AppConstants.PAGE_SIZE_OPTIONS[0],
+    filter: {
+      blocked: null,
+    },
+  } as ISearchRequest<IUserFilterModel>;
   public usersDataSource = new MatTableDataSource<IUser>();
-  public userStatuses: IUserStatus[] = [
-    { value: 'all', viewValue: 'All' },
-    { value: 'blocked', viewValue: 'Blocked' },
+  public userStatuses = [
+    { val: null, translationPath: 'common.all' },
+    { val: true, translationPath: 'userManage.common.blocked' },
+    { val: false, translationPath: 'userManage.common.active' },
   ];
-  public selectedUserStatus = this.userStatuses[0].value;
   public displayedColumns: string[] = [
     'select',
     'name',
@@ -51,11 +59,11 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   public get isItemsInitialized(): boolean {
-    return this.searchResult.items !== null;
+    return this.result.items !== null;
   }
 
   public get isItemsExist(): boolean {
-    return this.searchResult.totalCount > 0;
+    return this.result.totalCount > 0;
   }
 
   public get isSelectedItems(): boolean {
@@ -70,47 +78,33 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     return this.selection.hasValue() && !this.isAllSelected();
   }
 
-  constructor(private store: Store<IUserState>, private actions: Actions) {}
+  constructor(
+    private store: Store<IUserState>,
+    private actions: Actions,
+    private tService: TranslocoService
+  ) {}
 
   ngOnInit(): void {
     this.store.select(selectUsers).subscribe(users => {
-      this.searchResult = users;
+      this.result = users;
       this.usersDataSource.data = users.items;
     });
-    this.store.dispatch(
-      loadUsers({} as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
-    );
+    this.refreshList();
   }
 
-  ngAfterViewInit(): void {
-    this.usersDataSource.paginator = this.paginator;
-    this.usersDataSource.sort = this.sort;
-  }
-
-  public applyFilter($event: Event): void {
-    const filterValue = ($event.target as HTMLInputElement).value;
+  public applySearch($event: Event): void {
+    const searchValue = ($event.target as HTMLInputElement).value;
     this.usersDataSource.filter =
-      filterValue.length < 2 ? '' : filterValue.trim().toLowerCase();
-
-    this.getPaginatorFirstPage();
+      searchValue.length < 2 ? '' : searchValue.trim().toLowerCase();
   }
 
-  public userStatusChanged($event: Event): void {
-    this.selectedUserStatus = ($event.target as HTMLSelectElement).value;
-
-    this.usersDataSource.data = this.searchResult.items.filter(user =>
-      this.selectedUserStatus === 'blocked' ? user.blocked : user
-    );
-
-    this.getPaginatorFirstPage();
-    this.usersDataSource.sort = this.sort;
+  public applyUserStatus($event): void {
+    this.request.filter.blocked = $event === 'null' ? null : $event;
+    this.refreshList();
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  public isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.usersDataSource.data.length;
-    return numSelected === numRows;
+  public handleToggleAllRows($event: MatCheckboxChange) {
+    return $event ? this.toggleAllRows() : null;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -123,36 +117,26 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     this.selection.select(...this.usersDataSource.data);
   }
 
+  /** Whether the number of selected elements matches the total number of rows. */
+  public isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.usersDataSource.data.length;
+    return numSelected === numRows;
+  }
+
   /** The label for the checkbox on the passed row */
   public checkboxLabel(row?: IUser): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
+
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row._id + 1
     }`;
   }
 
-  public onDeleteUser(id: ActionRequestPayload<string>): void {
-    this.deleteUser.emit(id);
-  }
-
-  public trackByUserStatus(_index: number, status: IUserStatus) {
-    return status.value;
-  }
-
-  public handleToggleAllRows($event: MatCheckboxChange) {
-    return $event ? this.toggleAllRows() : null;
-  }
-
   public toggleSelectedRow($event: MatCheckboxChange, row: IUser) {
-    console.log(row);
-    
     return $event ? this.selection.toggle(row) : null;
-  }
-
-  public handleSelectedUserStatus(status: IUserStatus) {
-    return this.selectedUserStatus === status.value;
   }
 
   public getUserRole(user: IUser) {
@@ -163,11 +147,28 @@ export class UserManageListComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private getPaginatorFirstPage(): void {
-    if (this.usersDataSource.paginator) {
-      this.usersDataSource.paginator.firstPage();
-    } else {
-      this.usersDataSource.paginator = this.paginator;
+  public pageChanged($event: PageEvent) {
+    this.request.pageIndex = $event.pageIndex;
+    this.request.pageSize = $event.pageSize;
+    this.refreshList();
+  }
+
+  public refreshList(): void {
+    if (
+      this.result.totalCount / this.request.pageSize <=
+      this.request.pageIndex
+    ) {
+      this.request.pageIndex = 0;
     }
+
+    this.store.dispatch(
+      loadUsers({
+        data: JSON.parse(JSON.stringify(this.request)),
+      } as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
+    );
+  }
+
+  public trackByUserStatus(index) {
+    return index;
   }
 }
