@@ -1,11 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import {
-  EventEmitter,
-  Output,
-  Component,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { EventEmitter, Output, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,21 +18,6 @@ import { Actions } from '@ngrx/effects';
 import { selectUsers } from 'src/app/store/user/user.selectors';
 import { AppConstants } from 'src/app/common/app-constants';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { UserRoles } from 'src/app/common/user-roles';
-import { TranslocoService } from '@ngneat/transloco';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  take,
-  fromEvent,
-  map,
-  tap,
-  takeLast,
-  filter,
-  switchMap,
-  EMPTY,
-  pluck,
-} from 'rxjs';
 import { LocaleService } from 'src/app/services/locale.service';
 
 @Component({
@@ -53,6 +32,8 @@ export class UserManageListComponent implements OnInit {
   public result: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
   public request: ISearchRequest<IUserFilterModel> = {
     searchTerm: null,
+    sortTerm: null,
+    sortAsc: '',
     pageIndex: 0,
     pageSize: AppConstants.PAGE_SIZE_OPTIONS[0],
     filter: {
@@ -69,7 +50,7 @@ export class UserManageListComponent implements OnInit {
     'select',
     'name',
     'email',
-    'date',
+    'createdAt',
     'buttons',
   ];
   public selection = new SelectionModel<IUser>(true, []);
@@ -105,6 +86,9 @@ export class UserManageListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.usersDataSource.sort = this.sort;
+    this.usersDataSource.paginator = this.paginator;
+
     this.store.select(selectUsers).subscribe(users => {
       this.result = users;
       this.usersDataSource.data = users.items;
@@ -112,14 +96,26 @@ export class UserManageListComponent implements OnInit {
     this.refreshList();
   }
 
-  public applySearch(): void {
+  public applySearchChange(): void {
     if (this.request.searchTerm.length === 1) return;
 
     this.refreshList();
   }
 
-  public applyUserStatus($event): void {
+  public applyUserStatusChange($event): void {
     this.request.filter.blocked = $event === 'null' ? null : $event;
+    this.refreshList();
+  }
+
+  public applyPaginationChange($event: PageEvent): void {
+    this.request.pageIndex = $event.pageIndex;
+    this.request.pageSize = $event.pageSize;
+    this.refreshList();
+  }
+
+  public applySortChange() {
+    this.request.sortTerm = this.sort.active;
+    this.request.sortAsc = this.sort.direction;
     this.refreshList();
   }
 
@@ -159,21 +155,28 @@ export class UserManageListComponent implements OnInit {
     return $event ? this.selection.toggle(row) : null;
   }
 
-  public getUserRole(user: IUser) {
-    return {
-      admin: user.role === UserRoles.Admin,
-      moderator: user.role === UserRoles.Moderator,
-      user: user.role === UserRoles.User,
-    };
+  public getUserIcon(user: IUser): string {
+    if (user.blocked) return 'blocked';
+
+    let icon = '';
+
+    switch (user.role) {
+      case 'admin':
+        icon = 'stars';
+        break;
+      case 'moderator':
+        icon = 'security';
+        break;
+    }
+
+    return icon;
   }
 
-  public applyPaginationChangePage($event: PageEvent) {
-    this.request.pageIndex = $event.pageIndex;
-    this.request.pageSize = $event.pageSize;
-    this.refreshList();
+  public trackByUserStatus(index: number): number {
+    return index;
   }
 
-  public refreshList(): void {
+  private refreshList(): void {
     if (
       this.result.totalCount / this.request.pageSize <=
       this.request.pageIndex
@@ -186,9 +189,5 @@ export class UserManageListComponent implements OnInit {
         data: JSON.parse(JSON.stringify(this.request)),
       } as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
     );
-  }
-
-  public trackByUserStatus(index) {
-    return index;
   }
 }
