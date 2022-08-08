@@ -2,11 +2,14 @@
   <mat-toolbar-row>
     <span>{{ 'Archery Contest' }}</span>
     <span class="spacer"></span>
-    <button
-      *ngFor="let lang of languageList; trackBy: trackByLangs"
-      (click)="changeLanguage(lang.code)">
-      {{ lang.label }} ({{ lang.code | uppercase }})
-    </button>
+    <select (change)="updateLocale($event)" class="select-css">
+      <option
+        *ngFor="let l of localeService.locales"
+        [value]="l.value"
+        [selected]="l.value === localeService.locale">
+        {{ l.label }}
+      </option>
+    </select>
     <span class="spacer"></span>
     <a mat-button [routerLink]="UserRoutes.Root">
       <mat-icon

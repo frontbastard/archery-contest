@@ -2,36 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { UserRoutes } from '../common/routes';
+import { LocaleService } from '../services/locale.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  public siteLanguage = 'English';
   public readonly UserRoutes = UserRoutes;
-  public languageList = [
-    { code: 'en', label: 'English' },
-    { code: 'uk', label: 'Українська' },
-  ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private translocoService: TranslocoService
-  ) {}
+  constructor(public localeService: LocaleService) {}
 
   ngOnInit(): void {
-    // this.route.queryParams.subscribe(params => {
-    //   this.translocoService.setActiveLang(params['lang']);
-    // });
+    this.localeService.detectLocale();
   }
 
-  public changeLanguage(lang: string): void {
-    this.translocoService.setActiveLang(lang);
-    this.siteLanguage = this.languageList.find(l => l.code === lang).label;
+  public updateLocale(event: any): void {
+    this.localeService.updateLocale(event.target.value);
   }
 
-  public trackByLangs(_index, lang) {
+  public trackByLangs(_index, lang): string {
     return lang.code;
   }
 }
