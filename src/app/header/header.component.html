@@ -2,7 +2,7 @@
   <mat-toolbar-row>
     <span>{{ 'Archery Contest' }}</span>
     <span class="spacer"></span>
-    <select (change)="updateLocale($event)" class="select-css">
+    <select (change)="updateLocale($event)" class="lang-selector">
       <option
         *ngFor="let l of localeService.locales"
         [value]="l.value"
