@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, mergeMap } from 'rxjs';
 import { ActionRequestPayload, ISearchRequest } from 'src/app/models/core';
-import { IUserFilterModel } from 'src/app/models/user.model';
+import { IUser, IUserFilterModel } from 'src/app/models/user.model';
 import { UserApiService } from 'src/app/services/user-api.service';
 import { UserActions } from './user.actions';
 
@@ -33,12 +33,30 @@ export class UserEffects {
       mergeMap(
         ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
           this.userApiService.delete(data, cancellationObservable).pipe(
-            map(id => ({
+            map(data => ({
               type: UserActions.userDeleted,
-              data: id,
+              data,
             })),
             catchError(() => of({ type: UserActions.errorOccured }))
           )
+      )
+    )
+  );
+
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.updateUser),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<IUser>) =>
+          this.userApiService
+            .update(data._id, data, cancellationObservable)
+            .pipe(
+              map(data => ({
+                type: UserActions.userUpdated,
+                data,
+              })),
+              catchError(() => of({ type: UserActions.errorOccured }))
+            )
       )
     )
   );

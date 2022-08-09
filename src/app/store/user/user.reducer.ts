@@ -5,6 +5,8 @@ import {
   usersLoaded,
   deleteUser,
   userDeleted,
+  updateUser,
+  userUpdated,
 } from './user.actions';
 import { initialState, IUserState } from './user.state';
 
@@ -20,6 +22,14 @@ const _reducer = createReducer(
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
   on(errorOccured, state => ({
+    ...state,
+    loadingRequestCounter: state.loadingRequestCounter - 1,
+  })),
+  on(updateUser, state => ({
+    ...state,
+    loadingRequestCounter: state.loadingRequestCounter + 1,
+  })),
+  on(userUpdated, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),

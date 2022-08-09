@@ -44,7 +44,17 @@ export abstract class BaseApiCrudService<
 
   public create() {}
 
-  public update() {}
+  public update(
+    id: TID,
+    payload,
+    cancellationSubject
+  ): Observable<TUpdateResult> {
+    return this.httpApiService.put<TUpdateResult>(
+      `${this.rootRoute}/${id}`,
+      payload,
+      cancellationSubject
+    );
+  }
 
   public delete(
     id: TID,

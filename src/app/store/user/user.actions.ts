@@ -13,7 +13,8 @@ export enum UserActions {
   toggleDisabled = '[User] Toggle Disabled',
   disableToggled = '[User] Disable Toggled',
   // ADD_USER = '[User] Add User',
-  // UPDATE_USER = '[User] Update User',
+  updateUser = '[User] Update User',
+  userUpdated = '[User] User Updated',
   deleteUser = '[User] Delete User',
   userDeleted = '[User] User Deleted',
   errorOccured = '[User] Error Occured',
@@ -29,23 +30,21 @@ export const usersLoaded = createAction(
   props<ActionResponsePayload<ISearchResponse<IUser>>>()
 );
 
-// export class ToggleStatus implements Action {
-//   readonly type = UserActions.toggleDisabled;
-
-//   constructor(public payload: boolean) {}
-// }
-
 // export class AddUser implements Action {
 //   readonly type = UserActions.ADD_USER;
 
 //   constructor(public payload: User) {}
 // }
 
-// export class UpdateUser implements Action {
-//   readonly type = UserActions.UPDATE_USER;
+export const updateUser = createAction(
+  UserActions.updateUser,
+  props<ActionRequestPayload<IUser>>()
+);
 
-//   constructor(public payload: User) {}
-// }
+export const userUpdated = createAction(
+  UserActions.userUpdated,
+  props<ActionRequestPayload<IUser>>()
+);
 
 export const deleteUser = createAction(
   UserActions.deleteUser,
