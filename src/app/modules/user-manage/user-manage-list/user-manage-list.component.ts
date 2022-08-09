@@ -107,6 +107,7 @@ export class UserManageListComponent implements OnInit {
 
   public applyUserStatusChange($event): void {
     this.request.filter.blocked = $event === 'null' ? null : $event;
+    this.request.pageIndex = 0;
     this.refreshList();
   }
 

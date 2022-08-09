@@ -5,7 +5,7 @@
     "all": "Всі",
     "notFound": "Нічого не знайдено"
   },
-  "navigation": {
+  "navigationLinks": {
     "manageUsers": "Керування користувачами"
   },
   "elements": {

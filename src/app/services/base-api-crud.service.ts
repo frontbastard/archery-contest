@@ -9,12 +9,12 @@ import { HttpApiService } from './http-api.service';
 export abstract class BaseApiCrudService<
   TID,
   TModel,
-  TCreateModel extends object,
+  TCreate extends object,
   TCreateResult,
   TUpdate extends object,
   TUpdateResult,
-  TFilterModel,
-  TSearchModel
+  TFilter,
+  TSearch
 > {
   protected constructor(protected httpApiService: HttpApiService) {}
 
@@ -32,10 +32,10 @@ export abstract class BaseApiCrudService<
   }
 
   public search(
-    request: ISearchRequest<TFilterModel>,
+    request: ISearchRequest<TFilter>,
     cancellecionSubject: Observable<void>
-  ): Observable<ISearchResponse<TSearchModel>> {
-    return this.httpApiService.get<ISearchResponse<TSearchModel>>(
+  ): Observable<ISearchResponse<TSearch>> {
+    return this.httpApiService.get<ISearchResponse<TSearch>>(
       this.rootRoute,
       request,
       cancellecionSubject

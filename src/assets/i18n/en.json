@@ -5,7 +5,7 @@
     "all": "All",
     "notFound": "Nothing found"
   },
-  "navigation": {
+  "navigationLinks": {
     "manageUsers": "Manage Users"
   },
   "elements": {
