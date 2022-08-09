@@ -14,7 +14,7 @@ export abstract class BaseApiCrudService<
   TUpdate extends object,
   TUpdateResult,
   TFilter,
-  TSearch
+  TSearchResult
 > {
   protected constructor(protected httpApiService: HttpApiService) {}
 
@@ -22,23 +22,23 @@ export abstract class BaseApiCrudService<
 
   public getById(
     id: TID,
-    cancellecionSubject: Observable<void>
+    cancellationSubject: Observable<void>
   ): Observable<TModel> {
     return this.httpApiService.get<TModel>(
       this.rootRoute,
       id,
-      cancellecionSubject
+      cancellationSubject
     );
   }
 
   public search(
     request: ISearchRequest<TFilter>,
-    cancellecionSubject: Observable<void>
-  ): Observable<ISearchResponse<TSearch>> {
-    return this.httpApiService.get<ISearchResponse<TSearch>>(
+    cancellationSubject: Observable<void>
+  ): Observable<ISearchResponse<TSearchResult>> {
+    return this.httpApiService.get<ISearchResponse<TSearchResult>>(
       this.rootRoute,
       request,
-      cancellecionSubject
+      cancellationSubject
     );
   }
 
@@ -48,12 +48,12 @@ export abstract class BaseApiCrudService<
 
   public delete(
     id: TID,
-    cancellecionSubject: Observable<void>
+    cancellationSubject: Observable<void>
   ): Observable<void> {
     return this.httpApiService.delete<void>(
       this.rootRoute,
       id,
-      cancellecionSubject
+      cancellationSubject
     );
   }
 }

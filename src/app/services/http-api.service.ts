@@ -12,50 +12,50 @@ export class HttpApiService {
   public get<T>(
     url: string,
     data?: Object,
-    cancellecionSubject?: Observable<void>
+    cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url, data);
     let request = this.httpClient.get<T>(requestUrl);
-    request = this.tryApplyCancellacionSubject(request, cancellecionSubject);
+    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
     return request;
   }
   public post<T>(
     url: string,
     data?: Object,
-    cancellecionSubject?: Observable<void>
+    cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url);
     let request = this.httpClient.post<T>(requestUrl, data);
-    request = this.tryApplyCancellacionSubject(request, cancellecionSubject);
+    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
     return request;
   }
   public put<T>(
     url: string,
     data?: Object,
-    cancellecionSubject?: Observable<void>
+    cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url);
     let request = this.httpClient.put<T>(requestUrl, data);
-    request = this.tryApplyCancellacionSubject(request, cancellecionSubject);
+    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
     return request;
   }
   public delete<T>(
     url: string,
     data?: Object,
-    cancellecionSubject?: Observable<void>
+    cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url, data);
     let request = this.httpClient.delete<T>(requestUrl);
-    request = this.tryApplyCancellacionSubject(request, cancellecionSubject);
+    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
     return request;
   }
 
   private tryApplyCancellacionSubject<T>(
     request: Observable<T>,
-    cancellecionSubject?: Observable<void>
+    cancellationSubject?: Observable<void>
   ): Observable<T> {
-    if (cancellecionSubject) {
-      return request.pipe(takeUntil(cancellecionSubject));
+    if (cancellationSubject) {
+      return request.pipe(takeUntil(cancellationSubject));
     }
 
     return request;
