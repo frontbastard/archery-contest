@@ -1,6 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { EventEmitter, Output, Component, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { IUser, IUserFilterModel } from '../../../models/user.model';
 import { UserRoutes } from 'src/app/common/routes';
@@ -12,7 +11,11 @@ import {
 import { OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IUserState } from 'src/app/store/user/user.state';
-import { loadUsers, UserActions } from 'src/app/store/user/user.actions';
+import {
+  loadUsers,
+  updateUser,
+  UserActions,
+} from 'src/app/store/user/user.actions';
 import { deleteUser } from 'src/app/store/user/user.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { selectUsers } from 'src/app/store/user/user.selectors';
@@ -21,6 +24,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { LocaleService } from 'src/app/services/locale.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PageEvent } from '@angular/material/paginator';
+import { UserRoles } from 'src/app/common/user-roles';
 
 @UntilDestroy()
 @Component({
@@ -91,7 +95,10 @@ export class UserManageListComponent implements OnInit {
     });
 
     this.actions
-      .pipe(ofType(UserActions.userDeleted), untilDestroyed(this))
+      .pipe(
+        ofType(UserActions.userDeleted, UserActions.userUpdated),
+        untilDestroyed(this)
+      )
       .subscribe(() => {
         this.refreshList();
       });
@@ -99,35 +106,46 @@ export class UserManageListComponent implements OnInit {
     this.refreshList();
   }
 
-  public applySearchChange(): void {
+  public onSearchChange(): void {
     if (this.request.searchTerm.length === 1) return;
 
     this.refreshList();
   }
 
-  public applyUserStatusChange($event): void {
+  public onUserStatusChange($event): void {
     this.request.filter.blocked = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
     this.refreshList();
   }
 
-  public applyPaginationChange($event: PageEvent): void {
+  public onPaginationChange($event: PageEvent): void {
     this.request.pageIndex = $event.pageIndex;
     this.request.pageSize = $event.pageSize;
     this.refreshList();
   }
 
-  public applySortChange({ active, direction }) {
+  public onSortChange({ active, direction }) {
     this.request.sortTerm = active;
     this.request.sortAsc = direction;
     this.refreshList();
   }
 
-  public deleteUser(id: string): void {
+  public onDeleteUser(id: string): void {
     this.store.dispatch(
       deleteUser({
         data: id,
       } as ActionRequestPayload<string>)
+    );
+  }
+
+  public onToggleBlocked(user: IUser): void {
+    this.store.dispatch(
+      updateUser({
+        data: {
+          ...user,
+          blocked: !user.blocked,
+        },
+      } as ActionRequestPayload<IUser>)
     );
   }
 
@@ -201,5 +219,9 @@ export class UserManageListComponent implements OnInit {
         data: JSON.parse(JSON.stringify(this.request)),
       } as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
     );
+  }
+
+  public isAdmin(user: IUser): boolean {
+    return user.role === UserRoles.Admin;
   }
 }

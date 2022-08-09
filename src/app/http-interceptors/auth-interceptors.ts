@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
       // TODO: Rework
       headers: req.headers.set(
         'Authorization',
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU2ZTVlMzE1NjkyMjM1ZGRmMTJhZWUiLCJpYXQiOjE2NTk0NTQ5NjcsImV4cCI6MTY2MDA1OTc2N30.BQ7SUGyDL6T7u03bMaF7dvKe1Jz9Xhn6-Wx0ZazjFx4'
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmU2ZTVlMzE1NjkyMjM1ZGRmMTJhZWUiLCJpYXQiOjE2NjAwNjIwMjgsImV4cCI6MTY2MDY2NjgyOH0.Yr3ZLI8GZAEyng25Z5DtY6e7IlG63a-eRrPDvt4vLdk'
       ),
     });
 

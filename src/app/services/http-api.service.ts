@@ -16,27 +16,27 @@ export class HttpApiService {
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url, data);
     let request = this.httpClient.get<T>(requestUrl);
-    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
+    request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
   public post<T>(
     url: string,
-    data?: Object,
+    payload?: Object,
     cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url);
-    let request = this.httpClient.post<T>(requestUrl, data);
-    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
+    let request = this.httpClient.post<T>(requestUrl, payload);
+    request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
   public put<T>(
     url: string,
-    data?: Object,
+    payload?: Object,
     cancellationSubject?: Observable<void>
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url);
-    let request = this.httpClient.put<T>(requestUrl, data);
-    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
+    let request = this.httpClient.put<T>(requestUrl, payload);
+    request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
   public delete<T>(
@@ -46,11 +46,11 @@ export class HttpApiService {
   ): Observable<T> {
     const requestUrl = this.combineCompleteUrl(url, data);
     let request = this.httpClient.delete<T>(requestUrl);
-    request = this.tryApplyCancellacionSubject(request, cancellationSubject);
+    request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
 
-  private tryApplyCancellacionSubject<T>(
+  private tryApplyCancellationSubject<T>(
     request: Observable<T>,
     cancellationSubject?: Observable<void>
   ): Observable<T> {
