@@ -1,11 +1,11 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  deleteUser,
   errorOccured,
   loadUsers,
-  usersLoaded,
-  deleteUser,
-  userDeleted,
   updateUser,
+  userDeleted,
+  usersLoaded,
   userUpdated,
 } from './user.actions';
 import { initialState, IUserState } from './user.state';

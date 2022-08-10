@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TranslocoService } from '@ngneat/transloco';
 import { UserRoutes } from '../common/routes';
 import { LocaleService } from '../services/locale.service';
 

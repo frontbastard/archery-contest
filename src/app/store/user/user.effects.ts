@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, mergeMap } from 'rxjs';
+import { catchError, map, mergeMap, of } from 'rxjs';
 import { ActionRequestPayload, ISearchRequest } from 'src/app/models/core';
 import { IUser, IUserFilterModel } from 'src/app/models/user.model';
 import { UserApiService } from 'src/app/services/user-api.service';

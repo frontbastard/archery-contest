@@ -1,4 +1,3 @@
-import { IUser, IUserFilterModel } from 'src/app/models/user.model';
 import { createAction, props } from '@ngrx/store';
 import {
   ActionRequestPayload,
@@ -6,6 +5,7 @@ import {
   ISearchRequest,
   ISearchResponse,
 } from 'src/app/models/core';
+import { IUser, IUserFilterModel } from 'src/app/models/user.model';
 
 export enum UserActions {
   loadUsers = '[User] Load Users',
