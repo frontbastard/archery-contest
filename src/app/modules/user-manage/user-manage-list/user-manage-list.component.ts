@@ -1,30 +1,29 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { IUser, IUserFilterModel } from '../../../models/user.model';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { AppConstants } from 'src/app/common/app-constants';
 import { UserRoutes } from 'src/app/common/routes';
+import { UserRoles } from 'src/app/common/user-roles';
 import {
   ActionRequestPayload,
   ISearchRequest,
   ISearchResponse,
 } from 'src/app/models/core';
-import { OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IUserState } from 'src/app/store/user/user.state';
+import { LocaleService } from 'src/app/services/locale.service';
 import {
+  deleteUser,
   loadUsers,
   updateUser,
   UserActions,
 } from 'src/app/store/user/user.actions';
-import { deleteUser } from 'src/app/store/user/user.actions';
-import { Actions, ofType } from '@ngrx/effects';
 import { selectUsers } from 'src/app/store/user/user.selectors';
-import { AppConstants } from 'src/app/common/app-constants';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { LocaleService } from 'src/app/services/locale.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PageEvent } from '@angular/material/paginator';
-import { UserRoles } from 'src/app/common/user-roles';
+import { IUserState } from 'src/app/store/user/user.state';
+import { IUser, IUserFilterModel } from '../../../models/user.model';
 
 @UntilDestroy()
 @Component({

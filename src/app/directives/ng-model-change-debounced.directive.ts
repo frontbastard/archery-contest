@@ -1,5 +1,3 @@
-import { NgModel } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, skip } from 'rxjs/operators';
 import {
   Directive,
   EventEmitter,
@@ -7,7 +5,9 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

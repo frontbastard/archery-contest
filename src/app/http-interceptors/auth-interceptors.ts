@@ -1,7 +1,7 @@
 import {
+  HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpHandler,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
