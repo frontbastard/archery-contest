@@ -1,6 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -52,13 +51,7 @@ export class UserManageListComponent implements OnInit {
     { val: true, translationPath: 'userManage.common.blocked' },
     { val: false, translationPath: 'userManage.common.active' },
   ];
-  public displayedColumns: string[] = [
-    'select',
-    'name',
-    'email',
-    'createdAt',
-    'buttons',
-  ];
+  public displayedColumns: string[] = ['name', 'email', 'createdAt', 'buttons'];
   public selection = new SelectionModel<IUser>(true, []);
 
   public get isItemsInitialized(): boolean {
@@ -73,13 +66,13 @@ export class UserManageListComponent implements OnInit {
     return Boolean(this.selection.selected.length);
   }
 
-  public get isAllRowsSelected(): boolean {
-    return this.selection.hasValue() && this.isAllSelected();
+  public get notFoundMessage(): string {
+    return this.searchInput.nativeElement.value.length
+      ? 'elements.search.nothingFound'
+      : 'common.notFound';
   }
 
-  public get isNotAllRowsSelected(): boolean {
-    return this.selection.hasValue() && !this.isAllSelected();
-  }
+  @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(
     private store: Store<IUserState>,
@@ -148,57 +141,15 @@ export class UserManageListComponent implements OnInit {
     );
   }
 
-  public handleToggleAllRows($event: MatCheckboxChange) {
-    return $event ? this.toggleAllRows() : null;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  public toggleAllRows(): void {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.usersDataSource.data);
-  }
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  public isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.usersDataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** The label for the checkbox on the passed row */
-  public checkboxLabel(row?: IUser): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row._id + 1
-    }`;
-  }
-
-  public toggleSelectedRow($event: MatCheckboxChange, row: IUser) {
-    return $event ? this.selection.toggle(row) : null;
-  }
-
   public getUserIcon(user: IUser): string {
-    if (user.blocked) return 'blocked';
-
-    let icon = '';
-
     switch (user.role) {
       case 'admin':
-        icon = 'stars';
-        break;
+        return 'stars';
       case 'moderator':
-        icon = 'security';
-        break;
+        return 'security';
+      default:
+        return '';
     }
-
-    return icon;
   }
 
   public trackByUserStatus(index: number): number {

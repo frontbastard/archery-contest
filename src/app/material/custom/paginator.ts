@@ -23,6 +23,12 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     this.previousPageLabel = this.translocoService.translate(
       'elements.paginator.previousPage'
     );
+    this.firstPageLabel = this.translocoService.translate(
+      'elements.paginator.firstPage'
+    );
+    this.lastPageLabel = this.translocoService.translate(
+      'elements.paginator.lastPage'
+    );
     this.changes.next();
   }
 

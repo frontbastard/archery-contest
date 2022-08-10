@@ -1,0 +1,5 @@
+mat-checkbox {
+  &.mat-checkbox-disabled {
+    pointer-events: none;
+  }
+}

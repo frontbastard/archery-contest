@@ -17,7 +17,9 @@
     "paginator": {
       "itemsPerPage": "Елементів на сторінці",
       "nextPage": "Наступна сторінка",
-      "previousPage": "Попередня сторінка"
+      "previousPage": "Попередня сторінка",
+      "firstPage": "Перша сторінка",
+      "lastPage": "Остання сторінка"
     }
   }
 }
