@@ -17,7 +17,7 @@ export enum UserActions {
   userUpdated = '[User] User Updated',
   deleteUser = '[User] Delete User',
   userDeleted = '[User] User Deleted',
-  errorOccured = '[User] Error Occured',
+  errorOccurred = '[User] Error Occurred',
 }
 
 export const loadUsers = createAction(
@@ -56,4 +56,4 @@ export const userDeleted = createAction(
   props<ActionResponsePayload<string>>()
 );
 
-export const errorOccured = createAction(UserActions.errorOccured);
+export const errorOccurred = createAction(UserActions.errorOccurred);

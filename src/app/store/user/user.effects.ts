@@ -21,7 +21,7 @@ export class UserEffects {
               type: UserActions.usersLoaded,
               data: users,
             })),
-            catchError(() => of({ type: UserActions.errorOccured }))
+            catchError(() => of({ type: UserActions.errorOccurred }))
           )
       )
     )
@@ -37,7 +37,7 @@ export class UserEffects {
               type: UserActions.userDeleted,
               data,
             })),
-            catchError(() => of({ type: UserActions.errorOccured }))
+            catchError(() => of({ type: UserActions.errorOccurred }))
           )
       )
     )
@@ -55,7 +55,7 @@ export class UserEffects {
                 type: UserActions.userUpdated,
                 data,
               })),
-              catchError(() => of({ type: UserActions.errorOccured }))
+              catchError(() => of({ type: UserActions.errorOccurred }))
             )
       )
     )
