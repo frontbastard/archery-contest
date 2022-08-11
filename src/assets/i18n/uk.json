@@ -9,11 +9,8 @@
   "navigationLinks": {
     "manageUsers": "Керування користувачами"
   },
-  "dialogs": {
-    "deleteUser": {
-      "title": "Видалення користувача",
-      "description": "Ви впевнені, що хочете видалити користувача {{userName}}?"
-    }
+  "notifications": {
+    "errorOccurred": "Виникла помилка"
   },
   "elements": {
     "search": {

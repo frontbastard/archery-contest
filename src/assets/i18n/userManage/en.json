@@ -5,6 +5,17 @@
     "block": "Block",
     "unblock": "Unblock"
   },
+  "dialogs": {
+    "deleteUser": {
+      "title": "Delete User",
+      "description": "Are you sure you want to delete user {{userName}}?"
+    }
+  },
+  "notifications": {
+    "userDeleted": "User successfully deleted",
+    "userUpdated": "User successfully updated",
+    "userCreated": "User successfully created"
+  },
   "usersList": {
     "title": "Users List",
     "name": "Name",

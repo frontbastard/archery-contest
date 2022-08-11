@@ -12,10 +12,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoModule } from '@ngneat/transloco';
+import { SnackBarComponent } from './customization/snack-bar/snack-bar.component';
 import { MatTableResponsiveDirective } from './mat-table-responsive/mat-table-responsive.directive';
 
 const modules = [
@@ -35,11 +38,12 @@ const modules = [
   MatSidenavModule,
   MatFormFieldModule,
   MatDialogModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({
-  imports: [CommonModule, ...modules],
+  imports: [CommonModule, TranslocoModule, ...modules],
   exports: [...modules, MatTableResponsiveDirective],
-  declarations: [MatTableResponsiveDirective],
+  declarations: [MatTableResponsiveDirective, SnackBarComponent],
 })
 export class MaterialModule {}
