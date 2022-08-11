@@ -1,12 +1,19 @@
 {
   "common": {
+    "all": "All",
+    "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "all": "All",
     "notFound": "Nothing found"
   },
   "navigationLinks": {
     "manageUsers": "Manage Users"
+  },
+  "dialogs": {
+    "deleteUser": {
+      "title": "Delete User",
+      "description": "Are you sure you want to delete user {{userName}}?"
+    }
   },
   "elements": {
     "search": {

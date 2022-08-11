@@ -1,12 +1,19 @@
 {
   "common": {
+    "all": "Всі",
+    "cancel": "Відмінити",
     "delete": "Видалити",
     "edit": "Редагувати",
-    "all": "Всі",
     "notFound": "Нічого не знайдено"
   },
   "navigationLinks": {
     "manageUsers": "Керування користувачами"
+  },
+  "dialogs": {
+    "deleteUser": {
+      "title": "Видалення користувача",
+      "description": "Ви впевнені, що хочете видалити користувача {{userName}}?"
+    }
   },
   "elements": {
     "search": {
