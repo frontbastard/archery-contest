@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -23,6 +24,7 @@ import {
 import { selectUsers } from 'src/app/store/user/user.selectors';
 import { IUserState } from 'src/app/store/user/user.state';
 import { IUser, IUserFilterModel } from '../../../models/user.model';
+import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
 
 @UntilDestroy()
 @Component({
@@ -51,7 +53,7 @@ export class UserManageListComponent implements OnInit {
     { val: true, translationPath: 'userManage.common.blocked' },
     { val: false, translationPath: 'userManage.common.active' },
   ];
-  public displayedColumns: string[] = ['name', 'email', 'createdAt', 'buttons'];
+  public displayedColumns: string[] = ['name', 'email', 'createdAt', 'actions'];
   public selection = new SelectionModel<IUser>(true, []);
 
   public get isItemsInitialized(): boolean {
@@ -75,9 +77,10 @@ export class UserManageListComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(
+    public localeService: LocaleService,
     private store: Store<IUserState>,
     private actions: Actions,
-    public localeService: LocaleService
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -122,12 +125,20 @@ export class UserManageListComponent implements OnInit {
     this.refreshList();
   }
 
-  public onDeleteUser(id: string): void {
-    this.store.dispatch(
-      deleteUser({
-        data: id,
-      } as ActionRequestPayload<string>)
-    );
+  public onDeleteUserDialog(user: IUser): void {
+    const dialogRef = this.dialog.open(DialogDeleteUserComponent, {
+      data: user,
+    });
+
+    dialogRef.afterClosed().subscribe(id => {
+      if (id) {
+        this.store.dispatch(
+          deleteUser({
+            data: id,
+          } as ActionRequestPayload<string>)
+        );
+      }
+    });
   }
 
   public onToggleBlocked(user: IUser): void {

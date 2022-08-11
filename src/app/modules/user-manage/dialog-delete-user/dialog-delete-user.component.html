@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{ 'dialogs.deleteUser.title' | transloco }}</h1>
+<div mat-dialog-content>
+  {{ 'dialogs.deleteUser.description' | transloco: { userName: user.name } }}
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">
+    {{ 'common.cancel' | transloco }}
+  </button>
+  <button mat-button [mat-dialog-close]="user._id" cdkFocusInitial>
+    {{ 'common.delete' | transloco }}
+  </button>
+</div>
