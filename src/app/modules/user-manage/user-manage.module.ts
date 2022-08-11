@@ -11,11 +11,11 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserEffects } from 'src/app/store/user/user.effects';
 import { userFeatureKey, userReducer } from 'src/app/store/user/user.reducer';
+import { DialogDeleteUserComponent } from './dialog-delete-user/dialog-delete-user.component';
 import { UserManageDetailsComponent } from './user-manage-details/user-manage-details.component';
 import { UserManageListComponent } from './user-manage-list/user-manage-list.component';
 import { UserManageRouterComponent } from './user-manage-router.component';
 import { UserManageRoutingModule } from './user-manage-routing.module';
-import { DialogDeleteUserComponent } from './dialog-delete-user/dialog-delete-user.component';
 
 @NgModule({
   declarations: [

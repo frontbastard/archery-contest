@@ -9,11 +9,8 @@
   "navigationLinks": {
     "manageUsers": "Manage Users"
   },
-  "dialogs": {
-    "deleteUser": {
-      "title": "Delete User",
-      "description": "Are you sure you want to delete user {{userName}}?"
-    }
+  "notifications": {
+    "errorOccurred": "Error occurred"
   },
   "elements": {
     "search": {

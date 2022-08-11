@@ -79,8 +79,8 @@ export class UserManageListComponent implements OnInit {
   constructor(
     public localeService: LocaleService,
     private store: Store<IUserState>,
-    private actions: Actions,
-    private dialog: MatDialog
+    private _actions: Actions,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class UserManageListComponent implements OnInit {
       this.usersDataSource.data = users.items;
     });
 
-    this.actions
+    this._actions
       .pipe(
         ofType(UserActions.userDeleted, UserActions.userUpdated),
         untilDestroyed(this)
@@ -126,7 +126,7 @@ export class UserManageListComponent implements OnInit {
   }
 
   public onDeleteUserDialog(user: IUser): void {
-    const dialogRef = this.dialog.open(DialogDeleteUserComponent, {
+    const dialogRef = this._dialog.open(DialogDeleteUserComponent, {
       data: user,
     });
 

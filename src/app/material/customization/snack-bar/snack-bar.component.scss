@@ -1,0 +1,22 @@
+::ng-deep {
+  .mat-snack-bar-container {
+    &.success {
+      background: rgba(green, 0.8);
+    }
+
+    &.error {
+      background: rgba(red, 0.8);
+    }
+  }
+
+  .snack-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+
+    .close-button {
+      cursor: pointer;
+    }
+  }
+}
