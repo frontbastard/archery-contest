@@ -19,6 +19,7 @@
   "usersList": {
     "title": "Список користувачів",
     "name": "Імʼя",
+    "role": "Роль",
     "email": "Email",
     "created": "Створено",
     "selectUserStatus": "Вибрати статус користувача"

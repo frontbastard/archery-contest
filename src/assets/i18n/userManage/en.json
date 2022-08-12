@@ -19,6 +19,7 @@
   "usersList": {
     "title": "Users List",
     "name": "Name",
+    "role": "Role",
     "email": "Email",
     "created": "Created",
     "selectUserStatus": "Select user status"

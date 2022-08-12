@@ -34,6 +34,7 @@ import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-u
 })
 export class UserManageListComponent implements OnInit {
   public readonly UserRoutes = UserRoutes;
+  public readonly UserRoles = UserRoles;
   public readonly AppConstants = AppConstants;
 
   public result: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
@@ -53,7 +54,13 @@ export class UserManageListComponent implements OnInit {
     { val: true, translationPath: 'userManage.common.blocked' },
     { val: false, translationPath: 'userManage.common.active' },
   ];
-  public displayedColumns: string[] = ['name', 'email', 'createdAt', 'actions'];
+  public displayedColumns: string[] = [
+    'name',
+    'role',
+    'email',
+    'createdAt',
+    'actions',
+  ];
   public selection = new SelectionModel<IUser>(true, []);
 
   public get isItemsInitialized(): boolean {
@@ -152,17 +159,6 @@ export class UserManageListComponent implements OnInit {
     );
   }
 
-  public getUserIcon(user: IUser): string {
-    switch (user.role) {
-      case 'admin':
-        return 'stars';
-      case 'moderator':
-        return 'security';
-      default:
-        return '';
-    }
-  }
-
   public trackByUserStatus(index: number): number {
     return index;
   }
@@ -182,7 +178,7 @@ export class UserManageListComponent implements OnInit {
     );
   }
 
-  public isAdmin(user: IUser): boolean {
-    return user.role === UserRoles.Admin;
+  public getRole(user: IUser, role: string): boolean {
+    return user.role === role;
   }
 }
