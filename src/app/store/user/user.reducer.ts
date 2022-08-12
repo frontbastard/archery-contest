@@ -2,9 +2,11 @@ import { Action, createReducer, on } from '@ngrx/store';
 import {
   deleteUser,
   errorOccurred,
+  loadUser,
   loadUsers,
   updateUser,
   userDeleted,
+  userLoaded,
   usersLoaded,
   userUpdated,
 } from './user.actions';
@@ -12,6 +14,15 @@ import { initialState, IUserState } from './user.state';
 
 const _reducer = createReducer(
   initialState,
+  on(loadUser, state => ({
+    ...state,
+    loadingRequestCounter: state.loadingRequestCounter + 1,
+  })),
+  on(userLoaded, (state, action) => ({
+    ...state,
+    user: action.data,
+    loadingRequestCounter: state.loadingRequestCounter - 1,
+  })),
   on(loadUsers, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,

@@ -1,9 +1,11 @@
 {
+  "titles": {
+    "usersList": "Список користувачів",
+    "userDetails": "Деталі користувача"
+  },
   "common": {
-    "blocked": "Заблоковані",
-    "active": "Активні",
-    "block": "Заблокувати",
-    "unblock": "Розблокувати"
+    "blocked": "Заблокований",
+    "active": "Активний"
   },
   "dialogs": {
     "deleteUser": {
@@ -16,12 +18,31 @@
     "userUpdated": "Користувач успішно оновлений",
     "userCreated": "Користувач успішно створений"
   },
-  "usersList": {
-    "title": "Список користувачів",
-    "name": "Імʼя",
-    "role": "Роль",
-    "email": "Email",
-    "created": "Створено",
-    "selectUserStatus": "Вибрати статус користувача"
+  "roles": {
+    "master": "Майстер",
+    "admin": "Адміністратор",
+    "moderator": "Модератор",
+    "user": "Користувач"
+  },
+  "fields": {
+    "name": {
+      "title": "Імʼя",
+      "placeholder": "Введіть імʼя користувача",
+      "validator": {
+        "required": "Необхідно вказати ім'я",
+        "minLength": "Мінімальна довжина {{length}}"
+      }
+    },
+    "email": {
+      "title": "Email",
+      "placeholder": "Введіть email користувача",
+      "validator": {
+        "required": "Необхідно вказати Email",
+        "email": "Некоректний Email"
+      }
+    },
+    "role": { "title": "Роль" },
+    "blocked": { "title": "Заблоковано" },
+    "created": { "title": "Створено" }
   }
 }

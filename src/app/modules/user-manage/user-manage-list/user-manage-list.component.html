@@ -1,4 +1,4 @@
-<h1>{{ 'userManage.usersList.title' | transloco }}</h1>
+<h1>{{ 'userManage.titles.usersList' | transloco }}</h1>
 <ng-container *ngIf="isItemsInitialized">
   <div class="settings-bar">
     <mat-form-field appearance="standard">
@@ -6,8 +6,9 @@
       <input
         matInput
         [(ngModel)]="request.searchTerm"
-        (ngModelChangeDebounced)="onSearchChange()"
+        (ngModelChangeDebounced)="searchChanged()"
         [placeholder]="'elements.search.placeholder' | transloco"
+        autocomplete="false"
         #searchInput />
       <button
         *ngIf="searchInput.value"
@@ -20,13 +21,10 @@
     </mat-form-field>
     <span class="spacer"></span>
     <mat-form-field appearance="standard">
-      <mat-label>{{
-        'userManage.usersList.selectUserStatus' | transloco
-      }}</mat-label>
       <select
         matNativeControl
         [ngModel]="request.filter.blocked"
-        (ngModelChange)="onUserStatusChange($event)">
+        (ngModelChange)="userStatusChanged($event)">
         <option
           *ngFor="let status of userStatuses; trackBy: trackByUserStatus"
           [value]="status.val">
@@ -41,16 +39,16 @@
     matTableResponsive
     [dataSource]="result.items"
     matSort
-    (matSortChange)="onSortChange($event)"
+    (matSortChange)="sortChanged($event)"
     matSortActive="createdAt"
     class="mat-elevation-z8">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ 'userManage.usersList.name' | transloco }}
+        {{ 'userManage.fields.name.title' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
-        <a [routerLink]="[user._id]">
+        <a href="javascript:void(0)" (click)="loadUserDetails(user)">
           <strong>{{ user.name }}</strong>
         </a>
       </td>
@@ -59,7 +57,7 @@
     <!-- Email Column -->
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ 'userManage.usersList.role' | transloco }}
+        {{ 'userManage.fields.role.title' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">{{ user.role }}</td>
     </ng-container>
@@ -67,7 +65,7 @@
     <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ 'userManage.usersList.email' | transloco }}
+        {{ 'userManage.fields.email.title' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">{{ user.email }}</td>
     </ng-container>
@@ -75,7 +73,7 @@
     <!-- Created At Column -->
     <ng-container matColumnDef="createdAt">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ 'userManage.usersList.created' | transloco }}
+        {{ 'userManage.fields.created.title' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
         {{ user.createdAt | date: 'medium':'':localeService.locale }}
@@ -89,24 +87,17 @@
         <button
           mat-button
           class="blocked-label"
-          [disabled]="getRole(user, UserRoles.Admin)"
-          (click)="onToggleBlocked(user)">
-          <!-- {{
-            user.blocked
-              ? ('userManage.common.unblock' | transloco)
-              : ('userManage.common.block' | transloco)
-          }} -->
+          [disabled]="getRole(user, UserRoles.Master)"
+          (click)="toggleBlocked(user)">
+          <!-- TODO: Material switcher -->
           <mat-icon *ngIf="user.blocked">radio_button_unchecked</mat-icon>
           <mat-icon *ngIf="!user.blocked">hide_source</mat-icon>
         </button>
-        <!-- <button mat-button color="primary" [routerLink]="[user._id]">
-          <mat-icon>edit</mat-icon>
-        </button> -->
         <button
           mat-button
           color="warn"
-          [disabled]="getRole(user, UserRoles.Admin)"
-          (click)="onDeleteUserDialog(user)">
+          [disabled]="getRole(user, UserRoles.Master)"
+          (click)="deleteUserDialog(user)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -118,7 +109,7 @@
       *matRowDef="let user; columns: displayedColumns"
       [ngClass]="{
         blocked: user.blocked,
-        admin: getRole(user, UserRoles.Admin),
+        admin: getRole(user, UserRoles.Master),
         moderator: getRole(user, UserRoles.Moderator)
       }"></tr>
 
@@ -138,6 +129,6 @@
     [pageSize]="request.pageSize"
     [pageSizeOptions]="AppConstants.PAGE_SIZE_OPTIONS"
     showFirstLastButtons
-    (page)="onPaginationChange($event)">
+    (page)="paginationChanged($event)">
   </mat-paginator>
 </ng-container>

@@ -2,7 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -11,12 +11,14 @@ import { UserRoutes } from 'src/app/common/routes';
 import { UserRoles } from 'src/app/common/user-roles';
 import {
   ActionRequestPayload,
+  ActionResponsePayload,
   ISearchRequest,
   ISearchResponse,
 } from 'src/app/models/core';
 import { LocaleService } from 'src/app/services/locale.service';
 import {
   deleteUser,
+  loadUser,
   loadUsers,
   updateUser,
   UserActions,
@@ -48,7 +50,6 @@ export class UserManageListComponent implements OnInit {
       blocked: null,
     },
   } as ISearchRequest<IUserFilterModel>;
-  public usersDataSource = new MatTableDataSource<IUser>();
   public userStatuses = [
     { val: null, translationPath: 'common.all' },
     { val: true, translationPath: 'userManage.common.blocked' },
@@ -85,15 +86,21 @@ export class UserManageListComponent implements OnInit {
 
   constructor(
     public localeService: LocaleService,
-    private store: Store<IUserState>,
+    private _store: Store<IUserState>,
     private _actions: Actions,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
-    this.store.select(selectUsers).subscribe(users => {
+    this._actions
+      .pipe(ofType(UserActions.userLoaded), untilDestroyed(this))
+      .subscribe(({ data }: ActionResponsePayload<IUser>) => {
+        this._router.navigate([data._id]);
+      });
+
+    this._store.select(selectUsers).subscribe(users => {
       this.result = users;
-      this.usersDataSource.data = users.items;
     });
 
     this._actions
@@ -102,44 +109,44 @@ export class UserManageListComponent implements OnInit {
         untilDestroyed(this)
       )
       .subscribe(() => {
-        this.refreshList();
+        this._refreshList();
       });
 
-    this.refreshList();
+    this._refreshList();
   }
 
-  public onSearchChange(): void {
+  public searchChanged(): void {
     if (this.request.searchTerm.length === 1) return;
 
-    this.refreshList();
+    this._refreshList();
   }
 
-  public onUserStatusChange($event): void {
+  public userStatusChanged($event): void {
     this.request.filter.blocked = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
-    this.refreshList();
+    this._refreshList();
   }
 
-  public onPaginationChange($event: PageEvent): void {
+  public paginationChanged($event: PageEvent): void {
     this.request.pageIndex = $event.pageIndex;
     this.request.pageSize = $event.pageSize;
-    this.refreshList();
+    this._refreshList();
   }
 
-  public onSortChange({ active, direction }) {
+  public sortChanged({ active, direction }) {
     this.request.sortTerm = active;
     this.request.sortAsc = direction;
-    this.refreshList();
+    this._refreshList();
   }
 
-  public onDeleteUserDialog(user: IUser): void {
+  public deleteUserDialog(user: IUser): void {
     const dialogRef = this._dialog.open(DialogDeleteUserComponent, {
       data: user,
     });
 
     dialogRef.afterClosed().subscribe(id => {
       if (id) {
-        this.store.dispatch(
+        this._store.dispatch(
           deleteUser({
             data: id,
           } as ActionRequestPayload<string>)
@@ -148,8 +155,16 @@ export class UserManageListComponent implements OnInit {
     });
   }
 
-  public onToggleBlocked(user: IUser): void {
-    this.store.dispatch(
+  public loadUserDetails(user: IUser) {
+    this._store.dispatch(
+      loadUser({
+        data: user._id,
+      } as ActionRequestPayload<string>)
+    );
+  }
+
+  public toggleBlocked(user: IUser): void {
+    this._store.dispatch(
       updateUser({
         data: {
           ...user,
@@ -163,7 +178,11 @@ export class UserManageListComponent implements OnInit {
     return index;
   }
 
-  private refreshList(): void {
+  public getRole(user: IUser, role: string): boolean {
+    return user.role === role;
+  }
+
+  private _refreshList(): void {
     if (
       this.result.totalCount / this.request.pageSize <=
       this.request.pageIndex
@@ -171,14 +190,10 @@ export class UserManageListComponent implements OnInit {
       this.request.pageIndex = 0;
     }
 
-    this.store.dispatch(
+    this._store.dispatch(
       loadUsers({
-        data: JSON.parse(JSON.stringify(this.request)),
+        data: { ...this.request },
       } as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
     );
-  }
-
-  public getRole(user: IUser, role: string): boolean {
-    return user.role === role;
   }
 }
