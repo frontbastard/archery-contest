@@ -8,6 +8,22 @@ import { UserActions } from './user.actions';
 
 @Injectable()
 export class UserEffects {
+  loadUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.loadUser),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
+          this.userApiService.getById(data, cancellationObservable).pipe(
+            map(data => ({
+              type: UserActions.userLoaded,
+              data,
+            })),
+            catchError(() => of({ type: UserActions.errorOccurred }))
+          )
+      )
+    )
+  );
+
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.loadUsers),

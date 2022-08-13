@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslocoModule, TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { EffectsModule } from '@ngrx/effects';
@@ -35,6 +35,7 @@ import { UserManageRoutingModule } from './user-manage-routing.module';
     StoreModule.forFeature(userFeatureKey, userReducer),
     TranslocoModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

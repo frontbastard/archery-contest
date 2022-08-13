@@ -5,6 +5,11 @@ import { IUserState } from './user.state';
 export const selectUserState =
   createFeatureSelector<IUserState>(userFeatureKey);
 
+export const selectUser = createSelector(
+  selectUserState,
+  (state: IUserState) => state.user
+);
+
 export const selectUsers = createSelector(
   selectUserState,
   (state: IUserState) => state.users
