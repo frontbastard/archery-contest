@@ -5,3 +5,14 @@
   padding: 5px;
   border-radius: 3px;
 }
+
+.mat-table {
+  th.mat-header-cell + th.mat-header-cell,
+  td.mat-cell + td.mat-cell {
+    padding-left: 10px;
+  }
+}
+
+.mat-drawer-opened {
+  max-width: 200px;
+}

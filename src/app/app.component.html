@@ -1,4 +1,18 @@
-<app-header></app-header>
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="app-wrapper" [class.is-mobile]="mobileQuery.matches">
+  <app-header [snav]="snav"></app-header>
+  <mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+      [opened]="mobileQuery.matches ? 'false' : 'true'">
+      <app-navigation></app-navigation>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

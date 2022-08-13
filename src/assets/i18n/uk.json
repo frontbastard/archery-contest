@@ -8,7 +8,8 @@
     "notFound": "Нічого не знайдено"
   },
   "navigationLinks": {
-    "manageUsers": "Керування користувачами"
+    "users": "Користувачі",
+    "events": "Події"
   },
   "notifications": {
     "errorOccurred": "Виникла помилка"

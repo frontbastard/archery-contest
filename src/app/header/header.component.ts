@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserRoutes } from '../common/routes';
 import { LocaleService } from '../services/locale.service';
 
@@ -8,6 +8,8 @@ import { LocaleService } from '../services/locale.service';
 })
 export class HeaderComponent implements OnInit {
   public readonly UserRoutes = UserRoutes;
+
+  @Input() snav;
 
   constructor(public localeService: LocaleService) {}
 

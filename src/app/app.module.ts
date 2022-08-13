@@ -15,12 +15,13 @@ import { HeaderComponent } from './header/header.component';
 import { AuthInterceptor } from './http-interceptors/auth-interceptors';
 import { MaterialModule } from './material/material.module';
 import { UserManageModule } from './modules/user-manage/user-manage.module';
+import { NavigationComponent } from './navigation/navigation.component';
 import { TranslocoRootModule } from './transloco-root.module';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeUk, 'uk');
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, NavigationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
