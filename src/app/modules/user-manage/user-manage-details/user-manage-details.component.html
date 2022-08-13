@@ -1,10 +1,12 @@
-<h1>User Details</h1>
+<h1>{{ 'userManage.titles.userDetails' | transloco }}</h1>
 <ng-container *ngIf="isUserInitialized">
   <form [formGroup]="form" (ngSubmit)="submitted()">
     <div class="form-group">
-      <button mat-flat-button type="button" routerLink="/">Cancel</button>
+      <button mat-flat-button type="button" routerLink="/">
+        {{ 'common.cancel' | transloco }}
+      </button>
       <button mat-flat-button color="primary" [disabled]="form.invalid">
-        Submit
+        {{ 'common.submit' | transloco }}
       </button>
     </div>
     <!-- Name -->
