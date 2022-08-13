@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>{{ 'Archery Contest' }}</span>
+    <span class="spacer"></span>
+    <select (change)="updateLocale($event)" class="lang-selector">
+      <option
+        *ngFor="let l of localeService.locales"
+        [value]="l.value"
+        [selected]="l.value === localeService.locale">
+        {{ l.label }}
+      </option>
+    </select>
+    <span class="spacer"></span>
+    <a mat-button [routerLink]="UserRoutes.Root">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Manage icon"
+        fontIcon="manage_accounts"
+        >manage_accounts</mat-icon
+      >
+      {{ 'navigationLinks.manageUsers' | transloco }}
+    </a>
+  </mat-toolbar-row>
+</mat-toolbar>

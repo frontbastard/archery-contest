@@ -1,0 +1,134 @@
+<h1>{{ 'userManage.titles.usersList' | transloco }}</h1>
+<ng-container *ngIf="isItemsInitialized">
+  <div class="settings-bar">
+    <mat-form-field appearance="standard">
+      <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="request.searchTerm"
+        (ngModelChangeDebounced)="searchChanged()"
+        [placeholder]="'elements.search.placeholder' | transloco"
+        autocomplete="false"
+        #searchInput />
+      <button
+        *ngIf="searchInput.value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="request.searchTerm = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <span class="spacer"></span>
+    <mat-form-field appearance="standard">
+      <select
+        matNativeControl
+        [ngModel]="request.filter.blocked"
+        (ngModelChange)="userStatusChanged($event)">
+        <option
+          *ngFor="let status of userStatuses; trackBy: trackByUserStatus"
+          [value]="status.val">
+          {{ status.translationPath | transloco }}
+        </option>
+      </select>
+    </mat-form-field>
+  </div>
+
+  <table
+    mat-table
+    matTableResponsive
+    [dataSource]="result.items"
+    matSort
+    (matSortChange)="sortChanged($event)"
+    matSortActive="createdAt"
+    class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'userManage.fields.name.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let user">
+        <a href="javascript:void(0)" (click)="loadUserDetails(user)">
+          <strong>{{ user.name }}</strong>
+        </a>
+      </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'userManage.fields.role.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'userManage.fields.email.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+
+    <!-- Created At Column -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'userManage.fields.created.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let user">
+        {{ user.createdAt | date: 'medium':'':localeService.locale }}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let user" class="align-right">
+        <button
+          mat-button
+          class="blocked-label"
+          [disabled]="getRole(user, UserRoles.Master)"
+          (click)="toggleBlocked(user)">
+          <!-- TODO: Material switcher -->
+          <mat-icon *ngIf="user.blocked">radio_button_unchecked</mat-icon>
+          <mat-icon *ngIf="!user.blocked">hide_source</mat-icon>
+        </button>
+        <button
+          mat-button
+          color="warn"
+          [disabled]="getRole(user, UserRoles.Master)"
+          (click)="deleteUserDialog(user)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr
+      mat-row
+      *matRowDef="let user; columns: displayedColumns"
+      [ngClass]="{
+        blocked: user.blocked,
+        admin: getRole(user, UserRoles.Master),
+        moderator: getRole(user, UserRoles.Moderator)
+      }"></tr>
+
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="4">
+        {{ notFoundMessage | transloco }}
+        <span *ngIf="searchInput.value.length">
+          "{{ searchInput.value }}"
+        </span>
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [length]="result.totalCount"
+    [pageIndex]="request.pageIndex"
+    [pageSize]="request.pageSize"
+    [pageSizeOptions]="AppConstants.PAGE_SIZE_OPTIONS"
+    showFirstLastButtons
+    (page)="paginationChanged($event)">
+  </mat-paginator>
+</ng-container>

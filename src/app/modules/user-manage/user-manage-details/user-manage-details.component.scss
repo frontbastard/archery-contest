@@ -1,0 +1,24 @@
+mat-card-subtitle {
+  p {
+    margin: 0 0 5px;
+  }
+}
+
+.mat-card-actions:not(.mat-card-actions-align-end)
+  .mat-stroked-button:first-child {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.mat-card > .mat-card-actions:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sidenav {
+  display: flex;
+}
+
+.sidenav__content {
+  margin-left: 25px;
+}

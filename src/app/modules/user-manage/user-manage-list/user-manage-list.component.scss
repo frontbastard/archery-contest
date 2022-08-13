@@ -1,0 +1,35 @@
+@import '~include-media';
+
+.settings-bar {
+  display: flex;
+  align-items: center;
+}
+
+table {
+  tr {
+    &.blocked {
+      background: rgba(#000, 0.05);
+    }
+  }
+}
+
+.table-user-icon {
+  transform: scale(0.7);
+  color: #888;
+}
+
+.mat-column-actions {
+  @include media('<=tablet') {
+    display: flex;
+  }
+
+  [mat-button] {
+    min-width: auto;
+    margin-left: 0;
+    padding: 0 12px;
+
+    @include media('<=tablet') {
+      flex: 1;
+    }
+  }
+}

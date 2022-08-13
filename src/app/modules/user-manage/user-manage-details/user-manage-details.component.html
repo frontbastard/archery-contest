@@ -1,0 +1,65 @@
+<h1>User Details</h1>
+<ng-container *ngIf="isUserInitialized">
+  <form [formGroup]="form" (ngSubmit)="submitted()">
+    <div class="form-group">
+      <button mat-flat-button type="button" routerLink="/">Cancel</button>
+      <button mat-flat-button color="primary" [disabled]="form.invalid">
+        Submit
+      </button>
+    </div>
+    <!-- Name -->
+    <mat-form-field class="form-group">
+      <mat-label>{{ 'userManage.fields.name.title' | transloco }}</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        [placeholder]="'userManage.fields.name.placeholder' | transloco"
+        autocomplete="false" />
+      <mat-error *ngIf="form.controls['name'].hasError('required')">
+        {{ 'userManage.fields.name.validator.required' | transloco }}
+      </mat-error>
+      <mat-error *ngIf="form.controls['name'].hasError('minlength')">
+        {{
+          'userManage.fields.name.validator.minLength'
+            | transloco
+              : {
+                  length: getRequiredLength('name')
+                }
+        }}
+      </mat-error>
+    </mat-form-field>
+    <!-- Email -->
+    <mat-form-field class="form-group">
+      <mat-label>{{ 'userManage.fields.email.title' | transloco }}</mat-label>
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+        [placeholder]="'userManage.fields.email.placeholder' | transloco" />
+      <mat-error
+        *ngIf="
+          form.controls['email'].hasError('required') &&
+          !form.controls['email'].hasError('email')
+        ">
+        {{ 'userManage.fields.email.validator.required' | transloco }}
+      </mat-error>
+      <mat-error *ngIf="form.controls['email'].hasError('email')">
+        {{ 'userManage.fields.email.validator.email' | transloco }}
+      </mat-error>
+    </mat-form-field>
+    <!-- Role -->
+    <mat-form-field class="form-group">
+      <mat-label>{{ 'userManage.fields.role.title' | transloco }}</mat-label>
+      <mat-select [formControl]="controls.role">
+        <mat-option *ngFor="let role of roles" [value]="role.val">
+          {{ role.translationPath | transloco }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- Blocked -->
+    <mat-slide-toggle class="form-group" formControlName="blocked">
+      {{ isBlockedTranslationPath | transloco }}
+    </mat-slide-toggle>
+  </form>
+</ng-container>

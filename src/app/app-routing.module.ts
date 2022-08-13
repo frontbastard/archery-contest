@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserRoutes } from './common/routes';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: UserRoutes.Root,
+    loadChildren: () =>
+      import('src/app/modules/user-manage/user-manage.module').then(
+        mod => mod.UserManageModule
+      ),
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

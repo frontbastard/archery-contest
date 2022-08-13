@@ -1,0 +1,48 @@
+{
+  "titles": {
+    "usersList": "Users List",
+    "userDetails": "User Details"
+  },
+  "common": {
+    "blocked": "Blocked",
+    "active": "Active"
+  },
+  "dialogs": {
+    "deleteUser": {
+      "title": "Delete User",
+      "description": "Are you sure you want to delete user {{userName}}?"
+    }
+  },
+  "notifications": {
+    "userDeleted": "User successfully deleted",
+    "userUpdated": "User successfully updated",
+    "userCreated": "User successfully created"
+  },
+  "roles": {
+    "master": "Master",
+    "admin": "Admin",
+    "moderator": "Moderator",
+    "user": "User"
+  },
+  "fields": {
+    "name": {
+      "title": "Name",
+      "placeholder": "Enter user name",
+      "validator": {
+        "required": "Name is required",
+        "minLength": "Min length is {{length}}"
+      }
+    },
+    "email": {
+      "title": "Email",
+      "placeholder": "Enter user email",
+      "validator": {
+        "required": "Email is required",
+        "email": "Invalid Email"
+      }
+    },
+    "role": { "title": "Role" },
+    "blocked": { "title": "Blocked" },
+    "created": { "title": "Created" }
+  }
+}
