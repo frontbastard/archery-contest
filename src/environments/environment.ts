@@ -3,9 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  baseUrl: 'http://localhost:4200',
-  production: false,
-  apiUrl: 'http://localhost:3000/archery-contest-api',
+  production: false
 };
 
 /*
