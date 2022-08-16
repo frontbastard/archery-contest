@@ -7,8 +7,8 @@ import { TranslocoService } from '@ngneat/transloco';
 export class LocaleService {
   // the locales the app supports
   locales = [
-    { label: '🇺🇸 English (US)', value: 'en-US' },
-    { label: '🇺🇦 Українська (UA)', value: 'uk' },
+    { label: '🇺🇸 English', value: 'en-US' },
+    { label: '🇺🇦 Українська', value: 'uk' },
   ];
   // the user's locale
   detectedLocale = '';
