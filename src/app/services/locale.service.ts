@@ -44,7 +44,6 @@ export class LocaleService {
 
   // change locale/language at runtime
   updateLocale(locale: string): void {
-    console.log('update locale:', locale);
     if (this.locales.some(l => l.value === locale)) {
       this.locale = locale;
     }

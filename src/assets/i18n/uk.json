@@ -5,7 +5,9 @@
     "delete": "Видалити",
     "edit": "Редагувати",
     "submit": "Надіслати",
-    "notFound": "Нічого не знайдено"
+    "notFound": "Нічого не знайдено",
+    "createdAt": "Створено",
+    "updatedAt": "Оновлено"
   },
   "navigationLinks": {
     "users": "Користувачі",

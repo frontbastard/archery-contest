@@ -41,8 +41,8 @@
         "email": "Некоректний Email"
       }
     },
+    "dateOfBirth": { "title": "Дата народження" },
     "role": { "title": "Роль" },
-    "blocked": { "title": "Заблоковано" },
-    "created": { "title": "Створено" }
+    "blocked": { "title": "Заблоковано" }
   }
 }

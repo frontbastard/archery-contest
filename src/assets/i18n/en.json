@@ -5,7 +5,9 @@
     "delete": "Delete",
     "edit": "Edit",
     "submit": "Submit",
-    "notFound": "Nothing found"
+    "notFound": "Nothing found",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
   },
   "navigationLinks": {
     "users": "Users",

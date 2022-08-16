@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { UserRoles } from 'src/app/common/user-roles';
 import { ActionRequestPayload } from 'src/app/models/core';
 import { IUser } from 'src/app/models/user.model';
+import { LocaleService } from 'src/app/services/locale.service';
 import { loadUser, updateUser } from 'src/app/store/user/user.actions';
 import { selectUser } from 'src/app/store/user/user.selectors';
 
@@ -46,6 +47,7 @@ export class UserManageDetailsComponent implements OnInit {
   }
 
   constructor(
+    public localeService: LocaleService,
     private _route: ActivatedRoute,
     private _store: Store,
     private _formBuilder: FormBuilder

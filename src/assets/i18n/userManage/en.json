@@ -41,8 +41,8 @@
         "email": "Invalid Email"
       }
     },
+    "dateOfBirth": { "title": "Date of Birth" },
     "role": { "title": "Role" },
-    "blocked": { "title": "Blocked" },
-    "created": { "title": "Created" }
+    "blocked": { "title": "Blocked" }
   }
 }
