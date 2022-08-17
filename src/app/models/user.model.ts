@@ -3,7 +3,7 @@ export interface IUser {
   email: string;
   name: string;
   dateOfBirth: Date;
-  role: string;
+  role: string;//TODO: what about role id?
   blocked: boolean;
   createdAt: Date;
   updatedAt: Date;

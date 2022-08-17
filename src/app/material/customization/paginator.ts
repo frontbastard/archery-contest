@@ -7,13 +7,13 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   constructor(private translocoService: TranslocoService) {
     super();
 
-    this.translocoService.selectTranslation().subscribe((_event: Event) => {
+    this.translocoService.selectTranslation().subscribe((_event: Event) => { //TODO: підписка без відписки
       this.getAndInitTranslations();
     });
     this.getAndInitTranslations();
   }
 
-  private getAndInitTranslations(): void {
+  private getAndInitTranslations(): void { //TODO: виглядає дуже дивно, як ніби у індуса списав
     this.itemsPerPageLabel = this.translocoService.translate(
       'elements.paginator.itemsPerPage'
     );

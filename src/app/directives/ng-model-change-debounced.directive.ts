@@ -21,7 +21,7 @@ export class NgModelChangeDebouncedDirective implements OnDestroy {
 
   subscription: Subscription;
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription.unsubscribe(); //TODO: untilDestroyed(this) пробував?
   }
 
   constructor(private ngModel: NgModel) {

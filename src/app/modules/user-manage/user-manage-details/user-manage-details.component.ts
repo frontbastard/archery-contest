@@ -23,9 +23,9 @@ import { selectUser } from 'src/app/store/user/user.selectors';
 })
 export class UserManageDetailsComponent implements OnInit {
   public user: IUser;
-  public roles = [
-    { val: UserRoles.Admin, translationPath: 'userManage.roles.admin' },
-    { val: UserRoles.Moderator, translationPath: 'userManage.roles.moderator' },
+  public roles = [ //TODO: readonly?
+    { val: UserRoles.Admin, translationPath: 'userManage.roles.admin' }, //TODO: потрібно придумати загальний підхід для перекладу енамів
+    { val: UserRoles.Moderator, translationPath: 'userManage.roles.moderator' }, //TODO: що за стиль неймінгу? val - скорочено, translationPath - ні. Не консистентно
     { val: UserRoles.User, translationPath: 'userManage.roles.user' },
   ];
   public form: FormGroup;

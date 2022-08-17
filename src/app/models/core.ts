@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export interface ISearchRequest<TFilter> {
+export interface ISearchRequest<TFilter> {//TODO: я пропоную видалити суфікс "I", і так ясно що в ангулярі інтерфейси використовуються для об'єкту з даними
   searchTerm: string;
   sortTerm: string;
   sortAsc: string;

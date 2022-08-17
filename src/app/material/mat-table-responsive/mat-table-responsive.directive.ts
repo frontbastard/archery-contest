@@ -13,7 +13,7 @@ import { map, mapTo, takeUntil } from 'rxjs/operators';
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[matTableResponsive]',
 })
-export class MatTableResponsiveDirective
+export class MatTableResponsiveDirective //TODO: що це таке???
   implements OnInit, AfterViewInit, OnDestroy
 {
   private onDestroy$ = new Subject<boolean>();
