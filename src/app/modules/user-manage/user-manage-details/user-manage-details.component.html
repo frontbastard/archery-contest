@@ -1,71 +1,26 @@
 <h1>{{ 'userManage.titles.userDetails' | transloco }}</h1>
 <ng-container *ngIf="isUserInitialized">
-  <form [formGroup]="form" (ngSubmit)="submitted()">
-    <div class="form-group">
-      <button mat-flat-button type="button" routerLink="/">
-        {{ 'common.cancel' | transloco }}
-      </button>
-      <button mat-flat-button color="primary" [disabled]="form.invalid">
-        {{ 'common.submit' | transloco }}
-      </button>
-    </div>
-    <!-- Name -->
-    <mat-form-field class="form-group">
-      <mat-label>{{ 'userManage.fields.name.title' | transloco }}</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="name"
-        [placeholder]="'userManage.fields.name.placeholder' | transloco"
-        autocomplete="false" />
-      <mat-error *ngIf="form.controls['name'].hasError('required')">
-        {{ 'userManage.fields.name.validator.required' | transloco }}
-      </mat-error>
-      <mat-error *ngIf="form.controls['name'].hasError('minlength')">
-        {{
-          'userManage.fields.name.validator.minLength'
-            | transloco
-              : {
-                  length: getRequiredLength('name')
-                }
-        }}
-      </mat-error>
-    </mat-form-field>
-    <!-- Email -->
-    <mat-form-field class="form-group">
-      <mat-label>{{ 'userManage.fields.email.title' | transloco }}</mat-label>
-      <input
-        matInput
-        type="email"
-        formControlName="email"
-        [placeholder]="'userManage.fields.email.placeholder' | transloco" />
-      <mat-error
-        *ngIf="
-          form.controls['email'].hasError('required') &&
-          !form.controls['email'].hasError('email')
-        ">
-        {{ 'userManage.fields.email.validator.required' | transloco }}
-      </mat-error>
-      <mat-error *ngIf="form.controls['email'].hasError('email')">
-        {{ 'userManage.fields.email.validator.email' | transloco }}
-      </mat-error>
-    </mat-form-field>
-    <!-- Role -->
-    <mat-form-field class="form-group">
-      <mat-label>{{ 'userManage.fields.role.title' | transloco }}</mat-label>
-      <mat-select [formControl]="controls.role">
-        <mat-option *ngFor="let role of roles" [value]="role.val">
-          {{ role.translationPath | transloco }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- Blocked -->
-    <div class="form-group">
-      <mat-slide-toggle formControlName="blocked">
+  <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>info</mat-icon>
+        <span>Info</span>
+      </ng-template>
+      <p [className]="userStatusClass()">
         {{ isBlockedTranslationPath | transloco }}
-      </mat-slide-toggle>
-    </div>
-    <div class="form-group">
+      </p>
+      <p>
+        <strong> {{ 'userManage.fields.name.title' | transloco }}: </strong>
+        {{ user.name }}
+      </p>
+      <p>
+        <strong> {{ 'userManage.fields.email.title' | transloco }}: </strong>
+        {{ user.email }}
+      </p>
+      <p>
+        <strong> {{ 'userManage.fields.role.title' | transloco }}: </strong>
+        {{ user.role }}
+      </p>
       <p>
         <strong>
           {{ 'userManage.fields.dateOfBirth.title' | transloco }}:
@@ -80,6 +35,84 @@
         <strong>{{ 'common.updatedAt' | transloco }}:</strong>
         {{ user.updatedAt | date: 'medium':'':localeService.locale }}
       </p>
-    </div>
-  </form>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </ng-template>
+      <form [formGroup]="form" (ngSubmit)="submitted()">
+        <!-- Name -->
+        <mat-form-field class="form-group">
+          <mat-label>{{
+            'userManage.fields.name.title' | transloco
+          }}</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            [placeholder]="'userManage.fields.name.placeholder' | transloco"
+            autocomplete="false" />
+          <mat-error *ngIf="form.controls['name'].hasError('required')">
+            {{ 'userManage.fields.name.validator.required' | transloco }}
+          </mat-error>
+          <mat-error *ngIf="form.controls['name'].hasError('minlength')">
+            {{
+              'userManage.fields.name.validator.minLength'
+                | transloco
+                  : {
+                      length: getRequiredLength('name')
+                    }
+            }}
+          </mat-error>
+        </mat-form-field>
+        <!-- Email -->
+        <mat-form-field class="form-group">
+          <mat-label>{{
+            'userManage.fields.email.title' | transloco
+          }}</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            [placeholder]="'userManage.fields.email.placeholder' | transloco" />
+          <mat-error
+            *ngIf="
+              form.controls['email'].hasError('required') &&
+              !form.controls['email'].hasError('email')
+            ">
+            {{ 'userManage.fields.email.validator.required' | transloco }}
+          </mat-error>
+          <mat-error *ngIf="form.controls['email'].hasError('email')">
+            {{ 'userManage.fields.email.validator.email' | transloco }}
+          </mat-error>
+        </mat-form-field>
+        <!-- Role -->
+        <mat-form-field class="form-group">
+          <mat-label>{{
+            'userManage.fields.role.title' | transloco
+          }}</mat-label>
+          <mat-select [formControl]="controls.role">
+            <mat-option *ngFor="let role of roles" [value]="role.val">
+              {{ role.translationPath | transloco }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Blocked -->
+        <div class="form-group">
+          <mat-slide-toggle formControlName="blocked">
+            {{ isBlockedTranslationPath | transloco }}
+          </mat-slide-toggle>
+        </div>
+        <div class="form-group">
+          <button mat-flat-button type="button" (click)="submitCancelled()">
+            {{ 'common.cancel' | transloco }}
+          </button>
+          <button mat-flat-button color="primary" [disabled]="form.invalid">
+            {{ 'common.submit' | transloco }}
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
 </ng-container>

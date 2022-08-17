@@ -35,6 +35,7 @@ export class UserManageDetailsComponent implements OnInit {
     role: new FormControl(''),
     blocked: new FormControl(''),
   };
+  public tabIndex = 0;
 
   public get isUserInitialized(): boolean {
     return Boolean(this.user);
@@ -42,8 +43,8 @@ export class UserManageDetailsComponent implements OnInit {
 
   public get isBlockedTranslationPath(): string {
     return this.form.value.blocked
-      ? 'userManage.common.blocked'
-      : 'userManage.common.active';
+      ? 'userManage.fields.status.blocked'
+      : 'userManage.fields.status.active';
   }
 
   constructor(
@@ -86,6 +87,18 @@ export class UserManageDetailsComponent implements OnInit {
         data: this.user,
       } as ActionRequestPayload<IUser>)
     );
+    this.tabIndex = 0;
+  }
+
+  public submitCancelled(): void {
+    this.form.setValue({
+      name: this.user.name,
+      email: this.user.email,
+      role: this.user.role,
+      blocked: this.user.blocked,
+    });
+
+    this.tabIndex = 0;
   }
 
   public getRole(role: string): boolean {
@@ -98,6 +111,10 @@ export class UserManageDetailsComponent implements OnInit {
       this.form.touched &&
       this.form.controls[field].errors['minlength'].requiredLength
     );
+  }
+
+  public userStatusClass(): string {
+    return this.user.blocked ? 'blocked' : 'active';
   }
 
   private _loadUser(id: string): void {
