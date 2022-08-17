@@ -3,10 +3,6 @@
     "usersList": "Список користувачів",
     "userDetails": "Деталі користувача"
   },
-  "common": {
-    "blocked": "Заблокований",
-    "active": "Активний"
-  },
   "dialogs": {
     "deleteUser": {
       "title": "Видалення користувача",
@@ -43,6 +39,11 @@
     },
     "dateOfBirth": { "title": "Дата народження" },
     "role": { "title": "Роль" },
+    "status": {
+      "title": "Статус",
+      "blocked": "Заблокований",
+      "active": "Активний"
+    },
     "blocked": { "title": "Заблоковано" }
   }
 }

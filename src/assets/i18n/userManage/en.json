@@ -3,10 +3,6 @@
     "usersList": "Users List",
     "userDetails": "User Details"
   },
-  "common": {
-    "blocked": "Blocked",
-    "active": "Active"
-  },
   "dialogs": {
     "deleteUser": {
       "title": "Delete User",
@@ -43,6 +39,11 @@
     },
     "dateOfBirth": { "title": "Date of Birth" },
     "role": { "title": "Role" },
+    "status": {
+      "title": "Status",
+      "blocked": "Blocked",
+      "active": "Active"
+    },
     "blocked": { "title": "Blocked" }
   }
 }

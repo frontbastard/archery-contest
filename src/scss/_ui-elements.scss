@@ -20,3 +20,15 @@ table {
 .mat-drawer-opened {
   width: 200px;
 }
+
+.mat-icon {
+  & + * {
+    margin-left: 5px;
+  }
+}
+
+.mat-tab-group {
+  .mat-tab-body {
+    padding-top: 20px;
+  }
+}
