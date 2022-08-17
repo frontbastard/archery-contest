@@ -4,7 +4,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>info</mat-icon>
-        <span>Info</span>
+        <span>{{ 'common.info' | transloco }}</span>
       </ng-template>
       <p [className]="userStatusClass()">
         {{ isBlockedTranslationPath | transloco }}
@@ -39,7 +39,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>edit</mat-icon>
-        <span>Edit</span>
+        <span>{{ 'common.edit' | transloco }}</span>
       </ng-template>
       <form [formGroup]="form" (ngSubmit)="submitted()">
         <!-- Name -->
