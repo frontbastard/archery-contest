@@ -35,7 +35,7 @@ import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-u
   styleUrls: ['./user-manage-list.component.scss'],
 })
 export class UserManageListComponent implements OnInit {
-  public readonly UserRoutes = UserRoutes;
+  public readonly UserRoutes = UserRoutes; //TODO: не використовується
   public readonly UserRoles = UserRoles;
   public readonly AppConstants = AppConstants;
 
@@ -50,7 +50,7 @@ export class UserManageListComponent implements OnInit {
       blocked: null,
     },
   } as ISearchRequest<IUserFilterModel>;
-  public userStatuses = [
+  public userStatuses = [ //TODO: readonly?
     { val: null, translationPath: 'common.all' },
     { val: true, translationPath: 'userManage.common.blocked' },
     { val: false, translationPath: 'userManage.common.active' },
@@ -68,11 +68,11 @@ export class UserManageListComponent implements OnInit {
     return this.result.items !== null;
   }
 
-  public get isItemsExist(): boolean {
+  public get isItemsExist(): boolean {//TODO: не використовується
     return this.result.totalCount > 0;
   }
 
-  public get isSelectedItems(): boolean {
+  public get isSelectedItems(): boolean {//TODO: не використовується
     return Boolean(this.selection.selected.length);
   }
 
@@ -116,7 +116,9 @@ export class UserManageListComponent implements OnInit {
   }
 
   public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) return;
+    if (this.request.searchTerm.length === 1) {//TODO: braces
+      return
+    }
 
     this._refreshList();
   }
@@ -174,11 +176,11 @@ export class UserManageListComponent implements OnInit {
     );
   }
 
-  public trackByUserStatus(index: number): number {
+  public trackByUserStatus(index: number): number {//TODO: статуси унікальні, їх можна із велью трекати
     return index;
   }
 
-  public getRole(user: IUser, role: string): boolean {
+  public getRole(user: IUser, role: string): boolean { //TODO: назва і значення що повертаються не сходяться
     return user.role === role;
   }
 

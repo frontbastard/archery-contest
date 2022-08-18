@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './user-manage-router.component.html',
 })
 export class UserManageRouterComponent {
-  constructor() {}
+  constructor() {}//TODO: loader by selectIsUserStateLoading
 }

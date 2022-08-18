@@ -7,7 +7,7 @@ import { IUser } from 'src/app/models/user.model';
   templateUrl: './dialog-delete-user.component.html',
   styleUrls: ['./dialog-delete-user.component.scss'],
 })
-export class DialogDeleteUserComponent {
+export class DialogDeleteUserComponent { //TODO: ти думав про створення базового ConfirmComponent?
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteUserComponent>,
     @Inject(MAT_DIALOG_DATA) public user: IUser

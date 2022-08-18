@@ -14,7 +14,7 @@ enum MessageTypes {
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationService {
+export class NotificationService {//TODO: ти не розбив цей сервіс на 2: 1 - notification, 2 - message
   private snackBarConfig: MatSnackBarConfig = {
     duration: 5000,
     horizontalPosition: 'end',

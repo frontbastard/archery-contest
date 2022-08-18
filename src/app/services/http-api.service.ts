@@ -19,6 +19,7 @@ export class HttpApiService {
     request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
+
   public post<T>(
     url: string,
     payload?: Object,
@@ -29,6 +30,7 @@ export class HttpApiService {
     request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
+
   public put<T>(
     url: string,
     payload?: Object,
@@ -39,6 +41,7 @@ export class HttpApiService {
     request = this.tryApplyCancellationSubject(request, cancellationSubject);
     return request;
   }
+
   public delete<T>(
     url: string,
     data?: Object,

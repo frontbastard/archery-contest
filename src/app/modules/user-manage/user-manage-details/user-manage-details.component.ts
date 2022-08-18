@@ -87,7 +87,7 @@ export class UserManageDetailsComponent implements OnInit {
         data: this.user,
       } as ActionRequestPayload<IUser>)
     );
-    this.tabIndex = 0;
+    this.tabIndex = 0; //TODO: redirect to users list?
   }
 
   public submitCancelled(): void {
@@ -101,11 +101,11 @@ export class UserManageDetailsComponent implements OnInit {
     this.tabIndex = 0;
   }
 
-  public getRole(role: string): boolean {
+  public getRole(role: string): boolean { //TODO: not used
     return this.user.role === role;
   }
 
-  public getRequiredLength(field: string): number {
+  public getRequiredLength(field: string): number { //TODO: пергий раз бачу такий підхід, треба обговорити
     return (
       this.form.invalid &&
       this.form.touched &&
@@ -117,7 +117,7 @@ export class UserManageDetailsComponent implements OnInit {
     return this.user.blocked ? 'blocked' : 'active';
   }
 
-  private _loadUser(id: string): void {
+  private _loadUser(id: string): void { //TODO: неймінг?
     this._store.dispatch(
       loadUser({
         data: id,
