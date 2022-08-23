@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslocoService } from '@ngneat/transloco';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Injectable()
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   constructor(private translocoService: TranslocoService) {
     super();
 
-    this.translocoService.selectTranslation().subscribe((_event: Event) => { //TODO: підписка без відписки
-      this.getAndInitTranslations();
-    });
+    this.translocoService
+      .selectTranslation()
+      .pipe(untilDestroyed(this))
+      .subscribe((_event: Event) => {
+        this.getAndInitTranslations();
+      });
     this.getAndInitTranslations();
   }
 
-  private getAndInitTranslations(): void { //TODO: виглядає дуже дивно, як ніби у індуса списав
+  private getAndInitTranslations(): void {
+    //TODO: виглядає дуже дивно, як ніби у індуса списав
     this.itemsPerPageLabel = this.translocoService.translate(
       'elements.paginator.itemsPerPage'
     );

@@ -1,39 +1,39 @@
 <h1>{{ 'userManage.titles.usersList' | transloco }}</h1>
-<ng-container *ngIf="isItemsInitialized; else noUsers">
-  <div class="settings-bar">
-    <mat-form-field appearance="standard">
-      <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>
-      <input
-        matInput
-        [(ngModel)]="request.searchTerm"
-        (ngModelChangeDebounced)="searchChanged()"
-        [placeholder]="'elements.search.placeholder' | transloco"
-        autocomplete="false"
-        #searchInput />
-      <button
-        *ngIf="searchInput.value"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="request.searchTerm = ''">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <span class="spacer"></span>
-    <mat-form-field appearance="standard">
-      <select
-        matNativeControl
-        [ngModel]="request.filter.blocked"
-        (ngModelChange)="userStatusChanged($event)">
-        <option
-          *ngFor="let status of userStatuses; trackBy: trackByUserStatus"
-          [value]="status.val">
-          {{ status.translationPath | transloco }}
-        </option>
-      </select>
-    </mat-form-field>
-  </div>
+<div class="settings-bar">
+  <mat-form-field appearance="standard">
+    <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>
+    <input
+      matInput
+      [(ngModel)]="request.searchTerm"
+      (ngModelChangeDebounced)="searchChanged()"
+      [placeholder]="'elements.search.placeholder' | transloco"
+      autocomplete="false"
+      #searchInput />
+    <button
+      *ngIf="searchInput.value"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="request.searchTerm = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <span class="spacer"></span>
+  <mat-form-field appearance="standard">
+    <select
+      matNativeControl
+      [ngModel]="request.filter.blocked"
+      (ngModelChange)="userStatusChanged($event)">
+      <option
+        *ngFor="let status of userStatuses; trackBy: trackByUserStatus"
+        [value]="status.value">
+        {{ status.translationPath | transloco }}
+      </option>
+    </select>
+  </mat-form-field>
+</div>
 
+<ng-container *ngIf="isItemsInitialized; else noUsers">
   <table
     mat-table
     matTableResponsive
@@ -87,7 +87,7 @@
         <button
           mat-button
           class="blocked-label"
-          [disabled]="getRole(user, UserRoles.Master)"
+          [disabled]="matchRole(user, UserRole.Master)"
           (click)="toggleBlocked(user)">
           <mat-icon *ngIf="user.blocked">radio_button_unchecked</mat-icon>
           <mat-icon *ngIf="!user.blocked">hide_source</mat-icon>
@@ -95,7 +95,7 @@
         <button
           mat-button
           color="warn"
-          [disabled]="getRole(user, UserRoles.Master)"
+          [disabled]="matchRole(user, UserRole.Master)"
           (click)="deleteUserDialog(user)">
           <mat-icon>delete</mat-icon>
         </button>
@@ -108,8 +108,8 @@
       *matRowDef="let user; columns: displayedColumns"
       [ngClass]="{
         blocked: user.blocked,
-        admin: getRole(user, UserRoles.Master),
-        moderator: getRole(user, UserRoles.Moderator)
+        admin: matchRole(user, UserRole.Master),
+        moderator: matchRole(user, UserRole.Moderator)
       }"></tr>
 
     <tr *matNoDataRow class="mat-row">
@@ -121,17 +121,17 @@
       </td>
     </tr>
   </table>
-
-  <mat-paginator
-    [length]="result.totalCount"
-    [pageIndex]="request.pageIndex"
-    [pageSize]="request.pageSize"
-    [pageSizeOptions]="AppConstants.PAGE_SIZE_OPTIONS"
-    showFirstLastButtons
-    (page)="paginationChanged($event)">
-  </mat-paginator>
 </ng-container>
 
+<mat-paginator
+  [length]="result.totalCount"
+  [pageIndex]="request.pageIndex"
+  [pageSize]="request.pageSize"
+  [pageSizeOptions]="PAGE_SIZE_OPTIONS"
+  showFirstLastButtons
+  (page)="paginationChanged($event)">
+</mat-paginator>
+
 <ng-template #noUsers>
-  {{ 'common.notFound' | transloco }}
+  <p>{{ 'common.notFound' | transloco }}</p>
 </ng-template>

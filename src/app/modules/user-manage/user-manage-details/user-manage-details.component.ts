@@ -8,9 +8,9 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { UserRoles } from 'src/app/common/user-roles';
-import { ActionRequestPayload } from 'src/app/models/core';
-import { IUser } from 'src/app/models/user.model';
+import { UserRole } from 'src/app/common/user-roles';
+import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
+import { User } from 'src/app/models/user.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { loadUser, updateUser } from 'src/app/store/user/user.actions';
 import { selectUser } from 'src/app/store/user/user.selectors';
@@ -22,11 +22,14 @@ import { selectUser } from 'src/app/store/user/user.selectors';
   styleUrls: ['./user-manage-details.component.scss'],
 })
 export class UserManageDetailsComponent implements OnInit {
-  public user: IUser;
-  public roles = [ //TODO: readonly?
-    { val: UserRoles.Admin, translationPath: 'userManage.roles.admin' }, //TODO: потрібно придумати загальний підхід для перекладу енамів
-    { val: UserRoles.Moderator, translationPath: 'userManage.roles.moderator' }, //TODO: що за стиль неймінгу? val - скорочено, translationPath - ні. Не консистентно
-    { val: UserRoles.User, translationPath: 'userManage.roles.user' },
+  public user: User;
+  public readonly roles = [
+    { value: UserRole.Admin, translationPath: 'userManage.roles.admin' }, //TODO: потрібно придумати загальний підхід для перекладу енамів
+    {
+      value: UserRole.Moderator,
+      translationPath: 'userManage.roles.moderator',
+    },
+    { value: UserRole.User, translationPath: 'userManage.roles.user' },
   ];
   public form: FormGroup;
   public controls = {
@@ -85,7 +88,7 @@ export class UserManageDetailsComponent implements OnInit {
     this._store.dispatch(
       updateUser({
         data: this.user,
-      } as ActionRequestPayload<IUser>)
+      } as ActionRequestPayload<User>)
     );
     this.tabIndex = 0; //TODO: redirect to users list?
   }
@@ -101,11 +104,8 @@ export class UserManageDetailsComponent implements OnInit {
     this.tabIndex = 0;
   }
 
-  public getRole(role: string): boolean { //TODO: not used
-    return this.user.role === role;
-  }
-
-  public getRequiredLength(field: string): number { //TODO: пергий раз бачу такий підхід, треба обговорити
+  public getRequiredLength(field: string): number {
+    //TODO: пергий раз бачу такий підхід, треба обговорити
     return (
       this.form.invalid &&
       this.form.touched &&
@@ -117,7 +117,8 @@ export class UserManageDetailsComponent implements OnInit {
     return this.user.blocked ? 'blocked' : 'active';
   }
 
-  private _loadUser(id: string): void { //TODO: неймінг?
+  private _loadUser(id: string): void {
+    //TODO: неймінг?
     this._store.dispatch(
       loadUser({
         data: id,

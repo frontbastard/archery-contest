@@ -93,7 +93,7 @@
             'userManage.fields.role.title' | transloco
           }}</mat-label>
           <mat-select [formControl]="controls.role">
-            <mat-option *ngFor="let role of roles" [value]="role.val">
+            <mat-option *ngFor="let role of roles" [value]="role.value">
               {{ role.translationPath | transloco }}
             </mat-option>
           </mat-select>

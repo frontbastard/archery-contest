@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Custom files
-/src/app/http-interceptors/token.ts
+/src/app/core/interceptors/token.ts

@@ -6,16 +6,14 @@ import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { AppConstants } from 'src/app/common/app-constants';
-import { UserRoutes } from 'src/app/common/routes';
-import { UserRoles } from 'src/app/common/user-roles';
-import {
-  ActionRequestPayload,
-  ActionResponsePayload,
-  ISearchRequest,
-  ISearchResponse,
-} from 'src/app/models/core';
+import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
+import { UserRole } from 'src/app/common/user-roles';
+import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
+import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
+import { SearchRequest } from 'src/app/models/base/search-request';
+import { SearchResponse } from 'src/app/models/base/search-response';
 import { LocaleService } from 'src/app/services/locale.service';
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 import {
   deleteUser,
   loadUser,
@@ -24,9 +22,8 @@ import {
   UserActions,
 } from 'src/app/store/user/user.actions';
 import { selectUsers } from 'src/app/store/user/user.selectors';
-import { IUserState } from 'src/app/store/user/user.state';
-import { IUser, IUserFilterModel } from '../../../models/user.model';
-import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
+import { UserState } from 'src/app/store/user/user.state';
+import { User, UserFilterModel } from '../../../models/user.model';
 
 @UntilDestroy()
 @Component({
@@ -35,25 +32,24 @@ import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-u
   styleUrls: ['./user-manage-list.component.scss'],
 })
 export class UserManageListComponent implements OnInit {
-  public readonly UserRoutes = UserRoutes; //TODO: не використовується
-  public readonly UserRoles = UserRoles;
-  public readonly AppConstants = AppConstants;
+  public readonly UserRole = UserRole;
+  public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
-  public result: ISearchResponse<IUser> = {} as ISearchResponse<IUser>;
-  public request: ISearchRequest<IUserFilterModel> = {
+  public result: SearchResponse<User> = {} as SearchResponse<User>;
+  public request: SearchRequest<UserFilterModel> = {
     searchTerm: null,
     sortTerm: null,
     sortAsc: '',
     pageIndex: 0,
-    pageSize: AppConstants.PAGE_SIZE_OPTIONS[0],
+    pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
       blocked: null,
     },
-  } as ISearchRequest<IUserFilterModel>;
-  public userStatuses = [ //TODO: readonly?
-    { val: null, translationPath: 'common.all' },
-    { val: true, translationPath: 'userManage.common.blocked' },
-    { val: false, translationPath: 'userManage.common.active' },
+  } as SearchRequest<UserFilterModel>;
+  public userStatuses = [
+    { value: null, translationPath: 'common.all' },
+    { value: true, translationPath: 'userManage.fields.status.blocked' },
+    { value: false, translationPath: 'userManage.fields.status.active' },
   ];
   public displayedColumns: string[] = [
     'name',
@@ -62,18 +58,10 @@ export class UserManageListComponent implements OnInit {
     'createdAt',
     'actions',
   ];
-  public selection = new SelectionModel<IUser>(true, []);
+  public selection = new SelectionModel<User>(true, []);
 
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
-  }
-
-  public get isItemsExist(): boolean {//TODO: не використовується
-    return this.result.totalCount > 0;
-  }
-
-  public get isSelectedItems(): boolean {//TODO: не використовується
-    return Boolean(this.selection.selected.length);
   }
 
   public get notFoundMessage(): string {
@@ -86,7 +74,7 @@ export class UserManageListComponent implements OnInit {
 
   constructor(
     public localeService: LocaleService,
-    private _store: Store<IUserState>,
+    private _store: Store<UserState>,
     private _actions: Actions,
     private _dialog: MatDialog,
     private _router: Router
@@ -95,7 +83,7 @@ export class UserManageListComponent implements OnInit {
   ngOnInit(): void {
     this._actions
       .pipe(ofType(UserActions.userLoaded), untilDestroyed(this))
-      .subscribe(({ data }: ActionResponsePayload<IUser>) => {
+      .subscribe(({ data }: ActionResponsePayload<User>) => {
         this._router.navigate([data._id]);
       });
 
@@ -116,9 +104,7 @@ export class UserManageListComponent implements OnInit {
   }
 
   public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) {//TODO: braces
-      return
-    }
+    if (this.request.searchTerm.length === 1) return;
 
     this._refreshList();
   }
@@ -141,9 +127,17 @@ export class UserManageListComponent implements OnInit {
     this._refreshList();
   }
 
-  public deleteUserDialog(user: IUser): void {
-    const dialogRef = this._dialog.open(DialogDeleteUserComponent, {
-      data: user,
+  public deleteUserDialog(user: User): void {
+    const dialogRef = this._dialog.open(DialogComponent, {
+      data: {
+        entity: user,
+        dialog: {
+          title: 'userManage.dialogs.deleteUser.title',
+          content: 'userManage.dialogs.deleteUser.content',
+          actionButton: 'common.delete',
+          actionButtonColor: 'warn',
+        },
+      },
     });
 
     dialogRef.afterClosed().subscribe(id => {
@@ -157,7 +151,7 @@ export class UserManageListComponent implements OnInit {
     });
   }
 
-  public loadUserDetails(user: IUser) {
+  public loadUserDetails(user: User) {
     this._store.dispatch(
       loadUser({
         data: user._id,
@@ -165,22 +159,22 @@ export class UserManageListComponent implements OnInit {
     );
   }
 
-  public toggleBlocked(user: IUser): void {
+  public toggleBlocked(user: User): void {
     this._store.dispatch(
       updateUser({
         data: {
           ...user,
           blocked: !user.blocked,
         },
-      } as ActionRequestPayload<IUser>)
+      } as ActionRequestPayload<User>)
     );
   }
 
-  public trackByUserStatus(index: number): number {//TODO: статуси унікальні, їх можна із велью трекати
-    return index;
+  public trackByUserStatus(index: number, status) {
+    return status.value;
   }
 
-  public getRole(user: IUser, role: string): boolean { //TODO: назва і значення що повертаються не сходяться
+  public matchRole(user: User, role: UserRole): boolean {
     return user.role === role;
   }
 
@@ -194,8 +188,8 @@ export class UserManageListComponent implements OnInit {
 
     this._store.dispatch(
       loadUsers({
-        data: { ...this.request },
-      } as ActionRequestPayload<ISearchRequest<IUserFilterModel>>)
+        data: JSON.parse(JSON.stringify(this.request)),
+      } as ActionRequestPayload<SearchRequest<UserFilterModel>>)
     );
   }
 }

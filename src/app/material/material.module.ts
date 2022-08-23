@@ -23,7 +23,8 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { SnackBarComponent } from './customization/snack-bar/snack-bar.component';
 import { MatTableResponsiveDirective } from './mat-table-responsive/mat-table-responsive.directive';
 
-const modules = [ //TODO: вперше таке бачу, виглядає так що створює проблеми. Ти впевнений що всі ці модулі треба і експортити і імпортити? Газва змінної взагалі нічого не пояснює
+const modules = [
+  //TODO: вперше таке бачу, виглядає так що створює проблеми. Ти впевнений що всі ці модулі треба і експортити і імпортити? Газва змінної взагалі нічого не пояснює
   MatToolbarModule,
   MatIconModule,
   MatListModule,

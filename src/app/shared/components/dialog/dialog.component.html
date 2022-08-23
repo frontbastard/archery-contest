@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>
+  {{ data.dialog.title | transloco }}
+</h1>
+<div mat-dialog-content>
+  {{ data.dialog.content | transloco: { entityName: data.entity.name } }}
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">
+    {{ 'common.cancel' | transloco }}
+  </button>
+  <button
+    mat-flat-button
+    [color]="data.dialog.actionButtonColor || 'primary'"
+    [mat-dialog-close]="data.entity._id"
+    cdkFocusInitial>
+    {{ data.dialog.actionButton | transloco }}
+  </button>
+</div>

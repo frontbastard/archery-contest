@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IUser, IUserFilterModel } from '../models/user.model';
+import { User, UserFilterModel } from '../models/user.model';
 import { BaseApiCrudService } from './base-api-crud.service';
 
 @Injectable({
@@ -7,13 +7,13 @@ import { BaseApiCrudService } from './base-api-crud.service';
 })
 export class UserApiService extends BaseApiCrudService<
   string,
-  IUser,
-  IUser,
+  User,
+  User,
   void,
-  IUser,
+  User,
   void,
-  IUserFilterModel,
-  IUser
+  UserFilterModel,
+  User
 > {
   rootRoute = 'users';
 }

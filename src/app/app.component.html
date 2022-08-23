@@ -1,8 +1,8 @@
 <div class="app-wrapper" [class.is-mobile]="mobileQuery.matches">
-  <app-header [snav]="snav"></app-header>
+  <app-header [sidenav]="sidenav"></app-header>
   <mat-sidenav-container class="sidenav-container" autosize>
     <mat-sidenav
-      #snav
+      #sidenav
       [mode]="mobileQuery.matches ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"

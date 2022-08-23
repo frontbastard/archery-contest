@@ -10,7 +10,7 @@ import {
   usersLoaded,
   userUpdated,
 } from './user.actions';
-import { initialState, IUserState } from './user.state';
+import { initialState, UserState } from './user.state';
 
 const _reducer = createReducer(
   initialState,
@@ -58,7 +58,7 @@ const _reducer = createReducer(
   }))
 );
 
-export const userReducer = (state: IUserState, action: Action): IUserState =>
+export const userReducer = (state: UserState, action: Action): UserState =>
   _reducer(state, action);
 
 export const userFeatureKey = 'user';

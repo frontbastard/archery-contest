@@ -1,33 +1,24 @@
-import {
-  Directive,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
-} from '@angular/core';
+import { Directive, EventEmitter, Input, Output } from '@angular/core';
 import { NgModel } from '@angular/forms';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
+@UntilDestroy()
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[ngModelChangeDebounced]',
 })
-export class NgModelChangeDebouncedDirective implements OnDestroy {
+export class NgModelChangeDebouncedDirective {
   @Output()
   ngModelChangeDebounced = new EventEmitter<any>();
   @Input()
   ngModelChangeDebounceTime = 500; // optional, 500 default
 
-  subscription: Subscription;
-  ngOnDestroy() {
-    this.subscription.unsubscribe(); //TODO: untilDestroyed(this) пробував?
-  }
-
   constructor(private ngModel: NgModel) {
-    this.subscription = this.ngModel.control.valueChanges
+    this.ngModel.control.valueChanges
       .pipe(
         skip(1), // skip initial value
+        untilDestroyed(this),
         distinctUntilChanged(),
         debounceTime(this.ngModelChangeDebounceTime)
       )

@@ -30,5 +30,9 @@
       "firstPage": "Перша сторінка",
       "lastPage": "Остання сторінка"
     }
+  },
+  "errors": {
+    "unexpectedError": "Невідома помилка",
+    "userNotFound": "Користувач не знайдений"
   }
 }

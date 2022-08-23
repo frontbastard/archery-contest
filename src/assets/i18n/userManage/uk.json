@@ -6,7 +6,7 @@
   "dialogs": {
     "deleteUser": {
       "title": "Видалення користувача",
-      "description": "Ви впевнені, що хочете видалити користувача {{userName}}?"
+      "content": "Ви впевнені, що хочете видалити користувача {{entityName}}?"
     }
   },
   "notifications": {
