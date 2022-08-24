@@ -14,19 +14,13 @@
     "userUpdated": "User successfully updated",
     "userCreated": "User successfully created"
   },
-  "roles": {
-    "master": "Master",
-    "admin": "Admin",
-    "moderator": "Moderator",
-    "user": "User"
-  },
   "fields": {
     "name": {
       "title": "Name",
       "placeholder": "Enter user name",
       "validator": {
         "required": "Name is required",
-        "minLength": "Min length is {{length}}"
+        "minLength": "Min length is 2 symbols"
       }
     },
     "email": {

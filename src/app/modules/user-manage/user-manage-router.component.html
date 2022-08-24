@@ -1,2 +1,6 @@
+<mat-progress-bar
+  class="position-absolute"
+  *ngIf="selectIsUserStateLoading$ | async"
+  mode="indeterminate"></mat-progress-bar>
+
 <router-outlet></router-outlet>
-<!-- <mat-progress-bar *ngIf="true">Loading...</mat-progress-bar> -->

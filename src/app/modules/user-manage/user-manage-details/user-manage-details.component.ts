@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { UserRole } from 'src/app/common/user-roles';
+import { getEnumNames } from 'src/app/common/utils';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { User } from 'src/app/models/user.model';
 import { LocaleService } from 'src/app/services/locale.service';
@@ -23,14 +24,8 @@ import { selectUser } from 'src/app/store/user/user.selectors';
 })
 export class UserManageDetailsComponent implements OnInit {
   public user: User;
-  public readonly roles = [
-    { value: UserRole.Admin, translationPath: 'userManage.roles.admin' }, //TODO: потрібно придумати загальний підхід для перекладу енамів
-    {
-      value: UserRole.Moderator,
-      translationPath: 'userManage.roles.moderator',
-    },
-    { value: UserRole.User, translationPath: 'userManage.roles.user' },
-  ];
+  public UserRole = UserRole;
+  public readonly roles = getEnumNames(UserRole);
   public form: FormGroup;
   public controls = {
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -90,7 +85,7 @@ export class UserManageDetailsComponent implements OnInit {
         data: this.user,
       } as ActionRequestPayload<User>)
     );
-    this.tabIndex = 0; //TODO: redirect to users list?
+    this._goBack();
   }
 
   public submitCancelled(): void {
@@ -101,16 +96,7 @@ export class UserManageDetailsComponent implements OnInit {
       blocked: this.user.blocked,
     });
 
-    this.tabIndex = 0;
-  }
-
-  public getRequiredLength(field: string): number {
-    //TODO: пергий раз бачу такий підхід, треба обговорити
-    return (
-      this.form.invalid &&
-      this.form.touched &&
-      this.form.controls[field].errors['minlength'].requiredLength
-    );
+    this._goBack();
   }
 
   public userStatusClass(): string {
@@ -118,11 +104,14 @@ export class UserManageDetailsComponent implements OnInit {
   }
 
   private _loadUser(id: string): void {
-    //TODO: неймінг?
     this._store.dispatch(
       loadUser({
         data: id,
       } as ActionRequestPayload<string>)
     );
+  }
+
+  private _goBack() {
+    this.tabIndex = 0;
   }
 }

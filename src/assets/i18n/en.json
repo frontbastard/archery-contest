@@ -10,6 +10,18 @@
     "createdAt": "Created At",
     "updatedAt": "Updated At"
   },
+  "enums": {
+    "AcErrorCode": {
+      "UnexpectedError": "Unexpected error",
+      "UserNotFound": "User not found"
+    },
+    "UserRole": {
+      "Master": "Master",
+      "Admin": "Admin",
+      "Moderator": "Moderator",
+      "User": "User"
+    }
+  },
   "navigationLinks": {
     "users": "Users",
     "events": "Events"
@@ -24,15 +36,11 @@
       "nothingFound": "Nothing found on request"
     },
     "paginator": {
-      "itemsPerPage": "Items per page",
-      "nextPage": "Next page",
-      "previousPage": "Previous page",
-      "firstPage": "First page",
-      "lastPage": "Last page"
+      "itemsPerPageLabel": "Items per page",
+      "nextPageLabel": "Next page",
+      "previousPageLabel": "Previous page",
+      "firstPageLabel": "First page",
+      "lastPageLabel": "Last page"
     }
-  },
-  "errors": {
-    "unexpectedError": "Unexpected error",
-    "userNotFound": "User not found"
   }
 }

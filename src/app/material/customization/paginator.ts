@@ -6,10 +6,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @UntilDestroy()
 @Injectable()
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
-  constructor(private translocoService: TranslocoService) {
+  constructor(private _translocoService: TranslocoService) {
     super();
 
-    this.translocoService
+    this._translocoService
       .selectTranslation()
       .pipe(untilDestroyed(this))
       .subscribe((_event: Event) => {
@@ -19,22 +19,12 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   }
 
   private getAndInitTranslations(): void {
-    //TODO: виглядає дуже дивно, як ніби у індуса списав
-    this.itemsPerPageLabel = this.translocoService.translate(
-      'elements.paginator.itemsPerPage'
-    );
-    this.nextPageLabel = this.translocoService.translate(
-      'elements.paginator.nextPage'
-    );
-    this.previousPageLabel = this.translocoService.translate(
-      'elements.paginator.previousPage'
-    );
-    this.firstPageLabel = this.translocoService.translate(
-      'elements.paginator.firstPage'
-    );
-    this.lastPageLabel = this.translocoService.translate(
-      'elements.paginator.lastPage'
-    );
+    const translates =
+      this._translocoService.translateObject('elements.paginator');
+
+    Object.keys(translates).forEach(key => {
+      this[key] = translates[key];
+    });
     this.changes.next();
   }
 

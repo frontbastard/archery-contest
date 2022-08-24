@@ -10,6 +10,18 @@
     "createdAt": "Створено",
     "updatedAt": "Оновлено"
   },
+  "enums": {
+    "AcErrorCode": {
+      "UnexpectedError": "Unexpected error",
+      "UserNotFound": "User not found"
+    },
+    "UserRole": {
+      "Master": "Майстер",
+      "Admin": "Адміністратор",
+      "Moderator": "Модератор",
+      "User": "Користувач"
+    }
+  },
   "navigationLinks": {
     "users": "Користувачі",
     "events": "Події"
@@ -24,15 +36,11 @@
       "nothingFound": "Нічого не знайдено за запитом"
     },
     "paginator": {
-      "itemsPerPage": "Елементів на сторінці",
-      "nextPage": "Наступна сторінка",
-      "previousPage": "Попередня сторінка",
-      "firstPage": "Перша сторінка",
-      "lastPage": "Остання сторінка"
+      "itemsPerPageLabel": "Елементів на сторінці",
+      "nextPageLabel": "Наступна сторінка",
+      "previousPageLabel": "Попередня сторінка",
+      "firstPageLabel": "Перша сторінка",
+      "lastPageLabel": "Остання сторінка"
     }
-  },
-  "errors": {
-    "unexpectedError": "Невідома помилка",
-    "userNotFound": "Користувач не знайдений"
   }
 }

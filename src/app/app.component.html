@@ -1,4 +1,7 @@
-<div class="app-wrapper" [class.is-mobile]="mobileQuery.matches">
+<div
+  class="app-wrapper"
+  [class.is-mobile]="mobileQuery.matches"
+  *transloco="let t">
   <app-header [sidenav]="sidenav"></app-header>
   <mat-sidenav-container class="sidenav-container" autosize>
     <mat-sidenav
