@@ -2,22 +2,22 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RouteParams } from 'src/app/common/routes';
-import { UserManageDetailsComponent } from './user-manage-details/user-manage-details.component';
-import { UserManageListComponent } from './user-manage-list/user-manage-list.component';
-import { UserManageRouterComponent } from './user-manage-router.component';
+import { ContestDetailsComponent } from './contest-details/contest-details.component';
+import { ContestListComponent } from './contest-list/contest-list.component';
+import { ContestRouterComponent } from './contest-router.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserManageRouterComponent,
+    component: ContestRouterComponent,
     children: [
       {
         path: '',
-        component: UserManageListComponent,
+        component: ContestListComponent,
       },
       {
         path: `:${RouteParams.Id}`,
-        component: UserManageDetailsComponent,
+        component: ContestDetailsComponent,
       },
     ],
   },
@@ -28,4 +28,4 @@ const routes: Routes = [
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserManageRoutingModule {}
+export class ContestRoutingModule {}

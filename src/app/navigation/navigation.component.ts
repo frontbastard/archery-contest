@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserRoutes } from '../common/routes';
+import { ContestRoutes, UserRoutes } from '../common/routes';
 
 @Component({
   selector: 'app-navigation',
@@ -8,4 +8,5 @@ import { UserRoutes } from '../common/routes';
 })
 export class NavigationComponent {
   public readonly UserRoutes = UserRoutes;
+  public readonly ContestRoutes = ContestRoutes;
 }

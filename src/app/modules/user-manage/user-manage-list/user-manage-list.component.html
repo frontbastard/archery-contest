@@ -1,5 +1,5 @@
 <h1>{{ 'userManage.titles.usersList' | transloco }}</h1>
-<div class="settings-bar">
+<div class="filter-bar">
   <mat-form-field appearance="standard">
     <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>
     <input
@@ -109,7 +109,7 @@
       mat-row
       *matRowDef="let user; columns: displayedColumns"
       [ngClass]="{
-        blocked: user.blocked,
+        disabled: user.blocked,
         admin: matchRole(user, UserRole.Master),
         moderator: matchRole(user, UserRole.Moderator)
       }"></tr>
