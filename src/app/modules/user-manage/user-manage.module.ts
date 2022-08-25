@@ -20,7 +20,6 @@ import { UserManageRoutingModule } from './user-manage-routing.module';
   declarations: [
     UserManageDetailsComponent,
     UserManageListComponent,
-    UserManageDetailsComponent,
     UserManageRouterComponent,
     NgModelChangeDebouncedDirective,
   ],

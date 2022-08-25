@@ -29,7 +29,6 @@ import { User, UserFilterModel } from '../../../models/user.model';
 @Component({
   selector: 'app-user-manage-list',
   templateUrl: './user-manage-list.component.html',
-  styleUrls: ['./user-manage-list.component.scss'],
 })
 export class UserManageListComponent implements OnInit {
   public readonly UserRole = UserRole;

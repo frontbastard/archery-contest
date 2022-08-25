@@ -1,3 +1,5 @@
+@import '~include-media';
+
 table {
   width: 100%;
 }
@@ -10,10 +12,37 @@ table {
   border-radius: 3px;
 }
 
+.filter-bar {
+  display: flex;
+  align-items: center;
+}
+
 .mat-table {
-  th.mat-header-cell + th.mat-header-cell,
-  td.mat-cell + td.mat-cell {
+  .mat-header-cell + .mat-header-cell,
+  .mat-cell + .mat-cell {
     padding-left: 10px;
+  }
+
+  .mat-row {
+    &.disabled {
+      background: rgba(#000, 0.05);
+    }
+  }
+
+  .mat-column-actions {
+    @include media('<=tablet') {
+      display: flex;
+    }
+
+    [mat-button] {
+      min-width: auto;
+      margin-left: 0;
+      padding: 0 12px;
+
+      @include media('<=tablet') {
+        flex: 1;
+      }
+    }
   }
 }
 
