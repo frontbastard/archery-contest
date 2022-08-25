@@ -86,33 +86,18 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let user" class="align-right">
-        <button
-          mat-button
-          class="blocked-label"
-          [disabled]="matchRole(user, UserRole.Master)"
-          (click)="toggleBlocked(user)">
+        <button mat-button (click)="toggleBlocked(user)">
           <mat-icon *ngIf="user.blocked">radio_button_unchecked</mat-icon>
           <mat-icon *ngIf="!user.blocked">hide_source</mat-icon>
         </button>
-        <button
-          mat-button
-          color="warn"
-          [disabled]="matchRole(user, UserRole.Master)"
-          (click)="deleteUserDialog(user)">
+        <button mat-button color="warn" (click)="deleteUserDialog(user)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr
-      mat-row
-      *matRowDef="let user; columns: displayedColumns"
-      [ngClass]="{
-        disabled: user.blocked,
-        admin: matchRole(user, UserRole.Master),
-        moderator: matchRole(user, UserRole.Moderator)
-      }"></tr>
+    <tr mat-row *matRowDef="let user; columns: displayedColumns"></tr>
 
     <tr *matNoDataRow class="mat-row">
       <td class="mat-cell" colspan="4">

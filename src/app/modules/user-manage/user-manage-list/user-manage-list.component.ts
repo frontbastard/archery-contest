@@ -1,4 +1,3 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -57,7 +56,6 @@ export class UserManageListComponent implements OnInit {
     'createdAt',
     'actions',
   ];
-  public selection = new SelectionModel<User>(true, []);
 
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
@@ -171,10 +169,6 @@ export class UserManageListComponent implements OnInit {
 
   public trackByUserStatus(index: number, status) {
     return status.value;
-  }
-
-  public matchRole(user: User, role: UserRole): boolean {
-    return user.role === role;
   }
 
   private _refreshList(): void {
