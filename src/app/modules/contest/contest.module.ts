@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContestDetailsComponent } from './contest-details/contest-details.component';
@@ -13,7 +14,7 @@ import { ContestRoutingModule } from './contest-routing.module';
     ContestDetailsComponent,
     ContestListComponent,
   ],
-  imports: [CommonModule, SharedModule, ContestRoutingModule],
+  imports: [CommonModule, FormsModule, SharedModule, ContestRoutingModule],
   providers: [{ provide: TRANSLOCO_SCOPE, useValue: 'contest' }],
 })
 export class ContestModule {}

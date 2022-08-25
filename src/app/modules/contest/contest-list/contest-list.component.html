@@ -1,1 +1,126 @@
 <h1>{{ 'contest.titles.contestsList' | transloco }}</h1>
+<div class="filter-bar">
+  <mat-form-field appearance="standard">
+    <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>
+    <input
+      matInput
+      [(ngModel)]="request.searchTerm"
+      (ngModelChangeDebounced)="searchChanged()"
+      [placeholder]="'elements.search.placeholder' | transloco"
+      autocomplete="false"
+      #searchInput />
+    <button
+      *ngIf="searchInput.value"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="request.searchTerm = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <span class="spacer"></span>
+  <mat-form-field appearance="standard">
+    <select
+      matNativeControl
+      [ngModel]="request.filter.blocked"
+      (ngModelChange)="contestStatusChanged($event)">
+      <option
+        *ngFor="let status of contestStatuses; trackBy: trackByContestStatus"
+        [value]="status.value">
+        {{ status.translationPath | transloco }}
+      </option>
+    </select>
+  </mat-form-field>
+</div>
+
+<ng-container *ngIf="isItemsInitialized; else noContests">
+  <table
+    mat-table
+    matTableResponsive
+    [dataSource]="result.items"
+    matSort
+    (matSortChange)="sortChanged($event)"
+    matSortActive="createdAt"
+    class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'contest.fields.name.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let contest">
+        <a href="javascript:void(0)" (click)="loadContestDetails(contest)">
+          <strong>{{ contest.name }}</strong>
+        </a>
+      </td>
+    </ng-container>
+
+    <!-- Owner Column -->
+    <ng-container matColumnDef="owner">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'contest.fields.owner.title' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let contest">
+        {{ contest.owner }}
+      </td>
+    </ng-container>
+
+    <!-- Created At Column -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'common.createdAt' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let contest">
+        {{ contest.createdAt | date: 'medium':'':localeService.locale }}
+      </td>
+    </ng-container>
+
+    <!-- Updated At Column -->
+    <ng-container matColumnDef="updatedAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ 'common.updatedAt' | transloco }}
+      </th>
+      <td mat-cell *matCellDef="let contest">
+        {{ contest.updatedAt | date: 'medium':'':localeService.locale }}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let contest" class="align-right">
+        <button mat-button (click)="toggleHidden(contest)">
+          <mat-icon *ngIf="contest.hidden">radio_button_unchecked</mat-icon>
+          <mat-icon *ngIf="!contest.hidden">hide_source</mat-icon>
+        </button>
+        <button mat-button color="warn" (click)="deleteContestDialog(contest)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let contest; columns: displayedColumns"></tr>
+
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="4">
+        {{ notFoundMessage | transloco }}
+        <span *ngIf="searchInput.value.length">
+          "{{ searchInput.value }}"
+        </span>
+      </td>
+    </tr>
+  </table>
+</ng-container>
+
+<mat-paginator
+  [length]="result.totalCount"
+  [pageIndex]="request.pageIndex"
+  [pageSize]="request.pageSize"
+  [pageSizeOptions]="PAGE_SIZE_OPTIONS"
+  showFirstLastButtons
+  (page)="paginationChanged($event)">
+</mat-paginator>
+
+<ng-template #noContests>
+  <p>{{ 'common.notFound' | transloco }}</p>
+</ng-template>
