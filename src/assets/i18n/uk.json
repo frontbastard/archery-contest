@@ -12,8 +12,8 @@
   },
   "enums": {
     "AcErrorCode": {
-      "UnexpectedError": "Unexpected error",
-      "UserNotFound": "User not found"
+      "UnexpectedError": "Невідома помилка",
+      "UserNotFound": "Користувач не знайдений"
     },
     "UserRole": {
       "Master": "Майстер",
@@ -22,12 +22,12 @@
       "User": "Користувач"
     }
   },
+  "notifications": {
+    "errorOccurred": "Виникла помилка"
+  },
   "navigationLinks": {
     "users": "Користувачі",
     "events": "Події"
-  },
-  "notifications": {
-    "errorOccurred": "Виникла помилка"
   },
   "elements": {
     "search": {

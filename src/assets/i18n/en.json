@@ -22,12 +22,12 @@
       "User": "User"
     }
   },
+  "notifications": {
+    "errorOccurred": "Error occurred"
+  },
   "navigationLinks": {
     "users": "Users",
     "events": "Events"
-  },
-  "notifications": {
-    "errorOccurred": "Error occurred"
   },
   "elements": {
     "search": {
