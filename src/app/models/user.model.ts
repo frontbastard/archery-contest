@@ -1,14 +1,16 @@
-export interface IUser {
+import { UserRole } from '../common/user-roles';
+
+export interface User {
   _id: string;
   email: string;
   name: string;
   dateOfBirth: Date;
-  role: string;
+  role: UserRole;
   blocked: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IUserFilterModel {
+export interface UserFilterModel {
   blocked: boolean;
 }

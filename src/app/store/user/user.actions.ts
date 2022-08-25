@@ -1,11 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import {
-  ActionRequestPayload,
-  ActionResponsePayload,
-  ISearchRequest,
-  ISearchResponse,
-} from 'src/app/models/core';
-import { IUser, IUserFilterModel } from 'src/app/models/user.model';
+import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
+import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
+import { SearchRequest } from 'src/app/models/base/search-request';
+import { SearchResponse } from 'src/app/models/base/search-response';
+import { User, UserFilterModel } from 'src/app/models/user.model';
 
 export enum UserActions {
   loadUser = '[User] Load User',
@@ -29,17 +27,17 @@ export const loadUser = createAction(
 
 export const userLoaded = createAction(
   UserActions.userLoaded,
-  props<ActionResponsePayload<IUser>>()
+  props<ActionResponsePayload<User>>()
 );
 
 export const loadUsers = createAction(
   UserActions.loadUsers,
-  props<ActionRequestPayload<ISearchRequest<IUserFilterModel>>>()
+  props<ActionRequestPayload<SearchRequest<UserFilterModel>>>()
 );
 
 export const usersLoaded = createAction(
   UserActions.usersLoaded,
-  props<ActionResponsePayload<ISearchResponse<IUser>>>()
+  props<ActionResponsePayload<SearchResponse<User>>>()
 );
 
 // export class AddUser implements Action {
@@ -50,12 +48,12 @@ export const usersLoaded = createAction(
 
 export const updateUser = createAction(
   UserActions.updateUser,
-  props<ActionRequestPayload<IUser>>()
+  props<ActionRequestPayload<User>>()
 );
 
 export const userUpdated = createAction(
   UserActions.userUpdated,
-  props<ActionRequestPayload<IUser>>()
+  props<ActionRequestPayload<User>>()
 );
 
 export const deleteUser = createAction(

@@ -11,8 +11,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthInterceptor } from './core/interceptors/auth-interceptors';
+import { HttpResponseInterceptor } from './core/interceptors/http-response.interceptor';
 import { HeaderComponent } from './header/header.component';
-import { AuthInterceptor } from './http-interceptors/auth-interceptors';
 import { MaterialModule } from './material/material.module';
 import { UserManageModule } from './modules/user-manage/user-manage.module';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -38,7 +39,12 @@ registerLocaleData(localeUk, 'uk');
     TranslocoRootModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, // TODO: Refactor
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, // TODO [FUTURE]: Refactor
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpResponseInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

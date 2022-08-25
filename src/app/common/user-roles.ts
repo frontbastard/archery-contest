@@ -1,6 +1,6 @@
-export enum UserRoles {
-  Master = 'master',
-  Admin = 'admin',
-  Moderator = 'moderator',
-  User = 'user',
+export enum UserRole { //TODO [FUTURE]: а якщо ти захочеш менеджити ролі або створювати нові,то ти будеш цей енам розширювати та кожній ролі сетити пермішени? Не думав створити функціонал по менеджменту ролей?
+  Master = 1,
+  Admin = 2,
+  Moderator = 3,
+  User = 4,
 }

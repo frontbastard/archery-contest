@@ -8,9 +8,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { UserRoles } from 'src/app/common/user-roles';
-import { ActionRequestPayload } from 'src/app/models/core';
-import { IUser } from 'src/app/models/user.model';
+import { UserRole } from 'src/app/common/user-roles';
+import { getEnumNames } from 'src/app/common/utils';
+import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
+import { User } from 'src/app/models/user.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { loadUser, updateUser } from 'src/app/store/user/user.actions';
 import { selectUser } from 'src/app/store/user/user.selectors';
@@ -22,12 +23,9 @@ import { selectUser } from 'src/app/store/user/user.selectors';
   styleUrls: ['./user-manage-details.component.scss'],
 })
 export class UserManageDetailsComponent implements OnInit {
-  public user: IUser;
-  public roles = [
-    { val: UserRoles.Admin, translationPath: 'userManage.roles.admin' },
-    { val: UserRoles.Moderator, translationPath: 'userManage.roles.moderator' },
-    { val: UserRoles.User, translationPath: 'userManage.roles.user' },
-  ];
+  public user: User;
+  public UserRole = UserRole;
+  public readonly roles = getEnumNames(UserRole);
   public form: FormGroup;
   public controls = {
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -85,9 +83,9 @@ export class UserManageDetailsComponent implements OnInit {
     this._store.dispatch(
       updateUser({
         data: this.user,
-      } as ActionRequestPayload<IUser>)
+      } as ActionRequestPayload<User>)
     );
-    this.tabIndex = 0;
+    this._goBack();
   }
 
   public submitCancelled(): void {
@@ -98,19 +96,7 @@ export class UserManageDetailsComponent implements OnInit {
       blocked: this.user.blocked,
     });
 
-    this.tabIndex = 0;
-  }
-
-  public getRole(role: string): boolean {
-    return this.user.role === role;
-  }
-
-  public getRequiredLength(field: string): number {
-    return (
-      this.form.invalid &&
-      this.form.touched &&
-      this.form.controls[field].errors['minlength'].requiredLength
-    );
+    this._goBack();
   }
 
   public userStatusClass(): string {
@@ -123,5 +109,9 @@ export class UserManageDetailsComponent implements OnInit {
         data: id,
       } as ActionRequestPayload<string>)
     );
+  }
+
+  private _goBack() {
+    this.tabIndex = 0;
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ISearchRequest, ISearchResponse } from '../models/core';
+import { SearchRequest } from '../models/base/search-request';
+import { SearchResponse } from '../models/base/search-response';
 import { HttpApiService } from './http-api.service';
 
 @Injectable({
@@ -32,17 +33,17 @@ export abstract class BaseApiCrudService<
   }
 
   public search(
-    request: ISearchRequest<TFilter>,
+    request: SearchRequest<TFilter>,
     cancellationSubject: Observable<void>
-  ): Observable<ISearchResponse<TSearchResult>> {
-    return this.httpApiService.get<ISearchResponse<TSearchResult>>(
+  ): Observable<SearchResponse<TSearchResult>> {
+    return this.httpApiService.get<SearchResponse<TSearchResult>>(
       this.rootRoute,
       request,
       cancellationSubject
     );
   }
 
-  public create() {}
+  public create() {} //TODO:?
 
   public update(
     id: TID,

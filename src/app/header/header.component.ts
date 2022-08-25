@@ -9,7 +9,7 @@ import { LocaleService } from '../services/locale.service';
 export class HeaderComponent implements OnInit {
   public readonly UserRoutes = UserRoutes;
 
-  @Input() snav;
+  @Input() sidenav;
 
   constructor(public localeService: LocaleService) {}
 

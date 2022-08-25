@@ -1,21 +1,20 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { userFeatureKey } from './user.reducer';
-import { IUserState } from './user.state';
+import { UserState } from './user.state';
 
-export const selectUserState =
-  createFeatureSelector<IUserState>(userFeatureKey);
+export const selectUserState = createFeatureSelector<UserState>(userFeatureKey);
 
 export const selectUser = createSelector(
   selectUserState,
-  (state: IUserState) => state.user
+  (state: UserState) => state.user
 );
 
 export const selectUsers = createSelector(
   selectUserState,
-  (state: IUserState) => state.users
+  (state: UserState) => state.users
 );
 
 export const selectIsUserStateLoading = createSelector(
   selectUserState,
-  (state: IUserState) => state.loadingRequestCounter > 0
+  (state: UserState) => state.loadingRequestCounter > 0
 );

@@ -1,7 +1,3 @@
-export enum ACRoutes {
-  Root = '',
-}
-
 export enum UserRoutes {
   Root = 'manage-users',
 }

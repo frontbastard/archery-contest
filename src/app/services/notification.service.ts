@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActionsSubject } from '@ngrx/store';
 import { skip } from 'rxjs';
 import { match } from 'ts-pattern';
-import { SnackBarComponent } from '../material/customization/snack-bar/snack-bar.component';
 import { UserActions } from '../store/user/user.actions';
+import { ToastConfig, ToastService, ToastType } from './toast.service';
 
 enum MessageTypes {
   Success = 'success',
@@ -15,15 +14,9 @@ enum MessageTypes {
   providedIn: 'root',
 })
 export class NotificationService {
-  private snackBarConfig: MatSnackBarConfig = {
-    duration: 5000,
-    horizontalPosition: 'end',
-    verticalPosition: 'top',
-  };
-
   constructor(
     private _actionListener$: ActionsSubject,
-    private _snackBar: MatSnackBar
+    private _toastService: ToastService
   ) {}
 
   public startListen(): void {
@@ -31,31 +24,23 @@ export class NotificationService {
       const messageConfig = this.getMessageConfig(type);
 
       if (messageConfig) {
-        this.openSnackBar(messageConfig);
+        this._toastService.show(messageConfig);
       }
     });
   }
 
-  private openSnackBar({ type, message }) {
-    this._snackBar.openFromComponent(SnackBarComponent, {
-      ...this.snackBarConfig,
-      panelClass: type,
-      data: message,
-    });
-  }
-
-  private getMessageConfig(action) {
+  private getMessageConfig(action): ToastConfig {
     return match(action)
       .with(UserActions.userUpdated, () => ({
-        type: MessageTypes.Success,
+        type: ToastType.Success,
         message: 'userManage.notifications.userUpdated',
       }))
       .with(UserActions.userDeleted, () => ({
-        type: MessageTypes.Success,
+        type: ToastType.Success,
         message: 'userManage.notifications.userDeleted',
       }))
       .with(UserActions.errorOccurred, () => ({
-        type: MessageTypes.Error,
+        type: ToastType.Error,
         message: 'notifications.errorOccurred',
       }))
       .otherwise(() => null);

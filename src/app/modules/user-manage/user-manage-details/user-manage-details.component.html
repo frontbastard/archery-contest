@@ -19,9 +19,9 @@
       </p>
       <p>
         <strong> {{ 'userManage.fields.role.title' | transloco }}: </strong>
-        {{ user.role }}
+        {{ 'enums.UserRole.' + UserRole[user.role] | transloco }}
       </p>
-      <p>
+      <p *ngIf="user.dateOfBirth">
         <strong>
           {{ 'userManage.fields.dateOfBirth.title' | transloco }}:
         </strong>
@@ -57,13 +57,7 @@
             {{ 'userManage.fields.name.validator.required' | transloco }}
           </mat-error>
           <mat-error *ngIf="form.controls['name'].hasError('minlength')">
-            {{
-              'userManage.fields.name.validator.minLength'
-                | transloco
-                  : {
-                      length: getRequiredLength('name')
-                    }
-            }}
+            {{ 'userManage.fields.name.validator.minLength' | transloco }}
           </mat-error>
         </mat-form-field>
         <!-- Email -->
@@ -93,8 +87,8 @@
             'userManage.fields.role.title' | transloco
           }}</mat-label>
           <mat-select [formControl]="controls.role">
-            <mat-option *ngFor="let role of roles" [value]="role.val">
-              {{ role.translationPath | transloco }}
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{ 'enums.UserRole.' + role.name | transloco }}
             </mat-option>
           </mat-select>
         </mat-form-field>

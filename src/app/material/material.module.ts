@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -23,7 +24,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { SnackBarComponent } from './customization/snack-bar/snack-bar.component';
 import { MatTableResponsiveDirective } from './mat-table-responsive/mat-table-responsive.directive';
 
-const modules = [
+const importExportModules = [
   MatToolbarModule,
   MatIconModule,
   MatListModule,
@@ -43,11 +44,12 @@ const modules = [
   MatSnackBarModule,
   MatTabsModule,
   MatSlideToggleModule,
+  MatProgressBarModule,
 ];
 
 @NgModule({
-  imports: [CommonModule, TranslocoModule, ...modules],
-  exports: [...modules, MatTableResponsiveDirective],
+  imports: [CommonModule, TranslocoModule, ...importExportModules],
+  exports: [MatTableResponsiveDirective, ...importExportModules],
   declarations: [MatTableResponsiveDirective, SnackBarComponent],
 })
 export class MaterialModule {}
