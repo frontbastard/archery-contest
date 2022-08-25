@@ -20,7 +20,6 @@ import { selectUser } from 'src/app/store/user/user.selectors';
 @Component({
   selector: 'app-user-manage-details',
   templateUrl: './user-manage-details.component.html',
-  styleUrls: ['./user-manage-details.component.scss'],
 })
 export class UserManageDetailsComponent implements OnInit {
   public user: User;
