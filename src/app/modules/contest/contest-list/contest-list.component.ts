@@ -10,7 +10,9 @@ import { ActionRequestPayload } from 'src/app/models/base/action-request-payload
 import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.mode';
 import { LocaleService } from 'src/app/services/locale.service';
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 
 @UntilDestroy()
 @Component({
@@ -28,7 +30,7 @@ export class ContestListComponent implements OnInit {
     pageIndex: 0,
     pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
-      blocked: null,
+      hidden: null,
     },
   } as SearchRequest<ContestFilterModel>;
   public contestStatuses = [
@@ -45,15 +47,13 @@ export class ContestListComponent implements OnInit {
   ];
 
   public get isItemsInitialized(): boolean {
-    // return this.result.items !== null;
-    return true; // TODO [CONTEST]
+    return this.result.items !== null;
   }
 
   public get notFoundMessage(): string {
-    // return this.searchInput.nativeElement.value.length
-    //   ? 'elements.search.nothingFound'
-    //   : 'common.notFound';
-    return 'NOT FOUND'; // TODO [CONTEST]
+    return this.searchInput.nativeElement.value.length
+      ? 'elements.search.nothingFound'
+      : 'common.notFound';
   }
 
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -96,7 +96,7 @@ export class ContestListComponent implements OnInit {
   }
 
   public contestStatusChanged($event): void {
-    this.request.filter.blocked = $event === 'null' ? null : $event;
+    this.request.filter.hidden = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
     this._refreshList();
   }
