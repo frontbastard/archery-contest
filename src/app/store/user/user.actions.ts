@@ -6,19 +6,25 @@ import { SearchResponse } from 'src/app/models/base/search-response';
 import { User, UserFilterModel } from 'src/app/models/user.model';
 
 export enum UserActions {
+  // ADD_USER = '[User] Add User',
   loadUser = '[User] Load User',
   userLoaded = '[User] User Loaded',
   loadUsers = '[User] Load Users',
   usersLoaded = '[User] Users Loaded',
   toggleDisabled = '[User] Toggle Disabled',
   disableToggled = '[User] Disable Toggled',
-  // ADD_USER = '[User] Add User',
   updateUser = '[User] Update User',
   userUpdated = '[User] User Updated',
   deleteUser = '[User] Delete User',
   userDeleted = '[User] User Deleted',
   errorOccurred = '[User] Error Occurred',
 }
+
+// export class AddUser implements Action {
+//   readonly type = UserActions.ADD_USER;
+
+//   constructor(public payload: User) {}
+// }
 
 export const loadUser = createAction(
   UserActions.loadUser,
@@ -40,12 +46,6 @@ export const usersLoaded = createAction(
   props<ActionResponsePayload<SearchResponse<User>>>()
 );
 
-// export class AddUser implements Action {
-//   readonly type = UserActions.ADD_USER;
-
-//   constructor(public payload: User) {}
-// }
-
 export const updateUser = createAction(
   UserActions.updateUser,
   props<ActionRequestPayload<User>>()
@@ -53,7 +53,7 @@ export const updateUser = createAction(
 
 export const userUpdated = createAction(
   UserActions.userUpdated,
-  props<ActionRequestPayload<User>>()
+  props<ActionResponsePayload<User>>()
 );
 
 export const deleteUser = createAction(

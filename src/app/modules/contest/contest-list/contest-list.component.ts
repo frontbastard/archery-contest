@@ -13,6 +13,15 @@ import { SearchResponse } from 'src/app/models/base/search-response';
 import { Contest, ContestFilterModel } from 'src/app/models/contest.mode';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
+import {
+  ContestActions,
+  deleteContest,
+  loadContest,
+  loadContests,
+  updateContest,
+} from 'src/app/store/contest/contest.actions';
+import { selectContests } from 'src/app/store/contest/contest.selectors';
+import { ContestState } from 'src/app/store/contest/contest.state';
 
 @UntilDestroy()
 @Component({
@@ -150,7 +159,7 @@ export class ContestListComponent implements OnInit {
       updateContest({
         data: {
           ...contest,
-          blocked: !contest.blocked,
+          hidden: !contest.hidden,
         },
       } as ActionRequestPayload<Contest>)
     );

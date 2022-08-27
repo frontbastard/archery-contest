@@ -22,7 +22,7 @@
   <mat-form-field appearance="standard">
     <select
       matNativeControl
-      [ngModel]="request.filter.blocked"
+      [ngModel]="request.filter.hidden"
       (ngModelChange)="contestStatusChanged($event)">
       <option
         *ngFor="let status of contestStatuses; trackBy: trackByContestStatus"

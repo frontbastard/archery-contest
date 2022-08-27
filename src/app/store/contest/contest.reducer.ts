@@ -1,54 +1,56 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
-  deleteUser,
+  contestDeleted,
+  contestLoaded,
+  contestsLoaded,
+  contestUpdated,
+  deleteContest,
   errorOccurred,
-  loadUser,
-  loadUsers,
-  updateUser,
-  userDeleted,
-  userLoaded,
-  usersLoaded,
-  userUpdated,
-} from './user.actions';
-import { initialState, UserState } from './user.state';
+  loadContest,
+  loadContests,
+  updateContest,
+} from './contest.actions';
+import { ContestState, initialState } from './contest.state';
 
 const _reducer = createReducer(
   initialState,
-  on(loadUser, state => ({
+  on(loadContest, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(userLoaded, (state, action) => ({
+  on(contestLoaded, (state, action) => ({
     ...state,
-    user: action.data,
+    contest: action.data,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(loadUsers, state => ({
+  on(loadContests, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(usersLoaded, (state, action) => ({
+  on(contestsLoaded, (state, action) => ({
     ...state,
-    users: action.data,
+    contests: action.data,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(updateUser, state => ({
+  on(updateContest, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(userUpdated, state => ({
+  on(contestUpdated, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(deleteUser, state => ({
+  on(deleteContest, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(userDeleted, (state, action) => ({
+  on(contestDeleted, (state, action) => ({
     ...state,
-    users: {
-      items: state.users.items.filter(user => user._id !== action.data),
-      totalCount: state.users.totalCount - 1,
+    contests: {
+      items: state.contests.items.filter(
+        contest => contest._id !== action.data
+      ),
+      totalCount: state.contests.totalCount - 1,
     },
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
@@ -58,7 +60,9 @@ const _reducer = createReducer(
   }))
 );
 
-export const userReducer = (state: UserState, action: Action): UserState =>
-  _reducer(state, action);
+export const contestReducer = (
+  state: ContestState,
+  action: Action
+): ContestState => _reducer(state, action);
 
-export const userFeatureKey = 'user';
+export const contestFeatureKey = 'contest';
