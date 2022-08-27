@@ -3,7 +3,7 @@ export interface Contest {
   name: string;
   description: string;
   hidden: boolean;
-  owner: string;
+  owner: { id: string; name: string };
   createdAt: Date;
   updatedAt: Date;
 }

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
-import { ContestFilterModel } from 'src/app/models/contest.mode';
+import { ContestFilterModel } from 'src/app/models/contest.model';
 import { ContestApiService } from 'src/app/services/api/contest-api.service';
 import { ContestActions } from './contest.actions';
 

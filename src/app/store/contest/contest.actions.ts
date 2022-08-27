@@ -3,7 +3,7 @@ import { ActionRequestPayload } from 'src/app/models/base/action-request-payload
 import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
-import { Contest, ContestFilterModel } from 'src/app/models/contest.mode';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { UserActions } from '../user/user.actions';
 
 export enum ContestActions {

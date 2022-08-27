@@ -10,7 +10,7 @@ import { ActionRequestPayload } from 'src/app/models/base/action-request-payload
 import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
-import { Contest, ContestFilterModel } from 'src/app/models/contest.mode';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 import {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Contest, ContestFilterModel } from 'src/app/models/contest.mode';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { BaseApiCrudService } from './base-api-crud.service';
 
 @Injectable({ providedIn: 'root' })

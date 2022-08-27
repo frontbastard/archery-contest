@@ -1,5 +1,5 @@
 import { SearchResponse } from 'src/app/models/base/search-response';
-import { Contest } from 'src/app/models/contest.mode';
+import { Contest } from 'src/app/models/contest.model';
 
 export interface ContestState {
   contest: Contest;
