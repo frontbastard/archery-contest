@@ -13,7 +13,11 @@
   "enums": {
     "AcErrorCode": {
       "UnexpectedError": "Unexpected error",
-      "UserNotFound": "User not found"
+      "PermissionDenied": "Permission denied",
+      "UserNotFound": "User not found",
+      "UserNotAuthenticated": "User not authenticated",
+      "UserIsBlocked": "User is blocked",
+      "ContestNotFound": "Contest not found"
     },
     "UserRole": {
       "Master": "Master",
@@ -27,7 +31,7 @@
   },
   "navigationLinks": {
     "users": "Users",
-    "events": "Events"
+    "contests": "Events"
   },
   "elements": {
     "search": {

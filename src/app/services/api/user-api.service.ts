@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User, UserFilterModel } from 'src/app/models/user.model';
-import { BaseApiCrudService } from './base-api-crud.service';
+import { BaseApiCrudService } from './core/base-api-crud.service';
 
 @Injectable({
   providedIn: 'root',

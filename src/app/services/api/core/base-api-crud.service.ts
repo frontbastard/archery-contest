@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchRequest } from '../../models/base/search-request';
-import { SearchResponse } from '../../models/base/search-response';
+import { SearchRequest } from '../../../models/base/search-request';
+import { SearchResponse } from '../../../models/base/search-response';
 import { HttpApiService } from './http-api.service';
 
 @Injectable({

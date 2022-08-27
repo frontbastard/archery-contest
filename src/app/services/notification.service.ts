@@ -5,11 +5,6 @@ import { match } from 'ts-pattern';
 import { UserActions } from '../store/user/user.actions';
 import { ToastConfig, ToastService, ToastType } from './toast.service';
 
-enum MessageTypes {
-  Success = 'success',
-  Error = 'error',
-}
-
 @Injectable({
   providedIn: 'root',
 })

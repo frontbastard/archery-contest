@@ -13,7 +13,11 @@
   "enums": {
     "AcErrorCode": {
       "UnexpectedError": "Невідома помилка",
-      "UserNotFound": "Користувач не знайдений"
+      "PermissionDenied": "У дозволі відмовлено",
+      "UserNotFound": "Користувач не знайдений",
+      "UserNotAuthenticated": "Користувач не автентифікований",
+      "UserIsBlocked": "Користувач заблокований",
+      "ContestNotFound": "Подія не знайдена"
     },
     "UserRole": {
       "Master": "Майстер",
@@ -27,7 +31,7 @@
   },
   "navigationLinks": {
     "users": "Користувачі",
-    "events": "Події"
+    "contests": "Події"
   },
   "elements": {
     "search": {
