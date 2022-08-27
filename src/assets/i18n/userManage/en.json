@@ -37,7 +37,6 @@
       "title": "Status",
       "blocked": "Blocked",
       "active": "Active"
-    },
-    "blocked": { "title": "Blocked" }
+    }
   }
 }
