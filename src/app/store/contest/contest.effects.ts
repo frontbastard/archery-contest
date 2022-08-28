@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
-import { ContestFilterModel } from 'src/app/models/contest.model';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { ContestApiService } from 'src/app/services/api/contest-api.service';
 import { ContestActions } from './contest.actions';
 
@@ -36,6 +36,40 @@ export class ContestEffects {
           this._contestApiService.search(data, cancellationObservable).pipe(
             map(data => ({
               type: ContestActions.contestsLoaded,
+              data,
+            })),
+            catchError(() => of({ type: ContestActions.errorOccurred }))
+          )
+      )
+    )
+  );
+
+  updateContest$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(ContestActions.updateContest),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<Contest>) =>
+          this._contestApiService
+            .update(data._id, data, cancellationObservable)
+            .pipe(
+              map(data => ({
+                type: ContestActions.contestUpdated,
+                data,
+              })),
+              catchError(() => of({ type: ContestActions.errorOccurred }))
+            )
+      )
+    )
+  );
+
+  deleteContest$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(ContestActions.deleteContest),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
+          this._contestApiService.delete(data, cancellationObservable).pipe(
+            map(data => ({
+              type: ContestActions.contestDeleted,
               data,
             })),
             catchError(() => of({ type: ContestActions.errorOccurred }))

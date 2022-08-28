@@ -44,22 +44,6 @@ export class UserEffects {
     )
   );
 
-  deleteUser$ = createEffect(() =>
-    this._actions$.pipe(
-      ofType(UserActions.deleteUser),
-      mergeMap(
-        ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
-          this._userApiService.delete(data, cancellationObservable).pipe(
-            map(data => ({
-              type: UserActions.userDeleted,
-              data,
-            })),
-            catchError(() => of({ type: UserActions.errorOccurred }))
-          )
-      )
-    )
-  );
-
   updateUser$ = createEffect(() =>
     this._actions$.pipe(
       ofType(UserActions.updateUser),
@@ -69,6 +53,22 @@ export class UserEffects {
           .pipe(
             map(data => ({
               type: UserActions.userUpdated,
+              data,
+            })),
+            catchError(() => of({ type: UserActions.errorOccurred }))
+          )
+      )
+    )
+  );
+
+  deleteUser$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(UserActions.deleteUser),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
+          this._userApiService.delete(data, cancellationObservable).pipe(
+            map(data => ({
+              type: UserActions.userDeleted,
               data,
             })),
             catchError(() => of({ type: UserActions.errorOccurred }))
