@@ -3,7 +3,7 @@ export enum UserRoutes {
 }
 
 export enum ContestRoutes {
-  Root = 'contest',
+  Root = 'events',
 }
 
 export enum RouteParams {

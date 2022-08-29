@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
+import { UserRoutes } from 'src/app/common/routes';
 import { UserRole } from 'src/app/common/user-roles';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
@@ -81,7 +82,7 @@ export class UserManageListComponent implements OnInit {
     this._actions
       .pipe(ofType(UserActions.userLoaded), untilDestroyed(this))
       .subscribe(({ data }: ActionResponsePayload<User>) => {
-        this._router.navigate([data._id]);
+        this._router.navigate([UserRoutes.Root, data._id]);
       });
 
     this._store.select(selectUsers).subscribe(users => {

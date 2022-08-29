@@ -5,7 +5,6 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { NgModelChangeDebouncedDirective } from 'src/app/directives/ng-model-change-debounced.directive';
 import { CustomMatPaginatorIntl } from 'src/app/material/customization/paginator';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserEffects } from 'src/app/store/user/user.effects';
@@ -20,7 +19,6 @@ import { UserManageRoutingModule } from './user-manage-routing.module';
     UserManageDetailsComponent,
     UserManageListComponent,
     UserManageRouterComponent,
-    NgModelChangeDebouncedDirective,
   ],
   imports: [
     CommonModule,

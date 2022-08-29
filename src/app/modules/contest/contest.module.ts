@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { CustomMatPaginatorIntl } from 'src/app/material/customization/paginator';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContestEffects } from 'src/app/store/contest/contest.effects';
 import {
@@ -18,17 +20,23 @@ import { ContestRoutingModule } from './contest-routing.module';
 @NgModule({
   declarations: [
     ContestRouterComponent,
-    ContestDetailsComponent,
     ContestListComponent,
+    ContestDetailsComponent,
   ],
   imports: [
     CommonModule,
-    SharedModule,
     ContestRoutingModule,
+    SharedModule,
     StoreModule.forFeature(contestFeatureKey, contestReducer),
     EffectsModule.forFeature([ContestEffects]),
     FormsModule,
   ],
-  providers: [{ provide: TRANSLOCO_SCOPE, useValue: 'contest' }],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginatorIntl,
+    },
+    { provide: TRANSLOCO_SCOPE, useValue: 'contest' },
+  ],
 })
 export class ContestModule {}

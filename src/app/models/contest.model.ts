@@ -3,11 +3,13 @@ export interface Contest {
   name: string;
   description: string;
   hidden: boolean;
-  owner: { id: string; name: string };
+  ownerId: string;
+  ownerName: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface ContestFilterModel {
   hidden: boolean;
+  public: boolean;
 }

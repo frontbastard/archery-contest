@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
+import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
@@ -40,6 +41,7 @@ export class ContestListComponent implements OnInit {
     pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
       hidden: null,
+      public: false,
     },
   } as SearchRequest<ContestFilterModel>;
   public contestStatuses = [
@@ -79,7 +81,7 @@ export class ContestListComponent implements OnInit {
     this._actions
       .pipe(ofType(ContestActions.contestLoaded), untilDestroyed(this))
       .subscribe(({ data }: ActionResponsePayload<Contest>) => {
-        this._router.navigate([data._id]);
+        this._router.navigate([ContestRoutes.Root, data._id]);
       });
 
     this._store.select(selectContests).subscribe(contests => {

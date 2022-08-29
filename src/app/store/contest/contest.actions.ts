@@ -31,7 +31,7 @@ export const loadContest = createAction(
 
 export const contestLoaded = createAction(
   ContestActions.contestLoaded,
-  props<ActionRequestPayload<Contest>>()
+  props<ActionResponsePayload<Contest>>()
 );
 
 export const loadContests = createAction(
@@ -41,7 +41,7 @@ export const loadContests = createAction(
 
 export const contestsLoaded = createAction(
   ContestActions.contestsLoaded,
-  props<ActionRequestPayload<SearchResponse<Contest>>>()
+  props<ActionResponsePayload<SearchResponse<Contest>>>()
 );
 
 export const updateContest = createAction(
