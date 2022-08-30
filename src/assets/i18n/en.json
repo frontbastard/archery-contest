@@ -1,11 +1,12 @@
 {
   "common": {
     "all": "All",
-    "cancel": "Cancel",
+    "info": "Info",
+    "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
-    "info": "Info",
     "submit": "Submit",
+    "cancel": "Cancel",
     "notFound": "Nothing found",
     "createdAt": "Created At",
     "updatedAt": "Updated At"
@@ -17,7 +18,7 @@
       "UserNotFound": "User not found",
       "UserNotAuthenticated": "User not authenticated",
       "UserIsBlocked": "User is blocked",
-      "ContestNotFound": "Contest not found"
+      "ContestNotFound": "Event not found"
     },
     "UserRole": {
       "Master": "Master",

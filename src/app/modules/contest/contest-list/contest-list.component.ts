@@ -45,9 +45,8 @@ export class ContestListComponent implements OnInit {
     },
   } as SearchRequest<ContestFilterModel>;
   public contestStatuses = [
-    { value: null, translationPath: 'common.all' },
     { value: true, translationPath: 'contest.fields.status.hidden' },
-    { value: false, translationPath: 'contest.fields.status.active' },
+    { value: false, translationPath: 'contest.fields.status.visible' },
   ];
   public displayedColumns: string[] = [
     'name',

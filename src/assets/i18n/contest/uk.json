@@ -1,7 +1,8 @@
 {
   "titles": {
     "contestsList": "Список подій",
-    "contestDetails": "Деталі події"
+    "contestDetails": "Деталі події",
+    "createContest": "Створити подію"
   },
   "dialogs": {
     "deleteContest": {
@@ -33,7 +34,7 @@
     "status": {
       "title": "Статус",
       "hidden": "Приховано",
-      "active": "Активно"
+      "visible": "Видимі"
     }
   }
 }

@@ -1,7 +1,8 @@
 {
   "titles": {
     "contestsList": "Events List",
-    "contestDetails": "Event Details"
+    "contestDetails": "Event Details",
+    "createContest": "Create Event"
   },
   "dialogs": {
     "deleteContest": {
@@ -16,10 +17,10 @@
   },
   "fields": {
     "name": {
-      "title": "Name",
-      "placeholder": "Enter event name",
+      "title": "Title",
+      "placeholder": "Enter event title",
       "validator": {
-        "required": "Name is required",
+        "required": "Title is required",
         "minLength": "Min length is 2 symbols"
       }
     },
@@ -33,7 +34,7 @@
     "status": {
       "title": "Status",
       "hidden": "Hidden",
-      "active": "Active"
+      "visible": "Visible"
     }
   }
 }

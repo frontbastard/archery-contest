@@ -4,6 +4,12 @@
   padding: 30px 15px 0;
 }
 
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .align-right {
   text-align: right;
 }
@@ -12,11 +18,11 @@
   flex-grow: 1;
 }
 
-.blocked {
+.label-danger {
   color: red;
 }
 
-.active {
+.label-success {
   color: green;
 }
 

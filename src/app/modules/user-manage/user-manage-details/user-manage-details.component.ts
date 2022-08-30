@@ -5,15 +5,22 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { UserRoutes } from 'src/app/common/routes';
 import { UserRole } from 'src/app/common/user-roles';
 import { getEnumNames } from 'src/app/common/utils';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { User } from 'src/app/models/user.model';
 import { LocaleService } from 'src/app/services/locale.service';
-import { loadUser, updateUser } from 'src/app/store/user/user.actions';
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
+import {
+  deleteUser,
+  loadUser,
+  updateUser,
+} from 'src/app/store/user/user.actions';
 import { selectUser } from 'src/app/store/user/user.selectors';
 
 @UntilDestroy()
@@ -48,7 +55,9 @@ export class UserManageDetailsComponent implements OnInit {
     public localeService: LocaleService,
     private _route: ActivatedRoute,
     private _store: Store,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _dialog: MatDialog,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +108,7 @@ export class UserManageDetailsComponent implements OnInit {
   }
 
   public userStatusClass(): string {
-    return this.user.blocked ? 'blocked' : 'active';
+    return this.user.blocked ? 'label-danger' : 'label-success';
   }
 
   private _loadUser(id: string): void {
@@ -110,7 +119,36 @@ export class UserManageDetailsComponent implements OnInit {
     );
   }
 
+  public deleteUserDialog(user: User): void {
+    const dialogRef = this._dialog.open(DialogComponent, {
+      data: {
+        entity: user,
+        dialog: {
+          title: 'userManage.dialogs.deleteUser.title',
+          content: 'userManage.dialogs.deleteUser.content',
+          actionButton: 'common.delete',
+          actionButtonColor: 'warn',
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(id => {
+      if (id) {
+        this._store.dispatch(
+          deleteUser({
+            data: id,
+          } as ActionRequestPayload<string>)
+        );
+        this._goToList();
+      }
+    });
+  }
+
   private _goBack() {
     this.tabIndex = 0;
+  }
+
+  private _goToList() {
+    this._router.navigate([UserRoutes.Root]);
   }
 }

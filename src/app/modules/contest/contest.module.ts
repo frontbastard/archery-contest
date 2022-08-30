@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { EffectsModule } from '@ngrx/effects';
@@ -30,6 +30,7 @@ import { ContestRoutingModule } from './contest-routing.module';
     StoreModule.forFeature(contestFeatureKey, contestReducer),
     EffectsModule.forFeature([ContestEffects]),
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

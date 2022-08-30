@@ -6,8 +6,11 @@
         <mat-icon>info</mat-icon>
         <span>{{ 'common.info' | transloco }}</span>
       </ng-template>
-      <p [className]="userStatusClass()">
-        {{ isBlockedTranslationPath | transloco }}
+      <p>
+        <strong> {{ 'userManage.fields.status.title' | transloco }}: </strong>
+        <span [className]="userStatusClass()">{{
+          isBlockedTranslationPath | transloco
+        }}</span>
       </p>
       <p>
         <strong> {{ 'userManage.fields.name.title' | transloco }}: </strong>
@@ -35,6 +38,10 @@
         <strong>{{ 'common.updatedAt' | transloco }}:</strong>
         {{ user.updatedAt | date: 'medium':'':localeService.locale }}
       </p>
+      <button mat-flat-button color="warn" (click)="deleteUserDialog(user)">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
