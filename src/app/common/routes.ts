@@ -4,6 +4,7 @@ export enum UserRoutes {
 
 export enum ContestRoutes {
   Root = 'events',
+  Create = 'create',
 }
 
 export enum RouteParams {

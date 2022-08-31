@@ -1,5 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  addContest,
+  contestAdded,
   contestDeleted,
   contestLoaded,
   contestsLoaded,
@@ -14,6 +16,14 @@ import { ContestState, initialState } from './contest.state';
 
 const _reducer = createReducer(
   initialState,
+  on(addContest, state => ({
+    ...state,
+    loadingRequestCounter: state.loadingRequestCounter + 1,
+  })),
+  on(contestAdded, state => ({
+    ...state,
+    loadingRequestCounter: state.loadingRequestCounter - 1,
+  })),
   on(loadContest, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,

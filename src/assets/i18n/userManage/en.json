@@ -10,9 +10,9 @@
     }
   },
   "notifications": {
-    "userDeleted": "User successfully deleted",
+    "userCreated": "User successfully created",
     "userUpdated": "User successfully updated",
-    "userCreated": "User successfully created"
+    "userDeleted": "User successfully deleted"
   },
   "fields": {
     "name": {

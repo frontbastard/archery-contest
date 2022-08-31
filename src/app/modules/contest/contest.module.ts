@@ -12,6 +12,7 @@ import {
   contestFeatureKey,
   contestReducer,
 } from 'src/app/store/contest/contest.reducer';
+import { ContestCreateComponent } from './contest-create/contest-create.component';
 import { ContestDetailsComponent } from './contest-details/contest-details.component';
 import { ContestListComponent } from './contest-list/contest-list.component';
 import { ContestRouterComponent } from './contest-router.component';
@@ -22,6 +23,7 @@ import { ContestRoutingModule } from './contest-routing.module';
     ContestRouterComponent,
     ContestListComponent,
     ContestDetailsComponent,
+    ContestCreateComponent,
   ],
   imports: [
     CommonModule,

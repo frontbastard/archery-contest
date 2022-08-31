@@ -43,11 +43,20 @@ export abstract class BaseApiCrudService<
     );
   }
 
-  public create() {} //TODO:?
+  public create(
+    payload: TCreate,
+    cancellationSubject: Observable<void>
+  ): Observable<TCreateResult> {
+    return this.httpApiService.post<TCreateResult>(
+      this.rootRoute,
+      payload,
+      cancellationSubject
+    );
+  }
 
   public update(
     id: TID,
-    payload,
+    payload: TUpdate,
     cancellationSubject
   ): Observable<TUpdateResult> {
     return this.httpApiService.put<TUpdateResult>(

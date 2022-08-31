@@ -7,8 +7,8 @@ import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { UserActions } from '../user/user.actions';
 
 export enum ContestActions {
-  // addContest = '[Contest] Add Contest',
-  // contestAdded = '[Contest] Contest Added',
+  addContest = '[Contest] Add Contest',
+  contestAdded = '[Contest] Contest Added',
   loadContest = '[Contest] Load Contest',
   contestLoaded = '[Contest] Contest Loaded',
   loadContests = '[Contest] Load Contests',
@@ -22,7 +22,15 @@ export enum ContestActions {
   errorOccurred = '[Contest] Error Occurred',
 }
 
-// Create Contest Actions
+export const addContest = createAction(
+  ContestActions.addContest,
+  props<ActionRequestPayload<Contest>>()
+);
+
+export const contestAdded = createAction(
+  ContestActions.contestAdded,
+  props<ActionResponsePayload<Contest>>()
+);
 
 export const loadContest = createAction(
   ContestActions.loadContest,

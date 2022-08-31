@@ -1,4 +1,11 @@
-<h1>{{ 'contest.titles.contestsList' | transloco }}</h1>
+<h1 class="flex">
+  {{ 'contest.titles.contestsList' | transloco }}
+  <span class="spacer"></span>
+  <button mat-flat-button color="primary" [routerLink]="[ContestRouter.Create]">
+    <mat-icon>add</mat-icon>{{ 'common.create' | transloco }}
+  </button>
+</h1>
+
 <div class="filter-bar">
   <mat-form-field appearance="standard">
     <mat-label>{{ 'elements.search.title' | transloco }}</mat-label>

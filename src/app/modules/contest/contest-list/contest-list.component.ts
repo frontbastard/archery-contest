@@ -31,6 +31,7 @@ import { ContestState } from 'src/app/store/contest/contest.state';
 })
 export class ContestListComponent implements OnInit {
   public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
+  public readonly ContestRouter = ContestRoutes;
 
   public result: SearchResponse<Contest> = {} as SearchResponse<Contest>;
   public request: SearchRequest<ContestFilterModel> = {

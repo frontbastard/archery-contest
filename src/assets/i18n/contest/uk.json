@@ -11,9 +11,9 @@
     }
   },
   "notifications": {
-    "contestDeleted": "Подія успішно видалена",
+    "contestAdded": "Подія успішно створена",
     "contestUpdated": "Подія успішно оновлена",
-    "contestCreated": "Подія успішно створена"
+    "contestDeleted": "Подія успішно видалена"
   },
   "fields": {
     "name": {

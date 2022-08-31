@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActionsSubject } from '@ngrx/store';
 import { skip } from 'rxjs';
 import { match } from 'ts-pattern';
+import { ContestActions } from '../store/contest/contest.actions';
 import { UserActions } from '../store/user/user.actions';
 import { ToastConfig, ToastService, ToastType } from './toast.service';
 
@@ -33,6 +34,18 @@ export class NotificationService {
       .with(UserActions.userDeleted, () => ({
         type: ToastType.Success,
         message: 'userManage.notifications.userDeleted',
+      }))
+      .with(ContestActions.contestAdded, () => ({
+        type: ToastType.Success,
+        message: 'contest.notifications.contestAdded',
+      }))
+      .with(ContestActions.contestUpdated, () => ({
+        type: ToastType.Success,
+        message: 'contest.notifications.contestUpdated',
+      }))
+      .with(ContestActions.contestDeleted, () => ({
+        type: ToastType.Success,
+        message: 'contest.notifications.contestDeleted',
       }))
       .with(UserActions.errorOccurred, () => ({
         type: ToastType.Error,

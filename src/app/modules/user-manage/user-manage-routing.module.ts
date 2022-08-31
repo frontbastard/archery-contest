@@ -12,12 +12,12 @@ const routes: Routes = [
     component: UserManageRouterComponent,
     children: [
       {
-        path: '',
-        component: UserManageListComponent,
-      },
-      {
         path: `:${RouteParams.Id}`,
         component: UserManageDetailsComponent,
+      },
+      {
+        path: '',
+        component: UserManageListComponent,
       },
     ],
   },

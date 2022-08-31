@@ -9,6 +9,22 @@ import { ContestActions } from './contest.actions';
 
 @Injectable()
 export class ContestEffects {
+  addContest$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(ContestActions.addContest),
+      mergeMap(
+        ({ data, cancellationObservable }: ActionRequestPayload<Contest>) =>
+          this._contestApiService.create(data, cancellationObservable).pipe(
+            map(data => ({
+              type: ContestActions.contestAdded,
+              data,
+            })),
+            catchError(() => of({ type: ContestActions.errorOccurred }))
+          )
+      )
+    )
+  );
+
   loadContest$ = createEffect(() =>
     this._actions$.pipe(
       ofType(ContestActions.loadContest),

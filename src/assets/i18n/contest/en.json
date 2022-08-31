@@ -11,9 +11,9 @@
     }
   },
   "notifications": {
-    "contestDeleted": "Event successfully deleted",
+    "contestAdded": "Event successfully added",
     "contestUpdated": "Event successfully updated",
-    "contestCreated": "Event successfully created"
+    "contestDeleted": "Event successfully deleted"
   },
   "fields": {
     "name": {
