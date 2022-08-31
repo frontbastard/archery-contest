@@ -8,7 +8,6 @@ import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
 import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
-import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
 import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
@@ -17,8 +16,8 @@ import { DialogComponent } from 'src/app/shared/components/dialog/dialog.compone
 import {
   ContestActions,
   deleteContest,
-  loadContest,
   loadContests,
+  preloadContest,
   updateContest,
 } from 'src/app/store/contest/contest.actions';
 import { selectContests } from 'src/app/store/contest/contest.selectors';
@@ -37,7 +36,7 @@ export class ContestListComponent implements OnInit {
   public request: SearchRequest<ContestFilterModel> = {
     searchTerm: null,
     sortTerm: null,
-    sortAsc: '',
+    sortAsc: false,
     pageIndex: 0,
     pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
@@ -46,6 +45,7 @@ export class ContestListComponent implements OnInit {
     },
   } as SearchRequest<ContestFilterModel>;
   public contestStatuses = [
+    { value: null, translationPath: 'common.all' },
     { value: true, translationPath: 'contest.fields.status.hidden' },
     { value: false, translationPath: 'contest.fields.status.visible' },
   ];
@@ -56,6 +56,7 @@ export class ContestListComponent implements OnInit {
     'updatedAt',
     'actions',
   ];
+  public locale = null;
 
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
@@ -70,7 +71,7 @@ export class ContestListComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(
-    public localeService: LocaleService,
+    private _localeService: LocaleService,
     private _store: Store<ContestState>,
     private _actions: Actions,
     private _dialog: MatDialog,
@@ -78,21 +79,13 @@ export class ContestListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._actions
-      .pipe(ofType(ContestActions.contestLoaded), untilDestroyed(this))
-      .subscribe(({ data }: ActionResponsePayload<Contest>) => {
-        this._router.navigate([ContestRoutes.Root, data._id]);
-      });
-
+    this.locale = this._localeService.locale;
     this._store.select(selectContests).subscribe(contests => {
       this.result = contests;
     });
 
     this._actions
-      .pipe(
-        ofType(ContestActions.contestDeleted, ContestActions.contestUpdated),
-        untilDestroyed(this)
-      )
+      .pipe(ofType(ContestActions.contestDeleted), untilDestroyed(this))
       .subscribe(() => {
         this._refreshList();
       });
@@ -148,9 +141,9 @@ export class ContestListComponent implements OnInit {
     });
   }
 
-  public loadContestDetails(contest: Contest) {
+  public preloadContestDetails(contest: Contest) {
     this._store.dispatch(
-      loadContest({
+      preloadContest({
         data: contest._id,
       } as ActionRequestPayload<string>)
     );

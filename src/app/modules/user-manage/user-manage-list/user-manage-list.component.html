@@ -78,7 +78,7 @@
         {{ 'common.createdAt' | transloco }}
       </th>
       <td mat-cell *matCellDef="let user">
-        {{ user.createdAt | date: 'medium':'':localeService.locale }}
+        {{ user.createdAt | date: 'medium':'':locale }}
       </td>
     </ng-container>
 

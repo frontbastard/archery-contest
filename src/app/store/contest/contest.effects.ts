@@ -1,11 +1,24 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  catchError,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
+import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
+import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { ContestApiService } from 'src/app/services/api/contest-api.service';
 import { ContestActions } from './contest.actions';
+import { selectContest } from './contest.selectors';
 
 @Injectable()
 export class ContestEffects {
@@ -25,18 +38,60 @@ export class ContestEffects {
     )
   );
 
-  loadContest$ = createEffect(() =>
+  preloadContest$ = createEffect(() =>
+    // TODO: The same for Users
     this._actions$.pipe(
-      ofType(ContestActions.loadContest),
+      ofType(ContestActions.preloadContest),
       mergeMap(
         ({ data, cancellationObservable }: ActionRequestPayload<string>) =>
           this._contestApiService.getById(data, cancellationObservable).pipe(
             map(data => ({
-              type: ContestActions.contestLoaded,
+              type: ContestActions.contestPreloaded,
               data,
             })),
             catchError(() => of({ type: ContestActions.errorOccurred }))
           )
+      )
+    )
+  );
+
+  contestPreloaded$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(ContestActions.contestPreloaded),
+        tap(({ data }: ActionResponsePayload<Contest>) => {
+          this._router.navigate([ContestRoutes.Root, data._id]);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loadContest$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(ContestActions.loadContest),
+      withLatestFrom(this._store.select(selectContest)), // TODO: The same for Users
+      switchMap(
+        ([{ data, cancellationObservable }, state]: [
+          ActionRequestPayload<string>,
+          Contest
+        ]) => {
+          if (state !== null && state._id === data) {
+            return of({
+              type: ContestActions.contestLoaded,
+              data: state,
+            });
+          }
+
+          return this._contestApiService
+            .getById(data, cancellationObservable)
+            .pipe(
+              map(data => ({
+                type: ContestActions.contestLoaded,
+                data,
+              })),
+              catchError(() => of({ type: ContestActions.errorOccurred }))
+            );
+        }
       )
     )
   );
@@ -96,6 +151,8 @@ export class ContestEffects {
 
   constructor(
     private _actions$: Actions,
-    private _contestApiService: ContestApiService
+    private _contestApiService: ContestApiService,
+    private _router: Router,
+    private _store: Store
   ) {}
 }

@@ -9,16 +9,25 @@ import { UserActions } from '../user/user.actions';
 export enum ContestActions {
   addContest = '[Contest] Add Contest',
   contestAdded = '[Contest] Contest Added',
+
+  preloadContest = '[Contest] Preload Contest',
+  contestPreloaded = '[Contest] Contest Preloaded',
+
   loadContest = '[Contest] Load Contest',
   contestLoaded = '[Contest] Contest Loaded',
+
   loadContests = '[Contest] Load Contests',
   contestsLoaded = '[Contest] Contests Loaded',
+
   toggleHidden = '[Contest] Toggle Hidden',
   hiddenToggled = '[Contest] Hidden Toggled',
+
   updateContest = '[Contest] Update Contest',
   contestUpdated = '[Contest] Contest Updated',
+
   deleteContest = '[Contest] Delete Contest',
   contestDeleted = '[Contest] Contest Deleted',
+
   errorOccurred = '[Contest] Error Occurred',
 }
 
@@ -30,6 +39,16 @@ export const addContest = createAction(
 export const contestAdded = createAction(
   ContestActions.contestAdded,
   props<ActionResponsePayload<Contest>>()
+);
+
+export const preloadContest = createAction(
+  ContestActions.preloadContest,
+  props<ActionRequestPayload<string>>()
+);
+
+export const contestPreloaded = createAction(
+  ContestActions.contestPreloaded,
+  props<ActionRequestPayload<Contest>>()
 );
 
 export const loadContest = createAction(

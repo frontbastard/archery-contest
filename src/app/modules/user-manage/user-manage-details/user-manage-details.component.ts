@@ -50,9 +50,10 @@ export class UserManageDetailsComponent implements OnInit {
       ? 'userManage.fields.status.blocked'
       : 'userManage.fields.status.active';
   }
+  public locale = null;
 
   constructor(
-    public localeService: LocaleService,
+    private _localeService: LocaleService,
     private _route: ActivatedRoute,
     private _store: Store,
     private _formBuilder: FormBuilder,
@@ -61,6 +62,7 @@ export class UserManageDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.locale = this._localeService.locale;
     this.form = this._formBuilder.group(this.controls);
 
     this._store.select(selectUser).subscribe(user => {
@@ -81,7 +83,7 @@ export class UserManageDetailsComponent implements OnInit {
     });
   }
 
-  public submitted(): void {
+  public submit(): void {
     if (this.form.invalid) return;
     this.user = {
       ...this.user,

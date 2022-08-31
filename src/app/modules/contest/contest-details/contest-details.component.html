@@ -10,7 +10,7 @@
       </ng-template>
       <p>
         <strong> {{ 'contest.fields.status.title' | transloco }}: </strong>
-        <span [className]="contestStatusClass()">{{
+        <span [ngClass]="contestStatusClass()">{{
           isHiddenTranslationPath | transloco
         }}</span>
       </p>
@@ -24,11 +24,11 @@
       </p>
       <p>
         <strong>{{ 'common.createdAt' | transloco }}:</strong>
-        {{ contest.createdAt | date: 'medium':'':localeService.locale }}
+        {{ contest.createdAt | date: 'medium':'':locale }}
       </p>
       <p>
         <strong>{{ 'common.updatedAt' | transloco }}:</strong>
-        {{ contest.updatedAt | date: 'medium':'':localeService.locale }}
+        {{ contest.updatedAt | date: 'medium':'':locale }}
       </p>
       <button
         mat-flat-button
@@ -43,7 +43,7 @@
         <mat-icon>edit</mat-icon>
         <span>{{ 'common.edit' | transloco }}</span>
       </ng-template>
-      <form [formGroup]="form" (ngSubmit)="submitted()">
+      <form [formGroup]="form" (ngSubmit)="submit()">
         <!-- Name -->
         <mat-form-field class="form-group">
           <mat-label>{{ 'contest.fields.name.title' | transloco }}</mat-label>

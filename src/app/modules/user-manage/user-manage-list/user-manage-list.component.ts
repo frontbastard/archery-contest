@@ -38,7 +38,7 @@ export class UserManageListComponent implements OnInit {
   public request: SearchRequest<UserFilterModel> = {
     searchTerm: null,
     sortTerm: null,
-    sortAsc: '',
+    sortAsc: false,
     pageIndex: 0,
     pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
@@ -57,6 +57,7 @@ export class UserManageListComponent implements OnInit {
     'createdAt',
     'actions',
   ];
+  public locale = null;
 
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
@@ -71,7 +72,7 @@ export class UserManageListComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   constructor(
-    public localeService: LocaleService,
+    private _localeService: LocaleService,
     private _store: Store<UserState>,
     private _actions: Actions,
     private _dialog: MatDialog,
@@ -79,6 +80,7 @@ export class UserManageListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.locale = this._localeService.locale;
     this._actions
       .pipe(ofType(UserActions.userLoaded), untilDestroyed(this))
       .subscribe(({ data }: ActionResponsePayload<User>) => {

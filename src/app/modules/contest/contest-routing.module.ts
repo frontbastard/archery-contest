@@ -13,16 +13,16 @@ const routes: Routes = [
     component: ContestRouterComponent,
     children: [
       {
+        path: '',
+        component: ContestListComponent,
+      },
+      {
         path: ContestRoutes.Create,
         component: ContestCreateComponent,
       },
       {
         path: `:${RouteParams.Id}`,
         component: ContestDetailsComponent,
-      },
-      {
-        path: '',
-        component: ContestListComponent,
       },
     ],
   },

@@ -8,7 +8,7 @@
       </ng-template>
       <p>
         <strong> {{ 'userManage.fields.status.title' | transloco }}: </strong>
-        <span [className]="userStatusClass()">{{
+        <span [ngClass]="userStatusClass()">{{
           isBlockedTranslationPath | transloco
         }}</span>
       </p>
@@ -28,15 +28,15 @@
         <strong>
           {{ 'userManage.fields.dateOfBirth.title' | transloco }}:
         </strong>
-        {{ user.dateOfBirth | date: 'longDate':'':localeService.locale }}
+        {{ user.dateOfBirth | date: 'longDate':'':locale }}
       </p>
       <p>
         <strong>{{ 'common.createdAt' | transloco }}:</strong>
-        {{ user.createdAt | date: 'medium':'':localeService.locale }}
+        {{ user.createdAt | date: 'medium':'':locale }}
       </p>
       <p>
         <strong>{{ 'common.updatedAt' | transloco }}:</strong>
-        {{ user.updatedAt | date: 'medium':'':localeService.locale }}
+        {{ user.updatedAt | date: 'medium':'':locale }}
       </p>
       <button mat-flat-button color="warn" (click)="deleteUserDialog(user)">
         <mat-icon>delete</mat-icon>
@@ -48,7 +48,7 @@
         <mat-icon>edit</mat-icon>
         <span>{{ 'common.edit' | transloco }}</span>
       </ng-template>
-      <form [formGroup]="form" (ngSubmit)="submitted()">
+      <form [formGroup]="form" (ngSubmit)="submit()">
         <!-- Name -->
         <mat-form-field class="form-group">
           <mat-label>{{

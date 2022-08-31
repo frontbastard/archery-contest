@@ -41,7 +41,7 @@ export class ContestCreateComponent implements OnInit {
     this.form = this._formBuilder.group(this.controls);
   }
 
-  public submitted(): void {
+  public submit(): void {
     this._store.dispatch(
       addContest({
         data: { ...this.form.value },

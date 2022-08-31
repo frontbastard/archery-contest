@@ -4,12 +4,14 @@ import {
   contestAdded,
   contestDeleted,
   contestLoaded,
+  contestPreloaded,
   contestsLoaded,
   contestUpdated,
   deleteContest,
   errorOccurred,
   loadContest,
   loadContests,
+  preloadContest,
   updateContest,
 } from './contest.actions';
 import { ContestState, initialState } from './contest.state';
@@ -24,11 +26,11 @@ const _reducer = createReducer(
     ...state,
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
-  on(loadContest, state => ({
+  on(loadContest, preloadContest, state => ({
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(contestLoaded, (state, action) => ({
+  on(contestLoaded, contestPreloaded, (state, action) => ({
     ...state,
     contest: action.data,
     loadingRequestCounter: state.loadingRequestCounter - 1,
@@ -46,8 +48,12 @@ const _reducer = createReducer(
     ...state,
     loadingRequestCounter: state.loadingRequestCounter + 1,
   })),
-  on(contestUpdated, state => ({
+  on(contestUpdated, (state, action) => ({
     ...state,
+    // contests: { // TODO: Update item
+    //   items: state,
+    //   totalCount: state.contests.totalCount,
+    // },
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
   on(deleteContest, state => ({

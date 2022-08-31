@@ -47,9 +47,9 @@ export class HttpResponseInterceptor implements HttpInterceptor {
   }
 
   private handleError(response: ResponseWrapper): void {
-    const translationPath = `enums.AcErrorCode.${
-      AcErrorCode[response.errorCode || AcErrorCode.UnexpectedError]
-    }`;
+    const errorCode =
+      AcErrorCode[response.errorCode || AcErrorCode.UnexpectedError];
+    const translationPath = `enums.AcErrorCode.${errorCode}`;
     const config = {
       type: ToastType.Error,
       message: translationPath,

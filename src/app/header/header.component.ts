@@ -8,17 +8,21 @@ import { LocaleService } from '../services/locale.service';
 })
 export class HeaderComponent implements OnInit {
   public readonly UserRoutes = UserRoutes;
+  public locales = null;
+  public locale = null;
 
   @Input() sidenav;
 
-  constructor(public localeService: LocaleService) {}
+  constructor(private _localeService: LocaleService) {}
 
   ngOnInit(): void {
-    this.localeService.detectLocale();
+    this.locales = this._localeService.locales;
+    this.locale = this._localeService.locale;
+    this._localeService.detectLocale();
   }
 
   public updateLocale(event: any): void {
-    this.localeService.updateLocale(event.target.value);
+    this._localeService.updateLocale(event.target.value);
   }
 
   public trackByLangs(_index, lang): string {

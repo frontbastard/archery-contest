@@ -7,7 +7,9 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
 import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { Contest } from 'src/app/models/contest.model';
@@ -20,6 +22,7 @@ import {
 } from 'src/app/store/contest/contest.actions';
 import { selectContest } from 'src/app/store/contest/contest.selectors';
 
+@UntilDestroy()
 @Component({
   selector: 'app-contest-details',
   templateUrl: './contest-details.component.html',
@@ -33,6 +36,7 @@ export class ContestDetailsComponent implements OnInit {
     hidden: new FormControl(''),
   };
   public tabIndex = 0;
+  public locale = null;
 
   public get isContestInitialized(): boolean {
     return Boolean(this.contest);
@@ -45,7 +49,7 @@ export class ContestDetailsComponent implements OnInit {
   }
 
   constructor(
-    public localeService: LocaleService,
+    private _localeService: LocaleService,
     private _route: ActivatedRoute,
     private _store: Store,
     private _formBuilder: FormBuilder,
@@ -54,26 +58,25 @@ export class ContestDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.locale = this._localeService.locale;
     this.form = this._formBuilder.group(this.controls);
 
-    this._store.select(selectContest).subscribe(contest => {
-      if (contest === null) {
-        const contestId = this._route.snapshot.paramMap.get('id');
-        this._loadContest(contestId);
-        return;
-      }
+    const contestId = this._route.snapshot.paramMap.get('id');
+    this._loadContest(contestId);
+    this._store
+      .select(selectContest)
+      .pipe(
+        untilDestroyed(this), // TODO: The same for User Details
+        filter(x => !!x)
+      )
+      .subscribe(contest => {
+        this.form.patchValue(contest); // TODO: The same for User Details
 
-      this.form.setValue({
-        name: contest.name,
-        description: contest.description,
-        hidden: contest.hidden,
+        this.contest = contest;
       });
-
-      this.contest = { ...contest };
-    });
   }
 
-  public submitted(): void {
+  public submit(): void {
     if (this.form.invalid) return;
     this.contest = {
       ...this.contest,
@@ -89,11 +92,7 @@ export class ContestDetailsComponent implements OnInit {
   }
 
   public submitCancelled(): void {
-    this.form.setValue({
-      name: this.contest.name,
-      description: this.contest.description,
-      hidden: this.contest.hidden,
-    });
+    this.form.patchValue(this.contest);
 
     this._goBack();
   }
@@ -123,16 +122,19 @@ export class ContestDetailsComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(id => {
-      if (id) {
-        this._store.dispatch(
-          deleteContest({
-            data: id,
-          } as ActionRequestPayload<string>)
-        );
-        this._goToList();
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this)) // TODO: The same for every dialogRef
+      .subscribe(id => {
+        if (id) {
+          this._store.dispatch(
+            deleteContest({
+              data: id,
+            } as ActionRequestPayload<string>)
+          );
+          this._goToList();
+        }
+      });
   }
 
   private _goBack() {
