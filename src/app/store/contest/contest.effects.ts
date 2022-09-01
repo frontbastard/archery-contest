@@ -39,7 +39,6 @@ export class ContestEffects {
   );
 
   preloadContest$ = createEffect(() =>
-    // TODO: The same for Users
     this._actions$.pipe(
       ofType(ContestActions.preloadContest),
       mergeMap(
@@ -69,7 +68,7 @@ export class ContestEffects {
   loadContest$ = createEffect(() =>
     this._actions$.pipe(
       ofType(ContestActions.loadContest),
-      withLatestFrom(this._store.select(selectContest)), // TODO: The same for Users
+      withLatestFrom(this._store.select(selectContest)),
       switchMap(
         ([{ data, cancellationObservable }, state]: [
           ActionRequestPayload<string>,

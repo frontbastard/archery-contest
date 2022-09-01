@@ -66,11 +66,11 @@ export class ContestDetailsComponent implements OnInit {
     this._store
       .select(selectContest)
       .pipe(
-        untilDestroyed(this), // TODO: The same for User Details
+        untilDestroyed(this),
         filter(x => !!x)
       )
       .subscribe(contest => {
-        this.form.patchValue(contest); // TODO: The same for User Details
+        this.form.patchValue(contest);
 
         this.contest = contest;
       });
@@ -124,7 +124,7 @@ export class ContestDetailsComponent implements OnInit {
 
     dialogRef
       .afterClosed()
-      .pipe(untilDestroyed(this)) // TODO: The same for every dialogRef
+      .pipe(untilDestroyed(this))
       .subscribe(id => {
         if (id) {
           this._store.dispatch(

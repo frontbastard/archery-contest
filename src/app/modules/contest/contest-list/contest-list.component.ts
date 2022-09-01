@@ -94,7 +94,9 @@ export class ContestListComponent implements OnInit {
   }
 
   public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) return;
+    if (this.request.searchTerm.length === 1) {
+      return;
+    }
 
     this._refreshList();
   }
@@ -130,15 +132,18 @@ export class ContestListComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(id => {
-      if (id) {
-        this._store.dispatch(
-          deleteContest({
-            data: id,
-          } as ActionRequestPayload<string>)
-        );
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(id => {
+        if (id) {
+          this._store.dispatch(
+            deleteContest({
+              data: id,
+            } as ActionRequestPayload<string>)
+          );
+        }
+      });
   }
 
   public preloadContestDetails(contest: Contest) {

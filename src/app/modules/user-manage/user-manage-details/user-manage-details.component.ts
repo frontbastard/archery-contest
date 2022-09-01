@@ -7,8 +7,9 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
 import { UserRoutes } from 'src/app/common/routes';
 import { UserRole } from 'src/app/common/user-roles';
 import { getEnumNames } from 'src/app/common/utils';
@@ -65,22 +66,19 @@ export class UserManageDetailsComponent implements OnInit {
     this.locale = this._localeService.locale;
     this.form = this._formBuilder.group(this.controls);
 
-    this._store.select(selectUser).subscribe(user => {
-      if (user === null) {
-        const userID = this._route.snapshot.paramMap.get('id');
-        this._loadUser(userID);
-        return;
-      }
+    const userId = this._route.snapshot.paramMap.get('id');
+    this._loadUser(userId);
+    this._store
+      .select(selectUser)
+      .pipe(
+        untilDestroyed(this),
+        filter(x => !!x)
+      )
+      .subscribe(user => {
+        this.form.patchValue(user);
 
-      this.form.setValue({
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        blocked: user.blocked,
+        this.user = user;
       });
-
-      this.user = { ...user };
-    });
   }
 
   public submit(): void {
@@ -99,12 +97,7 @@ export class UserManageDetailsComponent implements OnInit {
   }
 
   public submitCancelled(): void {
-    this.form.setValue({
-      name: this.user.name,
-      email: this.user.email,
-      role: this.user.role,
-      blocked: this.user.blocked,
-    });
+    this.form.patchValue(this.user);
 
     this._goBack();
   }
@@ -134,16 +127,19 @@ export class UserManageDetailsComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(id => {
-      if (id) {
-        this._store.dispatch(
-          deleteUser({
-            data: id,
-          } as ActionRequestPayload<string>)
-        );
-        this._goToList();
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(id => {
+        if (id) {
+          this._store.dispatch(
+            deleteUser({
+              data: id,
+            } as ActionRequestPayload<string>)
+          );
+          this._goToList();
+        }
+      });
   }
 
   private _goBack() {

@@ -35,7 +35,6 @@ export const addContest = createAction(
   ContestActions.addContest,
   props<ActionRequestPayload<Contest>>()
 );
-
 export const contestAdded = createAction(
   ContestActions.contestAdded,
   props<ActionResponsePayload<Contest>>()
@@ -45,7 +44,6 @@ export const preloadContest = createAction(
   ContestActions.preloadContest,
   props<ActionRequestPayload<string>>()
 );
-
 export const contestPreloaded = createAction(
   ContestActions.contestPreloaded,
   props<ActionRequestPayload<Contest>>()
@@ -55,7 +53,6 @@ export const loadContest = createAction(
   ContestActions.loadContest,
   props<ActionRequestPayload<string>>()
 );
-
 export const contestLoaded = createAction(
   ContestActions.contestLoaded,
   props<ActionResponsePayload<Contest>>()
@@ -65,7 +62,6 @@ export const loadContests = createAction(
   ContestActions.loadContests,
   props<ActionRequestPayload<SearchRequest<ContestFilterModel>>>()
 );
-
 export const contestsLoaded = createAction(
   ContestActions.contestsLoaded,
   props<ActionResponsePayload<SearchResponse<Contest>>>()
@@ -75,7 +71,6 @@ export const updateContest = createAction(
   ContestActions.updateContest,
   props<ActionRequestPayload<Contest>>()
 );
-
 export const contestUpdated = createAction(
   ContestActions.contestUpdated,
   props<ActionResponsePayload<Contest>>()
@@ -85,7 +80,6 @@ export const deleteContest = createAction(
   ContestActions.deleteContest,
   props<ActionRequestPayload<string>>()
 );
-
 export const contestDeleted = createAction(
   ContestActions.contestDeleted,
   props<ActionResponsePayload<string>>()

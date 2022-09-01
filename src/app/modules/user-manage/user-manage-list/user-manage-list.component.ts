@@ -6,18 +6,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
-import { UserRoutes } from 'src/app/common/routes';
 import { UserRole } from 'src/app/common/user-roles';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
-import { ActionResponsePayload } from 'src/app/models/base/action-response-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 import {
   deleteUser,
-  loadUser,
   loadUsers,
+  preloadUser,
   updateUser,
   UserActions,
 } from 'src/app/store/user/user.actions';
@@ -81,21 +79,12 @@ export class UserManageListComponent implements OnInit {
 
   ngOnInit(): void {
     this.locale = this._localeService.locale;
-    this._actions
-      .pipe(ofType(UserActions.userLoaded), untilDestroyed(this))
-      .subscribe(({ data }: ActionResponsePayload<User>) => {
-        this._router.navigate([UserRoutes.Root, data._id]);
-      });
-
     this._store.select(selectUsers).subscribe(users => {
       this.result = users;
     });
 
     this._actions
-      .pipe(
-        ofType(UserActions.userDeleted, UserActions.userUpdated),
-        untilDestroyed(this)
-      )
+      .pipe(ofType(UserActions.userDeleted), untilDestroyed(this))
       .subscribe(() => {
         this._refreshList();
       });
@@ -104,7 +93,9 @@ export class UserManageListComponent implements OnInit {
   }
 
   public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) return;
+    if (this.request.searchTerm.length === 1) {
+      return;
+    }
 
     this._refreshList();
   }
@@ -140,20 +131,23 @@ export class UserManageListComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(id => {
-      if (id) {
-        this._store.dispatch(
-          deleteUser({
-            data: id,
-          } as ActionRequestPayload<string>)
-        );
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(id => {
+        if (id) {
+          this._store.dispatch(
+            deleteUser({
+              data: id,
+            } as ActionRequestPayload<string>)
+          );
+        }
+      });
   }
 
-  public loadUserDetails(user: User) {
+  public preloadUserDetails(user: User) {
     this._store.dispatch(
-      loadUser({
+      preloadUser({
         data: user._id,
       } as ActionRequestPayload<string>)
     );

@@ -20,7 +20,7 @@ import { addContest } from 'src/app/store/contest/contest.actions';
 export class ContestCreateComponent implements OnInit {
   public form: FormGroup;
   public controls = {
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]), // TODO: Create trimValueAccessor
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]), // TODO: Question: Create trimValueAccessor
     description: new FormControl(''),
     hidden: new FormControl(false),
   };

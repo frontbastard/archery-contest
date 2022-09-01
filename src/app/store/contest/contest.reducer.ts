@@ -50,10 +50,12 @@ const _reducer = createReducer(
   })),
   on(contestUpdated, (state, action) => ({
     ...state,
-    // contests: { // TODO: Update item
-    //   items: state,
-    //   totalCount: state.contests.totalCount,
-    // },
+    contests: {
+      items: state.contests.items.map(item =>
+        item._id === action.data._id ? action.data : item
+      ),
+      totalCount: state.contests.totalCount,
+    },
     loadingRequestCounter: state.loadingRequestCounter - 1,
   })),
   on(deleteContest, state => ({
