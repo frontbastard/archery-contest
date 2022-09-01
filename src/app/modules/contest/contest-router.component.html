@@ -1,0 +1,6 @@
+<mat-progress-bar
+  class="position-absolute"
+  *ngIf="selectIsContestStateLoading$ | async"
+  mode="indeterminate"></mat-progress-bar>
+
+<router-outlet></router-outlet>

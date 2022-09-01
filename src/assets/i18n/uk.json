@@ -1,11 +1,12 @@
 {
   "common": {
     "all": "Всі",
-    "cancel": "Відмінити",
+    "info": "Інформація",
+    "create": "Створити",
     "delete": "Видалити",
     "edit": "Редагувати",
-    "info": "Інформація",
     "submit": "Надіслати",
+    "cancel": "Відмінити",
     "notFound": "Нічого не знайдено",
     "createdAt": "Створено",
     "updatedAt": "Оновлено"
@@ -13,7 +14,11 @@
   "enums": {
     "AcErrorCode": {
       "UnexpectedError": "Невідома помилка",
-      "UserNotFound": "Користувач не знайдений"
+      "PermissionDenied": "У дозволі відмовлено",
+      "UserNotFound": "Користувач не знайдений",
+      "UserNotAuthenticated": "Користувач не автентифікований",
+      "UserIsBlocked": "Користувач заблокований",
+      "ContestNotFound": "Подія не знайдена"
     },
     "UserRole": {
       "Master": "Майстер",
@@ -27,7 +32,7 @@
   },
   "navigationLinks": {
     "users": "Користувачі",
-    "events": "Події"
+    "contests": "Події"
   },
   "elements": {
     "search": {

@@ -1,0 +1,40 @@
+{
+  "titles": {
+    "contestsList": "Список подій",
+    "contestDetails": "Деталі події",
+    "createContest": "Створити подію"
+  },
+  "dialogs": {
+    "deleteContest": {
+      "title": "Видалити подію",
+      "content": "Ви впевнені, що хочете видалити подію {{entityName}}?"
+    }
+  },
+  "notifications": {
+    "contestAdded": "Подія успішно створена",
+    "contestUpdated": "Подія успішно оновлена",
+    "contestDeleted": "Подія успішно видалена"
+  },
+  "fields": {
+    "name": {
+      "title": "Назва",
+      "placeholder": "Введіть назву події",
+      "validator": {
+        "required": "Необхідно вказати назву",
+        "minLength": "Мінімальна довжина 2 символи"
+      }
+    },
+    "description": {
+      "title": "Опис",
+      "placeholder": "Введіть опис"
+    },
+    "owner": {
+      "title": "Власник"
+    },
+    "status": {
+      "title": "Статус",
+      "hidden": "Приховано",
+      "visible": "Видимі"
+    }
+  }
+}

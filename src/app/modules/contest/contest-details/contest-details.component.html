@@ -1,0 +1,91 @@
+<div class="flex">
+  <h1>{{ 'contest.titles.contestDetails' | transloco }}</h1>
+</div>
+<ng-container *ngIf="isContestInitialized">
+  <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>info</mat-icon>
+        <span>{{ 'common.info' | transloco }}</span>
+      </ng-template>
+      <p>
+        <strong> {{ 'contest.fields.status.title' | transloco }}: </strong>
+        <span [ngClass]="contestStatusClass()">{{
+          isHiddenTranslationPath | transloco
+        }}</span>
+      </p>
+      <p>
+        <strong> {{ 'contest.fields.name.title' | transloco }}: </strong>
+        {{ contest.name }}
+      </p>
+      <p>
+        <strong> {{ 'contest.fields.description.title' | transloco }}: </strong>
+        {{ contest.description }}
+      </p>
+      <p>
+        <strong>{{ 'common.createdAt' | transloco }}:</strong>
+        {{ contest.createdAt | date: 'medium':'':locale }}
+      </p>
+      <p>
+        <strong>{{ 'common.updatedAt' | transloco }}:</strong>
+        {{ contest.updatedAt | date: 'medium':'':locale }}
+      </p>
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="deleteContestDialog(contest)">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>edit</mat-icon>
+        <span>{{ 'common.edit' | transloco }}</span>
+      </ng-template>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <!-- Name -->
+        <mat-form-field class="form-group">
+          <mat-label>{{ 'contest.fields.name.title' | transloco }}</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            [placeholder]="'contest.fields.name.placeholder' | transloco"
+            autocomplete="false" />
+          <mat-error *ngIf="form.controls['name'].hasError('required')">
+            {{ 'contest.fields.name.validator.required' | transloco }}
+          </mat-error>
+          <mat-error *ngIf="form.controls['name'].hasError('minlength')">
+            {{ 'contest.fields.name.validator.minLength' | transloco }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>{{
+            'contest.fields.description.title' | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            type="text"
+            formControlName="description"
+            [placeholder]="'contest.fields.description.placeholder' | transloco"
+            autocomplete="false"></textarea>
+        </mat-form-field>
+        <!-- Hidden -->
+        <div class="form-group">
+          <mat-slide-toggle formControlName="hidden">
+            {{ isHiddenTranslationPath | transloco }}
+          </mat-slide-toggle>
+        </div>
+        <div class="form-group">
+          <button mat-flat-button type="button" (click)="submitCancelled()">
+            {{ 'common.cancel' | transloco }}
+          </button>
+          <button mat-flat-button color="primary" [disabled]="form.invalid">
+            {{ 'common.submit' | transloco }}
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>

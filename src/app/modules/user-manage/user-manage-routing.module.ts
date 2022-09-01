@@ -16,7 +16,7 @@ const routes: Routes = [
         component: UserManageListComponent,
       },
       {
-        path: `:${RouteParams.ID}`,
+        path: `:${RouteParams.Id}`,
         component: UserManageDetailsComponent,
       },
     ],

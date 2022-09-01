@@ -15,9 +15,9 @@ import { AuthInterceptor } from './core/interceptors/auth-interceptors';
 import { HttpResponseInterceptor } from './core/interceptors/http-response.interceptor';
 import { HeaderComponent } from './header/header.component';
 import { MaterialModule } from './material/material.module';
+import { TranslocoRootModule } from './modules/transloco-root.module';
 import { UserManageModule } from './modules/user-manage/user-manage.module';
 import { NavigationComponent } from './navigation/navigation.component';
-import { TranslocoRootModule } from './transloco-root.module';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeUk, 'uk');

@@ -6,53 +6,54 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
-import { UserRole } from 'src/app/common/user-roles';
+import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
+import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 import {
-  deleteUser,
-  loadUsers,
-  preloadUser,
-  updateUser,
-  UserActions,
-} from 'src/app/store/user/user.actions';
-import { selectUsers } from 'src/app/store/user/user.selectors';
-import { UserState } from 'src/app/store/user/user.state';
-import { User, UserFilterModel } from '../../../models/user.model';
+  ContestActions,
+  deleteContest,
+  loadContests,
+  preloadContest,
+  updateContest,
+} from 'src/app/store/contest/contest.actions';
+import { selectContests } from 'src/app/store/contest/contest.selectors';
+import { ContestState } from 'src/app/store/contest/contest.state';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-user-manage-list',
-  templateUrl: './user-manage-list.component.html',
+  selector: 'app-contest-list',
+  templateUrl: './contest-list.component.html',
 })
-export class UserManageListComponent implements OnInit {
-  public readonly UserRole = UserRole;
+export class ContestListComponent implements OnInit {
   public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
+  public readonly ContestRouter = ContestRoutes;
 
-  public result: SearchResponse<User> = {} as SearchResponse<User>;
-  public request: SearchRequest<UserFilterModel> = {
+  public result: SearchResponse<Contest> = {} as SearchResponse<Contest>;
+  public request: SearchRequest<ContestFilterModel> = {
     searchTerm: null,
     sortTerm: null,
     sortAsc: false,
     pageIndex: 0,
     pageSize: PAGE_SIZE_OPTIONS[0],
     filter: {
-      blocked: null,
+      hidden: null,
+      public: false,
     },
-  } as SearchRequest<UserFilterModel>;
-  public userStatuses = [
+  } as SearchRequest<ContestFilterModel>;
+  public contestStatuses = [
     { value: null, translationPath: 'common.all' },
-    { value: true, translationPath: 'userManage.fields.status.blocked' },
-    { value: false, translationPath: 'userManage.fields.status.active' },
+    { value: true, translationPath: 'contest.fields.status.hidden' },
+    { value: false, translationPath: 'contest.fields.status.visible' },
   ];
   public displayedColumns: string[] = [
     'name',
-    'role',
-    'email',
+    'owner',
     'createdAt',
+    'updatedAt',
     'actions',
   ];
   public locale = null;
@@ -71,7 +72,7 @@ export class UserManageListComponent implements OnInit {
 
   constructor(
     private _localeService: LocaleService,
-    private _store: Store<UserState>,
+    private _store: Store<ContestState>,
     private _actions: Actions,
     private _dialog: MatDialog,
     private _router: Router
@@ -79,12 +80,12 @@ export class UserManageListComponent implements OnInit {
 
   ngOnInit(): void {
     this.locale = this._localeService.locale;
-    this._store.select(selectUsers).subscribe(users => {
-      this.result = users;
+    this._store.select(selectContests).subscribe(contests => {
+      this.result = contests;
     });
 
     this._actions
-      .pipe(ofType(UserActions.userDeleted), untilDestroyed(this))
+      .pipe(ofType(ContestActions.contestDeleted), untilDestroyed(this))
       .subscribe(() => {
         this._refreshList();
       });
@@ -100,8 +101,8 @@ export class UserManageListComponent implements OnInit {
     this._refreshList();
   }
 
-  public userStatusChanged($event): void {
-    this.request.filter.blocked = $event === 'null' ? null : $event;
+  public contestStatusChanged($event): void {
+    this.request.filter.hidden = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
     this._refreshList();
   }
@@ -118,13 +119,13 @@ export class UserManageListComponent implements OnInit {
     this._refreshList();
   }
 
-  public deleteUserDialog(user: User): void {
+  public deleteContestDialog(contest: Contest): void {
     const dialogRef = this._dialog.open(DialogComponent, {
       data: {
-        entity: user,
+        entity: contest,
         dialog: {
-          title: 'userManage.dialogs.deleteUser.title',
-          content: 'userManage.dialogs.deleteUser.content',
+          title: 'contest.dialogs.deleteContest.title',
+          content: 'contest.dialogs.deleteContest.content',
           actionButton: 'common.delete',
           actionButtonColor: 'warn',
         },
@@ -137,7 +138,7 @@ export class UserManageListComponent implements OnInit {
       .subscribe(id => {
         if (id) {
           this._store.dispatch(
-            deleteUser({
+            deleteContest({
               data: id,
             } as ActionRequestPayload<string>)
           );
@@ -145,26 +146,26 @@ export class UserManageListComponent implements OnInit {
       });
   }
 
-  public preloadUserDetails(user: User) {
+  public preloadContestDetails(contest: Contest) {
     this._store.dispatch(
-      preloadUser({
-        data: user.id,
+      preloadContest({
+        data: contest.id,
       } as ActionRequestPayload<string>)
     );
   }
 
-  public toggleBlocked(user: User): void {
+  public toggleHidden(contest: Contest): void {
     this._store.dispatch(
-      updateUser({
+      updateContest({
         data: {
-          ...user,
-          blocked: !user.blocked,
+          ...contest,
+          hidden: !contest.hidden,
         },
-      } as ActionRequestPayload<User>)
+      } as ActionRequestPayload<Contest>)
     );
   }
 
-  public trackByUserStatus(index: number, status) {
+  public trackByContestStatus(index: number, status) {
     return status.value;
   }
 
@@ -177,9 +178,9 @@ export class UserManageListComponent implements OnInit {
     }
 
     this._store.dispatch(
-      loadUsers({
+      loadContests({
         data: JSON.parse(JSON.stringify(this.request)),
-      } as ActionRequestPayload<SearchRequest<UserFilterModel>>)
+      } as ActionRequestPayload<SearchRequest<ContestFilterModel>>)
     );
   }
 }

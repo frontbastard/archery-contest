@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserRoutes } from './common/routes';
+import { ContestRoutes, UserRoutes } from './common/routes';
 
 const routes: Routes = [
   {
@@ -8,6 +8,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('src/app/modules/user-manage/user-manage.module').then(
         mod => mod.UserManageModule
+      ),
+  },
+  {
+    path: ContestRoutes.Root,
+    loadChildren: () =>
+      import('src/app/modules/contest/contest.module').then(
+        mod => mod.ContestModule
       ),
   },
 ];

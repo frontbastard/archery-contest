@@ -7,9 +7,9 @@
     <span class="spacer"></span>
     <select (change)="updateLocale($event)" class="lang-selector">
       <option
-        *ngFor="let l of localeService.locales"
+        *ngFor="let l of locales"
         [value]="l.value"
-        [selected]="l.value === localeService.locale">
+        [selected]="l.value === locale">
         {{ l.label }}
       </option>
     </select>

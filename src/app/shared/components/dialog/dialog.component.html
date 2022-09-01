@@ -11,7 +11,7 @@
   <button
     mat-flat-button
     [color]="data.dialog.actionButtonColor || 'primary'"
-    [mat-dialog-close]="data.entity._id"
+    [mat-dialog-close]="data.entity.id"
     cdkFocusInitial>
     {{ data.dialog.actionButton | transloco }}
   </button>

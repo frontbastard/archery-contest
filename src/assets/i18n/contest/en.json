@@ -1,0 +1,40 @@
+{
+  "titles": {
+    "contestsList": "Events List",
+    "contestDetails": "Event Details",
+    "createContest": "Create Event"
+  },
+  "dialogs": {
+    "deleteContest": {
+      "title": "Delete Event",
+      "content": "Are you sure you want to delete event {{entityName}}?"
+    }
+  },
+  "notifications": {
+    "contestAdded": "Event successfully added",
+    "contestUpdated": "Event successfully updated",
+    "contestDeleted": "Event successfully deleted"
+  },
+  "fields": {
+    "name": {
+      "title": "Title",
+      "placeholder": "Enter event title",
+      "validator": {
+        "required": "Title is required",
+        "minLength": "Min length is 2 symbols"
+      }
+    },
+    "description": {
+      "title": "Description",
+      "placeholder": "Enter event description"
+    },
+    "owner": {
+      "title": "Owner"
+    },
+    "status": {
+      "title": "Status",
+      "hidden": "Hidden",
+      "visible": "Visible"
+    }
+  }
+}

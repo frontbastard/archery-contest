@@ -10,48 +10,43 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
-import { UserRoutes } from 'src/app/common/routes';
-import { UserRole } from 'src/app/common/user-roles';
-import { getEnumNames } from 'src/app/common/utils';
+import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
-import { User } from 'src/app/models/user.model';
+import { Contest } from 'src/app/models/contest.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 import {
-  deleteUser,
-  loadUser,
-  updateUser,
-} from 'src/app/store/user/user.actions';
-import { selectUser } from 'src/app/store/user/user.selectors';
+  deleteContest,
+  loadContest,
+  updateContest,
+} from 'src/app/store/contest/contest.actions';
+import { selectContest } from 'src/app/store/contest/contest.selectors';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-user-manage-details',
-  templateUrl: './user-manage-details.component.html',
+  selector: 'app-contest-details',
+  templateUrl: './contest-details.component.html',
 })
-export class UserManageDetailsComponent implements OnInit {
-  public user: User;
-  public UserRole = UserRole;
-  public readonly roles = getEnumNames(UserRole);
+export class ContestDetailsComponent implements OnInit {
+  public contest: Contest;
   public form: FormGroup;
   public controls = {
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    role: new FormControl(''),
-    blocked: new FormControl(''),
+    description: new FormControl(''),
+    hidden: new FormControl(''),
   };
   public tabIndex = 0;
-
-  public get isUserInitialized(): boolean {
-    return Boolean(this.user);
-  }
-
-  public get isBlockedTranslationPath(): string {
-    return this.form.value.blocked
-      ? 'userManage.fields.status.blocked'
-      : 'userManage.fields.status.active';
-  }
   public locale = null;
+
+  public get isContestInitialized(): boolean {
+    return Boolean(this.contest);
+  }
+
+  public get isHiddenTranslationPath(): string {
+    return this.form.value.hidden
+      ? 'contest.fields.status.hidden'
+      : 'contest.fields.status.visible';
+  }
 
   constructor(
     private _localeService: LocaleService,
@@ -66,61 +61,61 @@ export class UserManageDetailsComponent implements OnInit {
     this.locale = this._localeService.locale;
     this.form = this._formBuilder.group(this.controls);
 
-    const userId = this._route.snapshot.paramMap.get('id');
-    this._loadUser(userId);
+    const contestId = this._route.snapshot.paramMap.get('id');
+    this._loadContest(contestId);
     this._store
-      .select(selectUser)
+      .select(selectContest)
       .pipe(
         untilDestroyed(this),
         filter(x => !!x)
       )
-      .subscribe(user => {
-        this.form.patchValue(user);
+      .subscribe(contest => {
+        this.form.patchValue(contest);
 
-        this.user = user;
+        this.contest = contest;
       });
   }
 
   public submit(): void {
     if (this.form.invalid) return;
-    this.user = {
-      ...this.user,
+    this.contest = {
+      ...this.contest,
       ...this.form.value,
     };
 
     this._store.dispatch(
-      updateUser({
-        data: this.user,
-      } as ActionRequestPayload<User>)
+      updateContest({
+        data: this.contest,
+      } as ActionRequestPayload<Contest>)
     );
     this._goBack();
   }
 
   public submitCancelled(): void {
-    this.form.patchValue(this.user);
+    this.form.patchValue(this.contest);
 
     this._goBack();
   }
 
-  public userStatusClass(): string {
-    return this.user.blocked ? 'label-danger' : 'label-success';
+  public contestStatusClass(): string {
+    return this.contest.hidden ? 'label-danger' : 'label-success';
   }
 
-  private _loadUser(id: string): void {
+  private _loadContest(id: string): void {
     this._store.dispatch(
-      loadUser({
+      loadContest({
         data: id,
       } as ActionRequestPayload<string>)
     );
   }
 
-  public deleteUserDialog(user: User): void {
+  public deleteContestDialog(contest: Contest): void {
     const dialogRef = this._dialog.open(DialogComponent, {
       data: {
-        entity: user,
+        entity: contest,
         dialog: {
-          title: 'userManage.dialogs.deleteUser.title',
-          content: 'userManage.dialogs.deleteUser.content',
+          title: 'contest.dialogs.deleteContest.title',
+          content: 'contest.dialogs.deleteContest.content',
           actionButton: 'common.delete',
           actionButtonColor: 'warn',
         },
@@ -133,7 +128,7 @@ export class UserManageDetailsComponent implements OnInit {
       .subscribe(id => {
         if (id) {
           this._store.dispatch(
-            deleteUser({
+            deleteContest({
               data: id,
             } as ActionRequestPayload<string>)
           );
@@ -147,6 +142,6 @@ export class UserManageDetailsComponent implements OnInit {
   }
 
   private _goToList() {
-    this._router.navigate([UserRoutes.Root]);
+    this._router.navigate([ContestRoutes.Root]);
   }
 }

@@ -51,6 +51,7 @@ table {
 }
 
 .mat-icon {
+  margin-top: -2px;
   & + * {
     margin-left: 5px;
   }
