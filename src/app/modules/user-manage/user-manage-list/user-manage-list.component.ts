@@ -148,7 +148,7 @@ export class UserManageListComponent implements OnInit {
   public preloadUserDetails(user: User) {
     this._store.dispatch(
       preloadUser({
-        data: user._id,
+        data: user.id,
       } as ActionRequestPayload<string>)
     );
   }

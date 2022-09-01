@@ -44,7 +44,7 @@ export class UserEffects {
       this._actions$.pipe(
         ofType(UserActions.userPreloaded),
         tap(({ data }: ActionResponsePayload<User>) => {
-          this._router.navigate([UserRoutes.Root, data._id]);
+          this._router.navigate([UserRoutes.Root, data.id]);
         })
       ),
     { dispatch: false }
@@ -59,7 +59,7 @@ export class UserEffects {
           ActionRequestPayload<string>,
           User
         ]) => {
-          if (state !== null && state._id === data) {
+          if (state !== null && state.id === data) {
             return of({
               type: UserActions.userPreloaded,
               data: state,
@@ -103,15 +103,13 @@ export class UserEffects {
     this._actions$.pipe(
       ofType(UserActions.updateUser),
       mergeMap(({ data, cancellationObservable }: ActionRequestPayload<User>) =>
-        this._userApiService
-          .update(data._id, data, cancellationObservable)
-          .pipe(
-            map(data => ({
-              type: UserActions.userUpdated,
-              data,
-            })),
-            catchError(() => of({ type: UserActions.errorOccurred }))
-          )
+        this._userApiService.update(data.id, data, cancellationObservable).pipe(
+          map(data => ({
+            type: UserActions.userUpdated,
+            data,
+          })),
+          catchError(() => of({ type: UserActions.errorOccurred }))
+        )
       )
     )
   );

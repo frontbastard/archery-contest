@@ -149,7 +149,7 @@ export class ContestListComponent implements OnInit {
   public preloadContestDetails(contest: Contest) {
     this._store.dispatch(
       preloadContest({
-        data: contest._id,
+        data: contest.id,
       } as ActionRequestPayload<string>)
     );
   }

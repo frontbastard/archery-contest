@@ -42,7 +42,7 @@ const _reducer = createReducer(
     ...state,
     users: {
       items: state.users.items.map(item =>
-        item._id === action.data._id ? action.data : item
+        item.id === action.data.id ? action.data : item
       ),
       totalCount: state.users.totalCount,
     },
@@ -55,7 +55,7 @@ const _reducer = createReducer(
   on(userDeleted, (state, action) => ({
     ...state,
     users: {
-      items: state.users.items.filter(user => user._id !== action.data),
+      items: state.users.items.filter(user => user.id !== action.data),
       totalCount: state.users.totalCount - 1,
     },
     loadingRequestCounter: state.loadingRequestCounter - 1,

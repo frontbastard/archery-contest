@@ -52,7 +52,7 @@ const _reducer = createReducer(
     ...state,
     contests: {
       items: state.contests.items.map(item =>
-        item._id === action.data._id ? action.data : item
+        item.id === action.data.id ? action.data : item
       ),
       totalCount: state.contests.totalCount,
     },
@@ -65,9 +65,7 @@ const _reducer = createReducer(
   on(contestDeleted, (state, action) => ({
     ...state,
     contests: {
-      items: state.contests.items.filter(
-        contest => contest._id !== action.data
-      ),
+      items: state.contests.items.filter(contest => contest.id !== action.data),
       totalCount: state.contests.totalCount - 1,
     },
     loadingRequestCounter: state.loadingRequestCounter - 1,

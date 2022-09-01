@@ -1,5 +1,5 @@
 export interface Contest {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   hidden: boolean;

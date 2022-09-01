@@ -59,7 +59,7 @@ export class ContestEffects {
       this._actions$.pipe(
         ofType(ContestActions.contestPreloaded),
         tap(({ data }: ActionResponsePayload<Contest>) => {
-          this._router.navigate([ContestRoutes.Root, data._id]);
+          this._router.navigate([ContestRoutes.Root, data.id]);
         })
       ),
     { dispatch: false }
@@ -74,7 +74,7 @@ export class ContestEffects {
           ActionRequestPayload<string>,
           Contest
         ]) => {
-          if (state !== null && state._id === data) {
+          if (state !== null && state.id === data) {
             return of({
               type: ContestActions.contestLoaded,
               data: state,
@@ -120,7 +120,7 @@ export class ContestEffects {
       mergeMap(
         ({ data, cancellationObservable }: ActionRequestPayload<Contest>) =>
           this._contestApiService
-            .update(data._id, data, cancellationObservable)
+            .update(data.id, data, cancellationObservable)
             .pipe(
               map(data => ({
                 type: ContestActions.contestUpdated,
