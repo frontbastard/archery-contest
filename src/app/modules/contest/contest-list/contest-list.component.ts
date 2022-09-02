@@ -31,6 +31,18 @@ import { ContestState } from 'src/app/store/contest/contest.state';
 export class ContestListComponent implements OnInit {
   public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
   public readonly ContestRouter = ContestRoutes;
+  public readonly contestStatuses = [
+    { value: null, translationPath: 'common.all' },
+    { value: true, translationPath: 'contest.fields.status.hidden' },
+    { value: false, translationPath: 'contest.fields.status.visible' },
+  ];
+  public readonly displayedColumns: string[] = [
+    'name',
+    'owner',
+    'createdAt',
+    'updatedAt',
+    'actions',
+  ];
 
   public result: SearchResponse<Contest> = {} as SearchResponse<Contest>;
   public request: SearchRequest<ContestFilterModel> = {
@@ -44,18 +56,6 @@ export class ContestListComponent implements OnInit {
       public: false,
     },
   } as SearchRequest<ContestFilterModel>;
-  public contestStatuses = [
-    { value: null, translationPath: 'common.all' },
-    { value: true, translationPath: 'contest.fields.status.hidden' },
-    { value: false, translationPath: 'contest.fields.status.visible' },
-  ];
-  public displayedColumns: string[] = [
-    'name',
-    'owner',
-    'createdAt',
-    'updatedAt',
-    'actions',
-  ];
   public locale = null;
 
   public get isItemsInitialized(): boolean {
