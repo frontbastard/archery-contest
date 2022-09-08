@@ -1,15 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
+import { BaseSearchComponent } from 'src/app/common/base/base-search.component';
 import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
-import { SearchResponse } from 'src/app/models/base/search-response';
 import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
@@ -28,7 +27,10 @@ import { ContestState } from 'src/app/store/contest/contest.state';
   selector: 'app-contest-list',
   templateUrl: './contest-list.component.html',
 })
-export class ContestListComponent implements OnInit {
+export class ContestListComponent
+  extends BaseSearchComponent<Contest, ContestFilterModel>
+  implements OnInit
+{
   public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
   public readonly ContestRouter = ContestRoutes;
   public readonly contestStatuses = [
@@ -43,42 +45,19 @@ export class ContestListComponent implements OnInit {
     'updatedAt',
     'actions',
   ];
-
-  public result: SearchResponse<Contest> = {} as SearchResponse<Contest>;
-  public request: SearchRequest<ContestFilterModel> = {
-    searchTerm: null,
-    sortTerm: null,
-    sortAsc: false,
-    pageIndex: 0,
-    pageSize: PAGE_SIZE_OPTIONS[0],
-    filter: {
-      hidden: null,
-      public: false,
-    },
-  } as SearchRequest<ContestFilterModel>;
   public locale = null;
 
-  public get isItemsInitialized(): boolean {
-    return this.result.items !== null;
-  }
-
-  public get notFoundMessage(): string {
-    return this.searchInput.nativeElement.value.length
-      ? 'elements.search.nothingFound'
-      : 'common.notFound';
-  }
-
-  @ViewChild('searchInput') searchInput: ElementRef;
-
   constructor(
+    protected override _store: Store<ContestState>,
     private _localeService: LocaleService,
-    private _store: Store<ContestState>,
     private _actions: Actions,
-    private _dialog: MatDialog,
-    private _router: Router
-  ) {}
+    private _dialog: MatDialog
+  ) {
+    super(_store);
+  }
 
   ngOnInit(): void {
+    this.request.filter.hidden = null;
     this.locale = this._localeService.locale;
     this._store.select(selectContests).subscribe(contests => {
       this.result = contests;
@@ -169,13 +148,8 @@ export class ContestListComponent implements OnInit {
     return status.value;
   }
 
-  private _refreshList(): void {
-    if (
-      this.result.totalCount / this.request.pageSize <=
-      this.request.pageIndex
-    ) {
-      this.request.pageIndex = 0;
-    }
+  protected override _refreshList(): void {
+    super._refreshList();
 
     this._store.dispatch(
       loadContests({

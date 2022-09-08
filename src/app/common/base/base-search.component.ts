@@ -1,4 +1,6 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
 import { PAGE_SIZE_OPTIONS } from '../app-constants';
@@ -28,4 +30,15 @@ export abstract class BaseSearchComponent<TModel, TFilter> {
   }
 
   @ViewChild('searchInput') searchInput: ElementRef;
+
+  constructor(protected _store: Store) {}
+
+  protected _refreshList(): void {
+    if (
+      this.result.totalCount / this.request.pageSize <=
+      this.request.pageIndex
+    ) {
+      this.request.pageIndex = 0;
+    }
+  }
 }

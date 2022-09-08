@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -49,17 +48,16 @@ export class UserManageListComponent
   public locale = null;
 
   constructor(
+    protected override _store: Store<UserState>,
     private _localeService: LocaleService,
-    private _store: Store<UserState>,
     private _actions: Actions,
-    private _dialog: MatDialog,
-    private _router: Router
+    private _dialog: MatDialog
   ) {
-    super();
+    super(_store);
   }
 
   ngOnInit(): void {
-    this.request.filter = { blocked: null };
+    this.request.filter.blocked = null;
     this.locale = this._localeService.locale;
     this._store.select(selectUsers).subscribe(users => {
       this.result = users;
@@ -150,13 +148,8 @@ export class UserManageListComponent
     return status.value;
   }
 
-  private _refreshList(): void {
-    if (
-      this.result.totalCount / this.request.pageSize <=
-      this.request.pageIndex
-    ) {
-      this.request.pageIndex = 0;
-    }
+  protected override _refreshList(): void {
+    super._refreshList();
 
     this._store.dispatch(
       loadUsers({
