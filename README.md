@@ -58,6 +58,7 @@ const token = {
 export const jwtToken = token.master;
 ```
 
-7. `npm i`
-8. `ng serve`
-9. Open `localhost:4200`
+7. `git checkout dev`
+8. `npm i`
+9. `ng serve`
+10. Open `localhost:4200`

@@ -4,7 +4,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
 import { BaseSearchComponent } from 'src/app/common/base/base-search.component';
 import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
@@ -31,7 +30,6 @@ export class ContestListComponent
   extends BaseSearchComponent<Contest, ContestFilterModel>
   implements OnInit
 {
-  public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
   public readonly ContestRouter = ContestRoutes;
   public readonly contestStatuses = [
     { value: null, translationPath: 'common.all' },
@@ -48,12 +46,12 @@ export class ContestListComponent
   public locale = null;
 
   constructor(
-    protected override _store: Store<ContestState>,
+    private _store: Store<ContestState>,
     private _localeService: LocaleService,
     private _actions: Actions,
     private _dialog: MatDialog
   ) {
-    super(_store);
+    super();
   }
 
   ngOnInit(): void {
@@ -72,29 +70,9 @@ export class ContestListComponent
     this._refreshList();
   }
 
-  public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) {
-      return;
-    }
-
-    this._refreshList();
-  }
-
   public contestStatusChanged($event): void {
     this.request.filter.hidden = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
-    this._refreshList();
-  }
-
-  public paginationChanged($event: PageEvent): void {
-    this.request.pageIndex = $event.pageIndex;
-    this.request.pageSize = $event.pageSize;
-    this._refreshList();
-  }
-
-  public sortChanged({ active, direction }) {
-    this.request.sortTerm = active;
-    this.request.sortAsc = direction;
     this._refreshList();
   }
 

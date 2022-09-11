@@ -1,5 +1,5 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { PageEvent } from '@angular/material/paginator';
 import { SearchRequest } from 'src/app/models/base/search-request';
 import { SearchResponse } from 'src/app/models/base/search-response';
 import { PAGE_SIZE_OPTIONS } from '../app-constants';
@@ -17,6 +17,7 @@ export abstract class BaseSearchComponent<TModel, TFilter> {
     filter: {} as TFilter,
   };
   public result = {} as SearchResponse<TModel>;
+  public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   public get isItemsInitialized(): boolean {
     return this.result.items !== null;
@@ -24,7 +25,24 @@ export abstract class BaseSearchComponent<TModel, TFilter> {
 
   @ViewChild('searchInput') searchInput: ElementRef;
 
-  constructor(protected _store: Store) {}
+  public paginationChanged($event: PageEvent): void {
+    this.request.pageIndex = $event.pageIndex;
+    this.request.pageSize = $event.pageSize;
+    this._refreshList();
+  }
+
+  public sortChanged({ active, direction }) {
+    this.request.sortTerm = active;
+    this.request.sortAsc = direction;
+    this._refreshList();
+  }
+
+  public searchChanged(): void {
+    if (this.request.searchTerm.length === 1) {
+      return;
+    }
+    this._refreshList();
+  }
 
   protected _refreshList(): void {
     if (
