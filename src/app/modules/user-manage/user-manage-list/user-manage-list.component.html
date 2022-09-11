@@ -104,7 +104,7 @@
 
     <tr *matNoDataRow class="mat-row">
       <td class="mat-cell" colspan="4">
-        {{ notFoundMessage | transloco }}
+        {{ 'common.notFound' | transloco }}
         <span *ngIf="searchInput.value.length">
           "{{ searchInput.value }}"
         </span>

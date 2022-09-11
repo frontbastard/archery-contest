@@ -1,15 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { PAGE_SIZE_OPTIONS } from 'src/app/common/app-constants';
+import { BaseSearchComponent } from 'src/app/common/base/base-search.component';
 import { ContestRoutes } from 'src/app/common/routes';
 import { ActionRequestPayload } from 'src/app/models/base/action-request-payload';
 import { SearchRequest } from 'src/app/models/base/search-request';
-import { SearchResponse } from 'src/app/models/base/search-response';
 import { Contest, ContestFilterModel } from 'src/app/models/contest.model';
 import { LocaleService } from 'src/app/services/locale.service';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
@@ -28,28 +26,17 @@ import { ContestState } from 'src/app/store/contest/contest.state';
   selector: 'app-contest-list',
   templateUrl: './contest-list.component.html',
 })
-export class ContestListComponent implements OnInit {
-  public readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
+export class ContestListComponent
+  extends BaseSearchComponent<Contest, ContestFilterModel>
+  implements OnInit
+{
   public readonly ContestRouter = ContestRoutes;
-
-  public result: SearchResponse<Contest> = {} as SearchResponse<Contest>;
-  public request: SearchRequest<ContestFilterModel> = {
-    searchTerm: null,
-    sortTerm: null,
-    sortAsc: false,
-    pageIndex: 0,
-    pageSize: PAGE_SIZE_OPTIONS[0],
-    filter: {
-      hidden: null,
-      public: false,
-    },
-  } as SearchRequest<ContestFilterModel>;
-  public contestStatuses = [
+  public readonly contestStatuses = [
     { value: null, translationPath: 'common.all' },
     { value: true, translationPath: 'contest.fields.status.hidden' },
     { value: false, translationPath: 'contest.fields.status.visible' },
   ];
-  public displayedColumns: string[] = [
+  public readonly displayedColumns: string[] = [
     'name',
     'owner',
     'createdAt',
@@ -58,27 +45,17 @@ export class ContestListComponent implements OnInit {
   ];
   public locale = null;
 
-  public get isItemsInitialized(): boolean {
-    return this.result.items !== null;
-  }
-
-  public get notFoundMessage(): string {
-    return this.searchInput.nativeElement.value.length
-      ? 'elements.search.nothingFound'
-      : 'common.notFound';
-  }
-
-  @ViewChild('searchInput') searchInput: ElementRef;
-
   constructor(
-    private _localeService: LocaleService,
     private _store: Store<ContestState>,
+    private _localeService: LocaleService,
     private _actions: Actions,
-    private _dialog: MatDialog,
-    private _router: Router
-  ) {}
+    private _dialog: MatDialog
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    this.request.filter.hidden = null;
     this.locale = this._localeService.locale;
     this._store.select(selectContests).subscribe(contests => {
       this.result = contests;
@@ -93,29 +70,9 @@ export class ContestListComponent implements OnInit {
     this._refreshList();
   }
 
-  public searchChanged(): void {
-    if (this.request.searchTerm.length === 1) {
-      return;
-    }
-
-    this._refreshList();
-  }
-
   public contestStatusChanged($event): void {
     this.request.filter.hidden = $event === 'null' ? null : $event;
     this.request.pageIndex = 0;
-    this._refreshList();
-  }
-
-  public paginationChanged($event: PageEvent): void {
-    this.request.pageIndex = $event.pageIndex;
-    this.request.pageSize = $event.pageSize;
-    this._refreshList();
-  }
-
-  public sortChanged({ active, direction }) {
-    this.request.sortTerm = active;
-    this.request.sortAsc = direction;
     this._refreshList();
   }
 
@@ -169,13 +126,8 @@ export class ContestListComponent implements OnInit {
     return status.value;
   }
 
-  private _refreshList(): void {
-    if (
-      this.result.totalCount / this.request.pageSize <=
-      this.request.pageIndex
-    ) {
-      this.request.pageIndex = 0;
-    }
+  protected override _refreshList(): void {
+    super._refreshList();
 
     this._store.dispatch(
       loadContests({
